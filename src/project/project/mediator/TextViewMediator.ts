@@ -1,9 +1,6 @@
 import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
-import {GridView} from '../view/grid/GridView'
 import 'pixi.js'
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
-import Application = PIXI.Application;
-import {SquareView} from "../view/grid/SquareView";
 
 export class TextViewMediator extends puremvc.Mediator implements puremvc.IMediator {
     public name: String = 'TextViewMediator';

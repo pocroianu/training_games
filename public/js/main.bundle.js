@@ -45139,16 +45139,15 @@ var ViewMediator = (function (_super) {
         _this.textViewName = 'TextView';
         _this.buttonViewName = 'ButtonView';
         _this.shipViewName = 'ShipView';
-        _this.GridView = [];
-        _this.shipView = [];
-        _this.GridView.push(GridView_1.GridView.getInstance(_this.gridViewName[0], BattleShipFacade_1.FacadeInformation.GridOne));
-        _this.GridView.push(GridView_1.GridView.getInstance(_this.gridViewName[1], BattleShipFacade_1.FacadeInformation.GridTwo));
+        GridView_1.GridView.getInstance(_this.gridViewName[0], BattleShipFacade_1.FacadeInformation.GridOne);
+        GridView_1.GridView.getInstance(_this.gridViewName[1], BattleShipFacade_1.FacadeInformation.GridTwo);
         var textView = TextView_1.TextView.getInstance(_this.textViewName, BattleShipFacade_1.FacadeInformation.TextViewText, BattleShipFacade_1.FacadeInformation.FontSize, BattleShipFacade_1.FacadeInformation.TextViewColor);
         var buttonView = ButtonView_1.ButtonView.getInstance(_this.buttonViewName, BattleShipFacade_1.FacadeInformation.ButtonViewXPosition, BattleShipFacade_1.FacadeInformation.ButtonViewYPosition, BattleShipFacade_1.FacadeInformation.ButtonViewScale);
         for (var i = 0; i < 3; i++) {
-            _this.shipView[i] = ShipView_1.ShipView.getInstance(_this.shipViewName + '' + i, 0, 100 + i * 100, 5 - i);
+            ShipView_1.ShipView.getInstance(_this.shipViewName + '' + i, 0, 100 + i * 100, 5 - i);
         }
         console.log('   # ' + _this.name + ' created');
+        GridView_1.GridView.getInstance(_this.gridViewName[0], BattleShipFacade_1.FacadeInformation.GridOne).getSquaresPosition();
         return _this;
     }
     ViewMediator.prototype.listNotificationInterests = function () {
@@ -45193,6 +45192,8 @@ var GridView = (function (_super) {
     __extends(GridView, _super);
     function GridView(key, gridNumber) {
         var _this = _super.call(this, key) || this;
+        _this.BoardSquaresXPosition = [];
+        _this.BoardSquaresYPosition = [];
         _this.RulerName = 'RulerForTheGrid';
         _this.name = 'GridView';
         _this.name = _this.name.concat(gridNumber.toString());
@@ -45228,6 +45229,8 @@ var GridView = (function (_super) {
         this.BoardSquares = [];
         for (var i = 0; i < numberOfSquaresVertically; i++) {
             this.BoardSquares[i] = [];
+            this.BoardSquaresXPosition[i] = [];
+            this.BoardSquaresYPosition[i] = [];
             newXPosition = gridXPosition;
             for (var j = 0; j < numberOfSquaresHorizontally; j++) {
                 key++;
@@ -45240,6 +45243,13 @@ var GridView = (function (_super) {
             for (var j = 0; j < numberOfSquaresHorizontally; j++)
                 this.container.addChild(this.BoardSquares[i][j].getUIContainer());
         console.log('   # GridSquares created');
+    };
+    GridView.prototype.getSquaresPosition = function () {
+        for (var i = 0; i < BattleShipFacade_1.FacadeInformation.NumberOfSquaresVertically; i++) {
+            for (var j = 0; j < BattleShipFacade_1.FacadeInformation.NumberOfSquaresHorizontally; j++) {
+                console.log(this.BoardSquares[i][j].getUIContainer().x);
+            }
+        }
     };
     GridView.prototype.createRuler = function (xPosition, yPosition, numberOfSquaresVertically, numberOfSquaresHorizontally, squareWidth, gridBorderColor, rulerTextColor) {
         var rulerView = RulerView_1.RulerView.getInstance(this.RulerName + '' + Math.random(), xPosition, yPosition, numberOfSquaresVertically, numberOfSquaresHorizontally, squareWidth, gridBorderColor, rulerTextColor);
@@ -45863,8 +45873,6 @@ var ShipView = (function (_super) {
         function onDragStart(event) {
             this.data = event.data;
             var position = this.data.getLocalPosition(this.parent);
-            console.log(position.x);
-            console.log(position.y);
             this.pivot.set(position.x, position.y);
             this.position.set(this.data.x, this.data.y);
             this.dragging = true;
@@ -45876,11 +45884,9 @@ var ShipView = (function (_super) {
                 this.y = newPosition.y;
             }
         }
-        function onDragEnd(event) {
-            this.data = event.data;
+        function onDragEnd() {
             var newPosition = this.data.getLocalPosition(this.parent);
-            console.log('End X Position : ' + newPosition.x);
-            console.log('End Y Position : ' + newPosition.y);
+            console.log(this.data.getLocalPosition(this.parent.parent));
             BattleShipFacade_1.BattleShipFacade.getInstance(BattleShipFacade_1.FacadeInformation.BattleShipFacadeKey).sendNotification(BattleShipFacade_1.MediatorNotifications.ShipsPlacement);
             this.alpha = 1;
             this.dragging = false;

@@ -2,7 +2,7 @@ import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import 'pixi.js'
 import {SquareView} from "./SquareView";
-import {FacadeInformation, BattleShipFacade} from '../../facade/BattleShipFacade'
+import {FacadeInformation} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
 import {GridViewMediator} from "../../mediator/GridViewMediator";
 
@@ -11,6 +11,9 @@ import {GridViewMediator} from "../../mediator/GridViewMediator";
  */
 export class GridView extends AbstractView {
     private BoardSquares: SquareView[][];
+    private BoardSquaresXPosition: number[][] = [];
+    private BoardSquaresYPosition: number[][] = [];
+
     public RulerName: string = 'RulerForTheGrid';
     public name = 'GridView';
 
@@ -50,8 +53,8 @@ export class GridView extends AbstractView {
     }
 
     public getUIContainer(): PIXI.Container {
-        this.container.pivot.x=this.container.width/2;
-        this.container.pivot.y=this.container.height/2;
+        this.container.pivot.x = this.container.width / 2;
+        this.container.pivot.y = this.container.height / 2;
         return super.getUIContainer();
     }
 
@@ -87,6 +90,8 @@ export class GridView extends AbstractView {
         this.BoardSquares = [];
         for (let i: number = 0; i < numberOfSquaresVertically; i++) {
             this.BoardSquares[i] = [];
+            this.BoardSquaresXPosition[i] = [];
+            this.BoardSquaresYPosition[i] = [];
             newXPosition = gridXPosition;
 
             for (let j: number = 0; j < numberOfSquaresHorizontally; j++) {
@@ -94,6 +99,7 @@ export class GridView extends AbstractView {
                 square = SquareView.getInstance('Square' + key + Math.random(), newXPosition + j * squareWidth,
                     newYPosition, squareWidth, gridBorderColor, gridSquareFillColor, j, i);
                 this.BoardSquares[i][j] = square;
+
             }
             newYPosition += squareWidth;
         }
@@ -102,6 +108,16 @@ export class GridView extends AbstractView {
             for (let j: number = 0; j < numberOfSquaresHorizontally; j++)
                 this.container.addChild(this.BoardSquares[i][j].getUIContainer());
         console.log('   # GridSquares created');
+
+    }
+
+    public getSquaresPosition(): void {
+
+        for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
+            for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
+                console.log(this.BoardSquares[i][j].getUIContainer().x);
+            }
+        }
     }
 
     /**

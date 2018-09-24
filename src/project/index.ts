@@ -1,4 +1,4 @@
-import {BattleShipFacade, FacadeInformation} from './PixiShowcase/facade/BattleShipFacade'
+import {BattleShipFacade, FacadeInformation} from './project/facade/BattleShipFacade'
 
 new class Main
 {

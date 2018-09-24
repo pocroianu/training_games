@@ -1,6 +1,7 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {FacadeInformation} from "../../facade/BattleShipFacade";
+
 export class HitView extends AbstractView {
 
     public graphics : PIXI.Graphics;

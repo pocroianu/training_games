@@ -1,5 +1,6 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
+
 /**
  * Has the responsibility to create a single square and inside it to put the coresponding letter
  */

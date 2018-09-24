@@ -1,23 +1,25 @@
 import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import 'pixi.js'
+import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 
+export class GridViewMediator extends puremvc.Mediator implements puremvc.IMediator {
+    public name: String = 'GridViewMediator';
+    public gridName: string = 'GridBoard';
 
-
-export class ButtonViewMediator extends puremvc.Mediator implements puremvc.IMediator {
-    public name: String = 'ButtonViewMediator';
 
     /**
      *
      * @param key
      * @param viewComponent
+     * @param gridNumber
      */
-    constructor(key: string, viewComponent: puremvc.View = null) {
+    constructor(key: string, viewComponent: puremvc.View = null,gridNumber:number) {
         super(name, viewComponent);
+        this.name+=''+gridNumber;
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList,3);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, gridNumber-1);
 
         console.log('   # '+this.name+' created');
     }

@@ -2,7 +2,6 @@ import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-
 import {ViewMediator} from "../../mediator/ViewMediator";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import 'pixi.js'
-import {Application} from "pixi.js";
 
 /**
  * The main BattleShip view class

@@ -30,7 +30,7 @@ export class SquareView extends AbstractView {
     private missView: MissView;
 
     /**Square's glow */
-    private squareGlow: PIXI.Graphics;
+    private readonly squareGlow: PIXI.Graphics;
 
     /**
      *
@@ -100,7 +100,6 @@ export class SquareView extends AbstractView {
             .on(this.squareEvent, this.handleMouseDown, this)
             .on('pointerover', this.handleMouseOver)
             .on('pointerout', this.handleMouseOut);
-
     }
 
     /**

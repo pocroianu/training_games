@@ -1,9 +1,4 @@
-import {
-    BattleShipFacade,
-    CommandNotifications,
-    FacadeInformation,
-    MediatorNotifications
-} from "../../facade/BattleShipFacade";
+import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../../facade/BattleShipFacade";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {ShipViewMediator} from "../../mediator/ShipViewMediator";
@@ -56,8 +51,7 @@ export class ShipView extends AbstractView {
             let position = this.data.getLocalPosition(this.parent);
 
             //Print the position
-            console.log(position.x);
-            console.log(position.y);
+
 
             // Set the pivot point to the new position
             this.pivot.set(position.x, position.y);
@@ -79,12 +73,16 @@ export class ShipView extends AbstractView {
         }
 
 
-        function onDragEnd(event): void {
-            this.data = event.data;
+        function onDragEnd(): void {
+
             //Show the end position
             let newPosition = this.data.getLocalPosition(this.parent);
-            console.log('End X Position : ' + newPosition.x);
-            console.log('End Y Position : ' + newPosition.y);
+
+
+            /*console.log('End X Position : ' + newPosition.x);
+            console.log('End Y Position : ' + newPosition.y);*/
+
+            console.log(this.data.getLocalPosition(this.parent.parent));
 
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(MediatorNotifications.ShipsPlacement);
 

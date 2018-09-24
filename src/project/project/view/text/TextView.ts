@@ -1,7 +1,7 @@
-import {BattleShipFacade} from "../../facade/BattleShipFacade";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {TextViewMediator} from "../../mediator/TextViewMediator";
+
 /**
  * Class that has the responsibility to show text notifications on the screen
  */
