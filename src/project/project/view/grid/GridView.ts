@@ -40,7 +40,7 @@ export class GridView extends AbstractView {
                     FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
                 break;
         }
-        super.registerMediator(new GridViewMediator(key, this, gridNumber));
+        super.registerMediator(new GridViewMediator(key, this ,gridNumber));
 
         console.log('   # ' + this.name + ' created');
     }
@@ -111,14 +111,6 @@ export class GridView extends AbstractView {
 
     }
 
-    public getSquaresPosition(): void {
-
-        for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
-            for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
-                console.log(this.BoardSquares[i][j].getUIContainer().x);
-            }
-        }
-    }
 
     /**
      *

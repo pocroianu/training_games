@@ -1,9 +1,10 @@
 import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import 'pixi.js'
+import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
 
-export class ButtonViewMediator extends puremvc.Mediator implements puremvc.IMediator {
+export class ButtonViewMediator extends AbstractMediator {
     public name: String = 'ButtonViewMediator';
 
     /**
@@ -24,8 +25,8 @@ export class ButtonViewMediator extends puremvc.Mediator implements puremvc.IMed
     /**
      * The notification that the ViewMediator is interested in.
      */
-    public listNotificationInterests(): string {
-        return '';
+    public listNotificationInterests(): string[] {
+        return [];
     }
 
     /**

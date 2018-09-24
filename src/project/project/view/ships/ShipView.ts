@@ -83,6 +83,8 @@ export class ShipView extends AbstractView {
             console.log('End Y Position : ' + newPosition.y);*/
 
             console.log(this.data.getLocalPosition(this.parent.parent));
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(MediatorNotifications.ShipsPlacement, this.data.getLocalPosition(this.parent.parent));
+
 
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(MediatorNotifications.ShipsPlacement);
 

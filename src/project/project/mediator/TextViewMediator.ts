@@ -1,31 +1,31 @@
 import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import 'pixi.js'
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
+import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
-export class TextViewMediator extends puremvc.Mediator implements puremvc.IMediator {
+export class TextViewMediator extends AbstractMediator {
     public name: String = 'TextViewMediator';
 
     /**
      *
-     * @param key
+     * @param mediatorName
      * @param viewComponent
      */
-    constructor(key: string, viewComponent: puremvc.View = null) {
+    constructor(mediatorName: string, viewComponent: any) {
         super(name, viewComponent);
 
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList,2);
-
-        console.log('   # '+this.name+' created');
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 2);
+        console.log('   # ' + this.name + ' created');
     }
 
     /**
      * The notification that the ViewMediator is interested in.
      */
-    public listNotificationInterests(): string {
-        return '';
+    public listNotificationInterests(): string[] {
+        return [];
     }
 
     /**

@@ -5,9 +5,10 @@ import {FacadeInformation} from "../facade/BattleShipFacade";
 import {TextView} from "../view/text/TextView";
 import {ButtonView} from "../view/button/ButtonView";
 import {ShipView} from "../view/ships/ShipView";
+import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
 
-export class ViewMediator extends puremvc.Mediator implements puremvc.IMediator {
+export class ViewMediator extends AbstractMediator {
     public name: String = 'ViewMediator';
     private gridViewName: Array<string> = ['GridOneBoard', 'GridTwoBoard'];
     public textViewName: string = 'TextView';
@@ -16,32 +17,29 @@ export class ViewMediator extends puremvc.Mediator implements puremvc.IMediator 
 
     /**
      *
-     * @param key
+     * @param mediatorName
      * @param viewComponent
      */
-    constructor(key: string, viewComponent: puremvc.View = null) {
-        super(name, viewComponent);
+    constructor(mediatorName?: string, viewComponent?: any) {
+        super(mediatorName, viewComponent);
 
         GridView.getInstance(this.gridViewName[0], FacadeInformation.GridOne);
         GridView.getInstance(this.gridViewName[1], FacadeInformation.GridTwo);
-        let textView: TextView = TextView.getInstance(this.textViewName, FacadeInformation.TextViewText, FacadeInformation.FontSize, FacadeInformation.TextViewColor);
-        let buttonView: ButtonView = ButtonView.getInstance(this.buttonViewName, FacadeInformation.ButtonViewXPosition, FacadeInformation.ButtonViewYPosition, FacadeInformation.ButtonViewScale);
+        // TextView.getInstance(this.textViewName, FacadeInformation.TextViewText, FacadeInformation.FontSize, FacadeInformation.TextViewColor);
+        let button =ButtonView.getInstance(this.buttonViewName, FacadeInformation.ButtonViewXPosition, FacadeInformation.ButtonViewYPosition, FacadeInformation.ButtonViewScale);
 
 
         for (let i: number = 0; i < 3; i++) {
             ShipView.getInstance(this.shipViewName + '' + i, 0, 100 + i * 100, 5 - i);
         }
-
         console.log('   # ' + this.name + ' created');
-
-        GridView.getInstance(this.gridViewName[0], FacadeInformation.GridOne).getSquaresPosition();
     }
 
     /**
      * The notification that the ViewMediator is interested in.
      */
-    public listNotificationInterests(): string {
-        return '';
+    public listNotificationInterests(): string [] {
+        return [];
     }
 
     /**

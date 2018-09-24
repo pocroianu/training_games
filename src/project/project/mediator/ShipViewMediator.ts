@@ -6,18 +6,19 @@ import {
     FacadeInformation,
     MediatorNotifications
 } from "../facade/BattleShipFacade";
+import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
 
-export class ShipViewMediator extends puremvc.Mediator implements puremvc.IMediator {
+export class ShipViewMediator extends AbstractMediator {
     public name: String = 'ShipViewMediator';
 
     /**
      *
-     * @param key
+     * @param mediatorName
      * @param viewComponent
      */
-    constructor(key: string, viewComponent: puremvc.View = null) {
-        super(name, viewComponent);
+    constructor(mediatorName?: string, viewComponent?: any) {
+        super(mediatorName, viewComponent);
 
 
         let containersList: Array<PIXI.Container> = [];
@@ -30,8 +31,8 @@ export class ShipViewMediator extends puremvc.Mediator implements puremvc.IMedia
     /**
      * The notification that the ViewMediator is interested in.
      */
-    public listNotificationInterests(): string {
-        return MediatorNotifications.ShipsPlacement;
+    public listNotificationInterests(): string[] {
+        return [MediatorNotifications.ShipsPlacement];
     }
 
     /**
@@ -43,9 +44,9 @@ export class ShipViewMediator extends puremvc.Mediator implements puremvc.IMedia
 
         switch (name) {
             case MediatorNotifications.ShipsPlacement:
+                console.log('Ships placement in mediator');
                 super.sendNotification(CommandNotifications.ShipsPlacement);
                 break;
         }
-
     }
 }

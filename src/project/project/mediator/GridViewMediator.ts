@@ -27,8 +27,8 @@ export class GridViewMediator extends puremvc.Mediator implements puremvc.IMedia
     /**
      * The notification that the ViewMediator is interested in.
      */
-    public listNotificationInterests(): string {
-        return '';
+    public listNotificationInterests(): string[] {
+        return [];
     }
 
     /**

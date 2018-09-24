@@ -16,13 +16,13 @@ export class TextView extends AbstractView {
      * @param color
      */
     constructor(key: string, text: string, fontSize: number, color: number) {
-        super(key);
+        super('asdasdddkkj');
 
         this.text = new PIXI.Text(text, {fontSize: fontSize, fill: color});
         this.text.anchor.set(0, 0);
         this.container.addChild(this.text);
 
-        super.registerMediator(new TextViewMediator(key,this));
+        super.registerMediator(new TextViewMediator(key, this));
     }
 
     /**
@@ -33,8 +33,8 @@ export class TextView extends AbstractView {
     }
 
     public getUIContainer(): PIXI.Container {
-        this.container.pivot.x=this.container.width/2;
-        this.container.pivot.y=this.container.height/2;
+        this.container.pivot.x = this.container.width / 2;
+        this.container.pivot.y = this.container.height / 2;
         return super.getUIContainer();
     }
 

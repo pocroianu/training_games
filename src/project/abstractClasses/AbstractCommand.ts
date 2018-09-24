@@ -6,7 +6,7 @@ import 'pixi.js';
  */
 export class AbstractCommand extends puremvc.SimpleCommand {
 
-    public name: string = 'SquareClickCommand';
+    public name: string = 'Command';
 
     public execute(notification: puremvc.INotification): void {
         super.execute(notification);

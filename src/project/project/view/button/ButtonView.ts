@@ -8,6 +8,7 @@ import {BattleShipFacade, CommandNotifications, FacadeInformation} from "../../f
  */
 export class ButtonView extends AbstractView {
 
+    /**The positions and the scale of the button */
     public xPosition: number;
     public yPosition: number;
     public scale: number;

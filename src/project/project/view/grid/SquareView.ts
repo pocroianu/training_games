@@ -1,6 +1,6 @@
 import {HitView} from "../hits/HitView";
 import {MissView} from "../hits/MissView";
-import {BattleShipFacade, FacadeInformation} from "../../facade/BattleShipFacade";
+import {BattleShipFacade, CommandNotifications, FacadeInformation} from "../../facade/BattleShipFacade";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 
@@ -91,6 +91,10 @@ export class SquareView extends AbstractView {
         super.initializeView();
     }
 
+    public getPosition():[number,number]{
+        return [this.x,this.y];
+    }
+
 
     /**
      *
@@ -107,7 +111,7 @@ export class SquareView extends AbstractView {
      */
     private handleMouseDown(): void {
         this.hit();
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification('CLICK_HANDLE', [this.horizontalIndex, this.verticalIndex]);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.horizontalIndex, this.verticalIndex]);
         // this.onClickHandler.call(this, [this.x, this.y]);
     }
 

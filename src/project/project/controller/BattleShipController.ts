@@ -4,7 +4,6 @@ import {CommandNotifications} from '../facade/BattleShipFacade'
 import {AbstractController} from "../../abstractClasses/AbstractController";
 import 'pixi.js'
 import {ButtonPressCommand} from "../command/ButtonPressCommand";
-import {ShipPlaceCommand} from "../command/ShipPlaceCommand";
 
 export class BattleShipController extends AbstractController {
     constructor(key: string) {
@@ -12,7 +11,7 @@ export class BattleShipController extends AbstractController {
 
         super.registerCommand(CommandNotifications.ClickHandle, SquareClickCommand);
         super.registerCommand(CommandNotifications.ButtonPress, ButtonPressCommand);
-        super.registerCommand(CommandNotifications.ShipsPlacement,ShipPlaceCommand);
+        // super.registerCommand(CommandNotifications.ShipsPlacement,ShipPlaceCommand);
         console.log('BattleShipController created');
     }
 
