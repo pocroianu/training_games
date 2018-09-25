@@ -1,11 +1,10 @@
-import * as puremvc from "../../../../public/js/puremvc-typescript-multicore-1.1.js";
 import {BattleShipController} from "../controller/BattleShipController";
 import {BattleShipView} from "../view/mainView/BattleShipView";
 import {AbstractFacade} from "../../abstractClasses/AbstractFacade";
-import {Application} from 'pixi.js';
+import 'pixi.js';
 
 export enum MediatorNotifications {
-    ShipsPlacement='SHIPS_PLACEMENT_MEDIATOR'
+    ShipsPlacement = 'SHIPS_PLACEMENT_MEDIATOR'
 }
 
 export enum CommandNotifications {
@@ -41,8 +40,8 @@ export enum FacadeInformation {
     TextViewColor = 0xffffff,
     FontSize = 30,
 
-    ShipFillColor=0xfff000,
-    ShipBorderColor=0xff0000,
+    ShipFillColor = 0x0000ff,
+    ShipBorderColor = 0xfff000,
 
     ButtonViewXPosition = 100,
     ButtonViewYPosition = 100,
@@ -53,7 +52,7 @@ export enum FacadeInformation {
 
 export class BattleShipFacade extends AbstractFacade {
 
-    public app: Application;
+    public app: PIXI.Application;
 
     //TODO - THE THREE CONTAINERS
     /**The containers that contains the GameBoards */
@@ -71,28 +70,14 @@ export class BattleShipFacade extends AbstractFacade {
     }
 
     /**
-     * Initializing the Facade
+     *
+     * @param key
      */
-    public initializeFacade(): void {
-        if (this.multitonKey == undefined)
-            return;
+    static getInstance(key: string): BattleShipFacade {
+        if (!puremvc.Facade.instanceMap[key])
+            puremvc.Facade.instanceMap[key] = new BattleShipFacade(key);
 
-        this.app = new Application(window.innerWidth, window.innerHeight, {backgroundColor: 0x000000});
-        document.body.appendChild(this.app.view);
-        this.GameBoardContainerOne = new PIXI.Container;
-        this.GameBoardContainerTwo = new PIXI.Container;
-        this.GameInfoContainer = new PIXI.Container;
-        this.GameButtonContainer = new PIXI.Container;
-        this.ShipsContainer = new PIXI.Container;
-        this.app.stage.addChild(this.GameBoardContainerOne, this.GameBoardContainerTwo,
-            this.GameInfoContainer, this.GameButtonContainer,this.ShipsContainer);
-
-        this.checkStartOrientation();
-        this.changeOrientation();
-        this.initializeView();
-        this.initializeModel();
-        this.initializeController();
-        console.log('BattleShipFacade created');
+        return puremvc.Facade.instanceMap[key] as BattleShipFacade;
     }
 
     /**
@@ -149,18 +134,39 @@ export class BattleShipFacade extends AbstractFacade {
         }
     }
 
+    /**
+     * Initializing the Facade
+     */
+    public initializeFacade(): void {
+        if (this.multitonKey == undefined)
+            return;
+
+        this.app = new PIXI.Application(window.innerWidth, window.innerHeight, {backgroundColor: 0x000000});
+        document.body.appendChild(this.app.view);
+        this.GameBoardContainerOne = new PIXI.Container;
+        this.GameBoardContainerTwo = new PIXI.Container;
+        this.GameInfoContainer = new PIXI.Container;
+        this.GameButtonContainer = new PIXI.Container;
+        this.ShipsContainer = new PIXI.Container;
+        this.app.stage.addChild(this.GameBoardContainerOne, this.GameBoardContainerTwo,
+            this.GameInfoContainer, this.GameButtonContainer, this.ShipsContainer);
+
+        this.checkStartOrientation();
+        this.changeOrientation();
+        this.initializeView();
+        this.initializeModel();
+        this.initializeController();
+        console.log('BattleShipFacade created');
+    }
+
+    /**
+     * Notifies this facade's view observers.
+     * @param mNotification
+     */
     public notifyObservers(mNotification): void {
         if (this.view)
             this.view.notifyObservers(mNotification);
     }
-
-    static getInstance(key: string): puremvc.Facade {
-        if (!puremvc.Facade.instanceMap[key])
-            puremvc.Facade.instanceMap[key] = new BattleShipFacade(key);
-
-        return puremvc.Facade.instanceMap[key] as puremvc.Facade;
-    }
-
 
     /**
      *  Checks at the Start of the game which orientation it has
@@ -187,7 +193,7 @@ export class BattleShipFacade extends AbstractFacade {
                 this.GameButtonContainer.position.set(5 * width / 6, 3 * height / 4);
                 this.GameButtonContainer.scale.set(0.9);
 
-                this.ShipsContainer.position.set(width/4,height/6);
+                this.ShipsContainer.position.set(width / 4, height / 6);
                 this.ShipsContainer.scale.set(0.5);
 
                 break;
@@ -219,7 +225,7 @@ export class BattleShipFacade extends AbstractFacade {
                 this.GameButtonContainer.position.set(5 * width / 6, 3 * height / 4);
                 this.GameButtonContainer.scale.set(0.9);
 
-                this.ShipsContainer.position.set(width/4,height/6);
+                this.ShipsContainer.position.set(width / 4, height / 6);
                 this.ShipsContainer.scale.set(0.5);
 
                 break;
@@ -254,7 +260,7 @@ export class BattleShipFacade extends AbstractFacade {
                         this.GameButtonContainer.position.set(5 * width / 6, 3 * height / 4);
                         this.GameButtonContainer.scale.set(0.9);
 
-                        this.ShipsContainer.position.set(width/4,height/6);
+                        this.ShipsContainer.position.set(width / 4, height / 6);
                         this.ShipsContainer.scale.set(0.5);
 
                         break;
@@ -288,7 +294,7 @@ export class BattleShipFacade extends AbstractFacade {
                         this.GameButtonContainer.position.set(5 * width / 6, 3 * height / 4);
                         this.GameButtonContainer.scale.set(0.9);
 
-                        this.ShipsContainer.position.set(width/4,height/6);
+                        this.ShipsContainer.position.set(width / 4, height / 6);
                         this.ShipsContainer.scale.set(0.5);
 
                         break;

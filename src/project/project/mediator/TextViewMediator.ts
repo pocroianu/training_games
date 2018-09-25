@@ -1,8 +1,10 @@
-import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import 'pixi.js'
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
+/**
+ *
+ */
 export class TextViewMediator extends AbstractMediator {
     public name: String = 'TextViewMediator';
 

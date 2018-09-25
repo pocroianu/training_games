@@ -1,9 +1,10 @@
-import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import 'pixi.js'
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
-
+/**
+ * The button's mediator.
+ */
 export class ButtonViewMediator extends AbstractMediator {
     public name: String = 'ButtonViewMediator';
 

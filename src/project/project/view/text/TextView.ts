@@ -1,5 +1,4 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {TextViewMediator} from "../../mediator/TextViewMediator";
 
 /**
@@ -7,6 +6,7 @@ import {TextViewMediator} from "../../mediator/TextViewMediator";
  */
 export class TextView extends AbstractView {
 
+    /**Here we save the text string */
     private readonly text: PIXI.Text;
 
     /**
@@ -16,11 +16,11 @@ export class TextView extends AbstractView {
      * @param color
      */
     constructor(key: string, text: string, fontSize: number, color: number) {
-        super('asdasdddkkj');
+        super(key);
 
         this.text = new PIXI.Text(text, {fontSize: fontSize, fill: color});
         this.text.anchor.set(0, 0);
-        this.container.addChild(this.text);
+        this._container.addChild(this.text);
 
         super.registerMediator(new TextViewMediator(key, this));
     }
@@ -32,12 +32,6 @@ export class TextView extends AbstractView {
         super.initializeView();
     }
 
-    public getUIContainer(): PIXI.Container {
-        this.container.pivot.x = this.container.width / 2;
-        this.container.pivot.y = this.container.height / 2;
-        return super.getUIContainer();
-    }
-
     /**
      *
      * @param key
@@ -45,10 +39,19 @@ export class TextView extends AbstractView {
      * @param fontSize
      * @param color
      */
-    static getInstance(key: string, text: string, fontSize: number, color: number): TextView {
+    static getInstance(key: string, text?: string, fontSize?: number, color?: number): TextView {
         if (!puremvc.View.instanceMap[key])
             puremvc.View.instanceMap[key] = new TextView(key, text, fontSize, color);
 
         return puremvc.View.instanceMap[key] as TextView;
+    }
+
+    /**
+     *
+     */
+    public getUIContainer(): PIXI.Container {
+        this._container.pivot.x = this._container.width / 2;
+        this._container.pivot.y = this._container.height / 2;
+        return super.getUIContainer();
     }
 }

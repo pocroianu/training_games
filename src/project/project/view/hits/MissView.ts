@@ -1,12 +1,9 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {FacadeInformation} from "../../facade/BattleShipFacade";
 
 /**
- * Class that creates the miss inside a Grid's square
+ * Class that creates the miss inside a Grid's square.
  */
-
-
 export class MissView extends AbstractView {
 
     public graphics: PIXI.Graphics;
@@ -35,7 +32,7 @@ export class MissView extends AbstractView {
      * @param squareYPosition
      * @param squareWidth
      */
-    static getInstance(key: string, squareXPosition: number, squareYPosition: number, squareWidth: number): MissView {
+    static getInstance(key: string, squareXPosition?: number, squareYPosition?: number, squareWidth?: number): MissView {
         if (!puremvc.View.instanceMap[key])
             puremvc.View.instanceMap[key] = new MissView(key, squareXPosition, squareYPosition, squareWidth);
 

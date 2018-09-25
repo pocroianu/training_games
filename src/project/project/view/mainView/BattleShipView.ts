@@ -1,4 +1,3 @@
-import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {ViewMediator} from "../../mediator/ViewMediator";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import 'pixi.js'
@@ -27,14 +26,16 @@ export class BattleShipView extends AbstractView {
     public initializeView(): void {
         super.initializeView();
         console.log('BattleShipView created');
-
     }
 
-
-    static getInstance(key: string): BattleShipView {
+    /**
+     *
+     * @param key
+     */
+    static getInstance(key: string): AbstractView {
         if (!puremvc.View.instanceMap[key])
             puremvc.View.instanceMap[key] = new BattleShipView(key);
 
-        return puremvc.View.instanceMap[key] as BattleShipView;
+        return puremvc.View.instanceMap[key] as AbstractView;
     }
 }

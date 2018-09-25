@@ -1,55 +1,34 @@
-import * as puremvc from "../../../public/js/puremvc-typescript-multicore-1.1.js";
+/**
+ * Extend this.
+ */
+export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
 
-export class AbstractFacade extends puremvc.Facade
-{
-    constructor(key: string)
-    {
+    /**
+     *
+     * @param key
+     */
+    constructor(key: string) {
         super(key);
-        super.multitonKey = key;
+        this.multitonKey = key;
     }
 
-    public notifyObservers(notification): void
-    {
-        if (super.view)
-            super.view.notifyObservers(notification);
+    /**
+     * Notifies the facade's view observers.
+     * @param notification
+     */
+    public notifyObservers(notification): void {
+        if (this.view)
+            this.view.notifyObservers(notification);
     }
 
-    get multitonKey(): string
-    {
-        return super.multitonKey;
-    }
-    set multitonKey(mKey: string)
-    {
-        super.multitonKey = mKey;
-    }
-
-    get view(): puremvc.View
-    {
-        return super.view;
+    /**
+     * Sends a notification.
+     * @param name
+     * @param body
+     * @param type
+     */
+    public sendNotification(name: string, body: string, type?: string): void {
+        super.sendNotification(name, body, type);
     }
 
-    set view(mView: puremvc.View)
-    {
-        super.view = mView;
-    }
-
-    get controller(): puremvc.Controller
-    {
-        return super.controller;
-    }
-
-    set controller(mController: puremvc.Controller)
-    {
-        super.controller = mController;
-    }
-
-    get model(): puremvc.Model
-    {
-        return super.model;
-    }
-
-    set model(mController: puremvc.Model)
-    {
-        super.model = mController;
-    }
 }

@@ -1,10 +1,9 @@
-import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import 'pixi.js'
 import {SquareView} from "./SquareView";
 import {FacadeInformation} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
 import {GridViewMediator} from "../../mediator/GridViewMediator";
+import 'pixi.js'
 
 /**
  * Creates the grid
@@ -40,7 +39,7 @@ export class GridView extends AbstractView {
                     FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
                 break;
         }
-        super.registerMediator(new GridViewMediator(key, this ,gridNumber));
+        super.registerMediator(new GridViewMediator(key, this, gridNumber));
 
         console.log('   # ' + this.name + ' created');
     }
@@ -52,24 +51,26 @@ export class GridView extends AbstractView {
         super.initializeView();
     }
 
-    public getUIContainer(): PIXI.Container {
-        this.container.pivot.x = this.container.width / 2;
-        this.container.pivot.y = this.container.height / 2;
-        return super.getUIContainer();
-    }
-
     /**
      * Get an instance of the Grid's view
      * @param key
      * @param gridNumber
      */
-    static getInstance(key: string, gridNumber: number): GridView {
+    static getInstance(key: string, gridNumber?: number): GridView {
         if (!puremvc.View.instanceMap[key])
             puremvc.View.instanceMap[key] = new GridView(key, gridNumber);
 
         return puremvc.View.instanceMap[key] as GridView;
     }
 
+    /**
+     * Returns this grid's container.
+     */
+    public getUIContainer(): PIXI.Container {
+        this._container.pivot.x = this._container.width / 2;
+        this._container.pivot.y = this._container.height / 2;
+        return super.getUIContainer();
+    }
 
     /**
      *
@@ -106,7 +107,7 @@ export class GridView extends AbstractView {
 
         for (let i: number = 0; i < numberOfSquaresVertically; i++)
             for (let j: number = 0; j < numberOfSquaresHorizontally; j++)
-                this.container.addChild(this.BoardSquares[i][j].getUIContainer());
+                this._container.addChild(this.BoardSquares[i][j].getUIContainer());
         console.log('   # GridSquares created');
 
     }
@@ -127,6 +128,6 @@ export class GridView extends AbstractView {
         let rulerView: RulerView = RulerView.getInstance(this.RulerName + '' + Math.random(), xPosition, yPosition, numberOfSquaresVertically,
             numberOfSquaresHorizontally, squareWidth, gridBorderColor, rulerTextColor);
 
-        this.container.addChild(rulerView.getUIContainer());
+        this._container.addChild(rulerView.getUIContainer());
     }
 }

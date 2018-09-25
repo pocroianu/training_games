@@ -1,4 +1,3 @@
-import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {GridView} from '../view/grid/GridView'
 import 'pixi.js'
 import {FacadeInformation} from "../facade/BattleShipFacade";
@@ -7,7 +6,9 @@ import {ButtonView} from "../view/button/ButtonView";
 import {ShipView} from "../view/ships/ShipView";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
-
+/**
+ *
+ */
 export class ViewMediator extends AbstractMediator {
     public name: String = 'ViewMediator';
     private gridViewName: Array<string> = ['GridOneBoard', 'GridTwoBoard'];
@@ -25,9 +26,8 @@ export class ViewMediator extends AbstractMediator {
 
         GridView.getInstance(this.gridViewName[0], FacadeInformation.GridOne);
         GridView.getInstance(this.gridViewName[1], FacadeInformation.GridTwo);
-        // TextView.getInstance(this.textViewName, FacadeInformation.TextViewText, FacadeInformation.FontSize, FacadeInformation.TextViewColor);
-        let button =ButtonView.getInstance(this.buttonViewName, FacadeInformation.ButtonViewXPosition, FacadeInformation.ButtonViewYPosition, FacadeInformation.ButtonViewScale);
-
+        TextView.getInstance(this.textViewName, FacadeInformation.TextViewText, FacadeInformation.FontSize, FacadeInformation.TextViewColor);
+        ButtonView.getInstance(this.buttonViewName, FacadeInformation.ButtonViewXPosition, FacadeInformation.ButtonViewYPosition, FacadeInformation.ButtonViewScale);
 
         for (let i: number = 0; i < 3; i++) {
             ShipView.getInstance(this.shipViewName + '' + i, 0, 100 + i * 100, 5 - i);

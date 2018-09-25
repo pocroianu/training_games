@@ -1,10 +1,13 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {FacadeInformation} from "../../facade/BattleShipFacade";
 
+/**
+ *  The X inside a square.
+ */
 export class HitView extends AbstractView {
 
     public graphics : PIXI.Graphics;
+
     /**
      *
      * @param key
@@ -12,7 +15,7 @@ export class HitView extends AbstractView {
      * @param squareYPosition
      * @param squareWidth
      */
-    constructor(key:string,squareXPosition: number, squareYPosition: number, squareWidth: number) {
+    constructor(key:string, squareXPosition: number, squareYPosition: number, squareWidth: number) {
 
         super(key);
 
@@ -35,7 +38,7 @@ export class HitView extends AbstractView {
      * @param squareYPosition
      * @param squareWidth
      */
-    static getInstance(key: string, squareXPosition: number, squareYPosition: number, squareWidth: number): HitView {
+    static getInstance(key: string, squareXPosition?: number, squareYPosition?: number, squareWidth?: number): HitView {
         if (!puremvc.View.instanceMap[key])
             puremvc.View.instanceMap[key] = new HitView(key, squareXPosition, squareYPosition, squareWidth);
 

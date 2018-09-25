@@ -1,13 +1,10 @@
-import * as puremvc from '../../../public/js/puremvc-typescript-multicore-1.1.js';
-import 'pixi.js';
-
 /**
- *  Extend this class
+ * Extends this.
  */
-export class AbstractView extends puremvc.View {
-    protected container: PIXI.Container;
-    private multitonkey: string;
-    private _active: boolean;
+export class AbstractView extends puremvc.View implements puremvc.IView {
+    public ID: number;
+    protected _container: PIXI.Container;
+    protected _multitonKey: string;
 
     /**
      *
@@ -15,15 +12,24 @@ export class AbstractView extends puremvc.View {
      */
     constructor(key: string) {
         super(key);
-        this.multitonkey = key;
+        this._multitonKey = key;
+    }
 
+    protected _active: boolean;
+
+    /**
+     *
+     */
+    get active(): boolean {
+        return this._active;
     }
 
     /**
-     * Returns the view's container
+     *
+     * @param key
      */
-    public getUIContainer(): PIXI.Container {
-        return this.container;
+    set active(key: boolean) {
+        this._active = key;
     }
 
     /**
@@ -31,7 +37,14 @@ export class AbstractView extends puremvc.View {
      * Creates an instance of the container.
      */
     public initializeView(): void {
-        this.container = new PIXI.Container();
+        this._container = new PIXI.Container();
+    }
+
+    /**
+     *
+     */
+    public getUIContainer(): PIXI.Container {
+        return this._container;
     }
 
     /**
@@ -39,55 +52,61 @@ export class AbstractView extends puremvc.View {
      * @param item
      */
     public addToContainer(item: any): void {
-        this.container.addChild(item);
+        this._container.addChild(item);
     }
 
     /**
      *
-     * @param _active
+     * @param active
      */
-    public setActive(_active: boolean): void {
-        for (let item of this.container.children) {
-            item.visible = _active;
+    public setActive(active: boolean): void {
+        for (let item of this._container.children) {
+            item.visible = active;
+            item.interactive = active;
         }
-        this._active = _active;
+        this._active = active;
     }
 
+
     /**
-     * Register a mediator to this view
+     * Register a mediator to this view.
      * @param mediator
      */
-    public registerMediator(mediator: puremvc.Mediator) {
+    public registerMediator(mediator: puremvc.Mediator): void {
         super.registerMediator(mediator);
     }
 
     /**
      *
      */
-    get multitonKey(): string {
-        return this.multitonkey;
+    public activateUpdate(): void {
+        //todo: override where needed
+    }
+
+
+    /**
+     *
+     * @param id
+     */
+    public onClick(id: number): void {
+        //todo: override where needed
     }
 
     /**
      *
-     * @param key
+     * @param loader
+     * @param res
      */
-    set multitonKey(key: string) {
-        this.multitonkey = key;
+    public onAssetsLoaded(loader, res): void {
+        //todo: override where needed
     }
 
     /**
-     * Getter for the active class property
+     *
+     * @param loader
+     * @param res
      */
-    get active(): boolean {
-        return this._active;
-    }
-
-    /**
-     * Setter for the active class property
-     * @param key
-     */
-    set active(key: boolean) {
-        this._active = key;
+    public onConfigLoaded(loader, res): void {
+        //todo: override where needed
     }
 }

@@ -1,20 +1,23 @@
-import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {CommandNotifications} from "../facade/BattleShipFacade";
 import 'pixi.js'
 
-export class SquareClickCommand extends AbstractCommand
-{
+/**
+ * Command used when a grid's square is clicked by a player.
+ */
+export class SquareClickCommand extends AbstractCommand {
 
-    public execute(notification: puremvc.Notification): void
-    {
-        switch(notification.getName()){
+    /**
+     * Execute this command
+     * @param notification
+     */
+    public execute(notification: puremvc.Notification): void {
+        switch (notification.getName()) {
 
             case CommandNotifications.ClickHandle:
                 console.log('SquareClick Handle Request');
                 break;
         }
-
-        //TODO: Add extra things
+        //TODO: Add extra things for the square's interaction
     }
 }

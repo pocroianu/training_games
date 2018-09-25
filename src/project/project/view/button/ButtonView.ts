@@ -1,10 +1,8 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {ButtonViewMediator} from "../../mediator/ButtonViewMediator";
-import {BattleShipFacade, CommandNotifications, FacadeInformation} from "../../facade/BattleShipFacade";
 
 /**
- * A button class
+ * A button class.
  */
 export class ButtonView extends AbstractView {
 
@@ -33,7 +31,7 @@ export class ButtonView extends AbstractView {
 
         this.sprite = PIXI.Sprite.fromImage('images/NextPhaseButton.png');
         this.sprite.scale.set(this.scale);
-        this.container.addChild(this.sprite);
+        this._container.addChild(this.sprite);
 
         this.initializeButtonInteraction();
 
@@ -43,35 +41,49 @@ export class ButtonView extends AbstractView {
     }
 
     /**
-     * Initializing the Button's view
+     *
+     * @param key
+     * @param xPosition
+     * @param yPosition
+     * @param scale
+     */
+    static getInstance(key: string, xPosition?: number, yPosition?: number, scale?: number): puremvc.IView {
+        if (!puremvc.View.instanceMap[key])
+            puremvc.View.instanceMap[key] = new ButtonView(key, xPosition, yPosition, scale);
+        return puremvc.View.instanceMap[key] as puremvc.IView;
+    }
+
+    /**
+     * Initializing the Button's view.
      */
     public initializeView(): void {
         super.initializeView();
     }
 
+    /**
+     * Returns this button's container which will contain the button's texture.
+     */
     public getUIContainer(): PIXI.Container {
-        this.container.pivot.x = this.container.width / 2;
-        this.container.pivot.y = this.container.height / 2;
+        this._container.pivot.x = this._container.width / 2;
+        this._container.pivot.y = this._container.height / 2;
         return super.getUIContainer();
     }
 
+    /*
+        /!**
+         *
+         *!/
+        private handleMouseDown(): void {
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ButtonPress);
+        }*/
 
+    /**
+     * Makes the button interactive with the player.
+     */
     private initializeButtonInteraction() {
         this.sprite.interactive = true;
         this.sprite.buttonMode = true;
 
-        this.sprite.on('pointertap', this.handleMouseDown);
-    }
-
-    private handleMouseDown(): void {
-
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ButtonPress);
-    }
-
-    static getInstance(key: string, xPosition: number, yPosition: number, scale: number): ButtonView {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new ButtonView(key, xPosition, yPosition, scale);
-
-        return puremvc.View.instanceMap[key] as ButtonView;
+        // this.sprite.on('pointertap', this.handleMouseDown);
     }
 }

@@ -1,7 +1,9 @@
-import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import 'pixi.js'
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 
+/**
+ * The grid's mediator.
+ */
 export class GridViewMediator extends puremvc.Mediator implements puremvc.IMediator {
     public name: String = 'GridViewMediator';
     public gridName: string = 'GridBoard';
@@ -13,7 +15,7 @@ export class GridViewMediator extends puremvc.Mediator implements puremvc.IMedia
      * @param viewComponent
      * @param gridNumber
      */
-    constructor(key: string, viewComponent: puremvc.View = null,gridNumber:number) {
+    constructor(key: string, viewComponent: puremvc.View = null, gridNumber:number) {
         super(name, viewComponent);
         this.name+=''+gridNumber;
 

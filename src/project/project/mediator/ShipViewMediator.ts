@@ -1,4 +1,3 @@
-import * as puremvc from '../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import 'pixi.js'
 import {
     BattleShipFacade,
@@ -39,8 +38,7 @@ export class ShipViewMediator extends AbstractMediator {
      *  This is where the notifications are handled.
      * @param notification
      */
-    public handleNotification(notification: puremvc.Notification): void {
-        let name: String = notification.name;
+    public handleNotification(notification: puremvc.INotification): void {
 
         switch (name) {
             case MediatorNotifications.ShipsPlacement:

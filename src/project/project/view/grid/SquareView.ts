@@ -2,7 +2,6 @@ import {HitView} from "../hits/HitView";
 import {MissView} from "../hits/MissView";
 import {BattleShipFacade, CommandNotifications, FacadeInformation} from "../../facade/BattleShipFacade";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 
 /**
  * Small rectangle class
@@ -91,8 +90,22 @@ export class SquareView extends AbstractView {
         super.initializeView();
     }
 
-    public getPosition():[number,number]{
-        return [this.x,this.y];
+    /**
+     * Returns an instance of the square view
+     * @param key
+     * @param squareXPosition
+     * @param squareYPosition
+     * @param squareWidth
+     * @param borderColor
+     * @param fillColor
+     * @param horizontalIndex
+     * @param verticalIndex
+     */
+    static getInstance(key: string, squareXPosition?: number, squareYPosition?: number, squareWidth?: number, borderColor?: number, fillColor?: number, horizontalIndex?: number, verticalIndex?: number): SquareView {
+        if (!puremvc.View.instanceMap[key])
+            puremvc.View.instanceMap[key] = new SquareView(key, squareXPosition, squareYPosition, squareWidth, borderColor, fillColor, horizontalIndex, verticalIndex);
+
+        return puremvc.View.instanceMap[key] as SquareView;
     }
 
 
@@ -107,12 +120,10 @@ export class SquareView extends AbstractView {
     }
 
     /**
-     *  Handles the clicked down event
+     * Returns the x and y coordinates for this square.
      */
-    private handleMouseDown(): void {
-        this.hit();
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.horizontalIndex, this.verticalIndex]);
-        // this.onClickHandler.call(this, [this.x, this.y]);
+    public getPosition(): [number, number] {
+        return [this.x, this.y];
     }
 
     /**
@@ -129,29 +140,26 @@ export class SquareView extends AbstractView {
         this.squareGlow.visible = false;
     };
 
+    /**
+     *  Handles the clicked down event
+     */
+    private handleMouseDown(): void {
+        this.hit();
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.horizontalIndex, this.verticalIndex].toString());
+        // this.onClickHandler.call(this, [this.x, this.y]);
+    }
+
+    /**
+     * Shows an X on the square.
+     */
     private hit(): void {
         this.hitView.setActive(true);
     }
 
+    /**
+     * Shows a miss on the square.
+     */
     private miss(): void {
         this.missView.setActive(true);
-    }
-
-    /**
-     * Returns an instance of the square view
-     * @param key
-     * @param squareXPosition
-     * @param squareYPosition
-     * @param squareWidth
-     * @param borderColor
-     * @param fillColor
-     * @param horizontalIndex
-     * @param verticalIndex
-     */
-    static getInstance(key: string, squareXPosition: number, squareYPosition: number, squareWidth: number, borderColor: number, fillColor: number, horizontalIndex?: number, verticalIndex?: number): SquareView {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new SquareView(key, squareXPosition, squareYPosition, squareWidth, borderColor, fillColor, horizontalIndex, verticalIndex);
-
-        return puremvc.View.instanceMap[key] as SquareView;
     }
 }

@@ -1,12 +1,11 @@
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../../facade/BattleShipFacade";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import * as puremvc from '../../../../../public/js/puremvc-typescript-multicore-1.1.js';
 import {ShipViewMediator} from "../../mediator/ShipViewMediator";
 import 'pixi.js';
 
 
 /**
- *  Class that represents a single Ship
+ *  Class that represents a single Ship.
  */
 export class ShipView extends AbstractView {
 
@@ -43,6 +42,10 @@ export class ShipView extends AbstractView {
             .on('pointerupoutside', onDragEnd)
             .on('pointermove', onDragMove);
 
+        /**
+         * When the player starts to drag the ship.
+         * @param event
+         */
         function onDragStart(event): void {
             this.data = event.data;
 
@@ -63,6 +66,9 @@ export class ShipView extends AbstractView {
             this.dragging = true;
         }
 
+        /**
+         * When the player is dragging the ship.
+         */
         function onDragMove(): void {
             if (this.dragging) {
                 let newPosition = this.data.getLocalPosition(this.parent);
@@ -72,28 +78,22 @@ export class ShipView extends AbstractView {
             }
         }
 
-
+        /**
+         * When the player stops grabbing the ship.
+         */
         function onDragEnd(): void {
 
             //Show the end position
             let newPosition = this.data.getLocalPosition(this.parent);
 
-
-            /*console.log('End X Position : ' + newPosition.x);
-            console.log('End Y Position : ' + newPosition.y);*/
-
             console.log(this.data.getLocalPosition(this.parent.parent));
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(MediatorNotifications.ShipsPlacement, this.data.getLocalPosition(this.parent.parent));
-
-
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(MediatorNotifications.ShipsPlacement);
 
             this.alpha = 1;
             this.dragging = false;
 
             // set the interaction data to null
             this.data = null;
-
             this.destroy();
         }
 
@@ -108,10 +108,6 @@ export class ShipView extends AbstractView {
         super.initializeView();
     }
 
-    public getUIContainer(): PIXI.Container {
-        return this.shipGraphics;
-    }
-
     /**
      *
      * @param key
@@ -119,10 +115,17 @@ export class ShipView extends AbstractView {
      * @param yPosition
      * @param numberOfSquares
      */
-    static getInstance(key: string, xPosition: number, yPosition: number, numberOfSquares: number): ShipView {
+    static getInstance(key: string, xPosition?: number, yPosition?: number, numberOfSquares?: number): ShipView {
         if (!puremvc.View.instanceMap[key])
             puremvc.View.instanceMap[key] = new ShipView(key, xPosition, yPosition, numberOfSquares);
 
         return puremvc.View.instanceMap[key] as ShipView;
+    }
+
+    /**
+     * Getter for the ShipView's Container
+     */
+    public getUIContainer(): PIXI.Container {
+        return this.shipGraphics;
     }
 }
