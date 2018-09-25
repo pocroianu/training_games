@@ -29,12 +29,12 @@ export enum FacadeInformation {
 
     GridSquareFillColor = 0x000000,
     RulerTextColor = 0x000000,
-    HitColor = 0xBB0044,
+    HitColor = 0x00ff00,
     MissColor = 0xff3300,
 
     SquareWidth = 80,
-    NumberOfSquaresVertically = 10,
-    NumberOfSquaresHorizontally = 10,
+    NumberOfSquaresVertically = 12,
+    NumberOfSquaresHorizontally = 12,
 
     TextViewText = 'Game status : \n  Ships placement',
     TextViewColor = 0xffffff,
