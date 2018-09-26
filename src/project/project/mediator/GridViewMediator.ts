@@ -5,8 +5,6 @@ import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
  * The grid's mediator.
  */
 export class GridViewMediator extends puremvc.Mediator implements puremvc.IMediator {
-    public name: String = 'GridViewMediator';
-    public gridName: string = 'GridBoard';
 
 
     /**
@@ -15,19 +13,19 @@ export class GridViewMediator extends puremvc.Mediator implements puremvc.IMedia
      * @param viewComponent
      * @param gridNumber
      */
-    constructor(key: string, viewComponent: puremvc.View = null, gridNumber:number) {
+    constructor(key: string, viewComponent: puremvc.View = null, gridNumber: number) {
         super(name, viewComponent);
-        this.name+=''+gridNumber;
+
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, gridNumber-1);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, gridNumber - 1);
 
-        console.log('   # '+this.name+' created');
+        console.log('   # ' + super.getMediatorName() + ' created');
     }
 
     /**
-     * The notification that the ViewMediator is interested in.
+     * The notification that the BattleShipMediator is interested in.
      */
     public listNotificationInterests(): string[] {
         return [];

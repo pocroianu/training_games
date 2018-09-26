@@ -1,5 +1,4 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import {TextViewMediator} from "../../mediator/TextViewMediator";
 
 /**
  * Class that has the responsibility to show text notifications on the screen
@@ -22,7 +21,7 @@ export class TextView extends AbstractView {
         this.text.anchor.set(0, 0);
         this._container.addChild(this.text);
 
-        super.registerMediator(new TextViewMediator(key, this));
+
     }
 
     /**

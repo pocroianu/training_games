@@ -2,7 +2,6 @@ import {AbstractView} from "../../../abstractClasses/AbstractView";
 import {SquareView} from "./SquareView";
 import {FacadeInformation} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
-import {GridViewMediator} from "../../mediator/GridViewMediator";
 import 'pixi.js'
 
 /**
@@ -39,7 +38,7 @@ export class GridView extends AbstractView {
                     FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
                 break;
         }
-        super.registerMediator(new GridViewMediator(key, this, gridNumber));
+        // super.registerMediator(new GridViewMediator(key, this, gridNumber));
 
         console.log('   # ' + this.name + ' created');
     }

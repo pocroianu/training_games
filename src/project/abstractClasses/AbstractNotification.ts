@@ -24,5 +24,7 @@ export class AbstractNotification extends puremvc.Notification {
     public getBody(): string {
         return super.getBody();
     }
+
+
 }
 

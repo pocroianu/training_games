@@ -7,28 +7,38 @@ import {
 } from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
+/**
+ *
+ */
+export class BundleShipViewMediator extends AbstractMediator {
 
-export class ShipViewMediator extends AbstractMediator {
-    public name: String = 'ShipViewMediator';
+    private readonly _player: string;
 
     /**
      *
      * @param mediatorName
      * @param viewComponent
+     * @param player
      */
-    constructor(mediatorName?: string, viewComponent?: any) {
+    constructor(mediatorName?: string, viewComponent?: any, player?: string) {
         super(mediatorName, viewComponent);
-
+        this._player = player;
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 4);
 
-        console.log('   # ' + this.name + ' created');
+        if (player == FacadeInformation.PlayerOne) {
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 4);
+        }
+        else if (player == FacadeInformation.PlayerTwo) {
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 5);
+        }
+
+        console.log('   # ' + super.getMediatorName() + ' created');
     }
 
     /**
-     * The notification that the ViewMediator is interested in.
+     * The notification that the BattleShipMediator is interested in.
      */
     public listNotificationInterests(): string[] {
         return [MediatorNotifications.ShipsPlacement];
@@ -40,11 +50,12 @@ export class ShipViewMediator extends AbstractMediator {
      */
     public handleNotification(notification: puremvc.INotification): void {
 
-        switch (name) {
+        switch (notification.getName()) {
             case MediatorNotifications.ShipsPlacement:
-                console.log('Ships placement in mediator');
+                console.log(notification.getBody());
                 super.sendNotification(CommandNotifications.ShipsPlacement);
                 break;
         }
     }
+
 }

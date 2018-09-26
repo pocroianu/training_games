@@ -1,4 +1,4 @@
-import {ViewMediator} from "../../mediator/ViewMediator";
+import {BattleShipMediator} from "../../mediator/BattleShipMediator";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import 'pixi.js'
 
@@ -16,7 +16,7 @@ export class BattleShipView extends AbstractView {
         super(key);
         this.multitonKey = key;
 
-        super.registerMediator(new ViewMediator(key, this));
+        super.registerMediator(new BattleShipMediator(key, this));
 
     }
 

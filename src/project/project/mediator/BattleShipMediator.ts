@@ -1,32 +1,29 @@
 import 'pixi.js'
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
 /**
  *
  */
-export class TextViewMediator extends AbstractMediator {
-    public name: String = 'TextViewMediator';
+export class BattleShipMediator extends AbstractMediator {
+    public name: String = 'BattleShipMediator';
+
 
     /**
      *
      * @param mediatorName
      * @param viewComponent
      */
-    constructor(mediatorName: string, viewComponent: any) {
-        super(name, viewComponent);
+    constructor(mediatorName?: string, viewComponent?: any) {
+        super(mediatorName, viewComponent);
 
 
-        let containersList: Array<PIXI.Container> = [];
-        containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 2);
         console.log('   # ' + this.name + ' created');
     }
 
     /**
      * The notification that the BattleShipMediator is interested in.
      */
-    public listNotificationInterests(): string[] {
+    public listNotificationInterests(): string [] {
         return [];
     }
 
