@@ -11,7 +11,7 @@ export class GridView extends AbstractView {
     private BoardSquares: SquareView[][];
     private BoardSquaresXPosition: number[][] = [];
     private BoardSquaresYPosition: number[][] = [];
-
+    private _gridNumber: number;
     public RulerName: string = 'RulerForTheGrid';
     public name = 'GridView';
 
@@ -23,6 +23,7 @@ export class GridView extends AbstractView {
     constructor(key: string, gridNumber: number) {
         super(key);
         this.name = this.name.concat(gridNumber.toString());
+        this._gridNumber = gridNumber;
         switch (gridNumber) {
             case 1:
                 this.createBoard(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.SquareWidth,
@@ -108,6 +109,22 @@ export class GridView extends AbstractView {
             for (let j: number = 0; j < numberOfSquaresHorizontally; j++)
                 this._container.addChild(this.BoardSquares[i][j].getUIContainer());
         console.log('   # GridSquares created');
+
+    }
+
+    public fillGridWithBattleShip(position: Array<number>): void {
+        let gridDimensions: PIXI.Rectangle = this.getUIContainer().getBounds();
+        let xPosition: number = position[0];
+        let yPosition: number = position[1];
+
+        if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
+            if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
+            }
+
+            console.log('Ship is in GridView' + this._gridNumber);
+
+        }
+
 
     }
 

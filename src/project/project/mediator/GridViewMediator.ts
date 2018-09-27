@@ -1,21 +1,21 @@
 import 'pixi.js'
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
+import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
+import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 
 /**
  * The grid's mediator.
  */
-export class GridViewMediator extends puremvc.Mediator implements puremvc.IMediator {
+export class GridViewMediator extends AbstractMediator {
 
 
     /**
      *
-     * @param key
+     * @param mediatorName
      * @param viewComponent
      * @param gridNumber
      */
-    constructor(key: string, viewComponent: puremvc.View = null, gridNumber: number) {
-        super(name, viewComponent);
-
+    constructor(mediatorName: string, viewComponent: any, gridNumber: number) {
+        super(mediatorName, viewComponent);
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
@@ -25,17 +25,35 @@ export class GridViewMediator extends puremvc.Mediator implements puremvc.IMedia
     }
 
     /**
-     * The notification that the BattleShipMediator is interested in.
+     * The notification that the GridViewMediator is interested in.
      */
     public listNotificationInterests(): string[] {
-        return [];
+        return [MediatorNotifications.GridShipMarking,
+            MediatorNotifications.Test];
     }
 
     /**
      *  This is where the notifications are handled.
      * @param notification
      */
-    public handleNotification(notification: puremvc.Notification): void {
-        let name: String = notification.name;
+    public handleNotification(notification: puremvc.INotification): void {
+        switch (notification.getName()) {
+
+            case MediatorNotifications.GridShipMarking :
+                console.log('GridMarkingNotification received');
+                let array: any = notification.getBody().split(',', 4);
+                let newArray: Array<number> = [];
+                for (let i of array) {
+                    let j = +i;
+                    newArray.push(j);
+                }
+
+                super.getViewComponent().fillGridWithBattleShip(newArray);
+                break;
+            //Some test for a notification.
+            /* case MediatorNotifications.Test:
+                 console.log('Test');
+                 break;*/
+        }
     }
 }

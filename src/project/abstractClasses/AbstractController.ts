@@ -1,16 +1,17 @@
 /**
  *  Extend this class.
  */
-export class AbstractController extends puremvc.Controller {
+export class AbstractController extends puremvc.Controller implements puremvc.IController {
 
     public name: string = 'Controller';
-
+    private multitonkey: string;
     /**
      *
      * @param key
      */
     constructor(key: string) {
         super(key);
+        this.multitonkey = key
     }
 
 
@@ -54,5 +55,20 @@ export class AbstractController extends puremvc.Controller {
      */
     public removeCommand(notificationName: string): void {
         super.removeCommand(notificationName);
+    }
+
+    /**
+     * Getter for the multitonKey.
+     */
+    get multitonKey(): string {
+        return this.multitonkey;
+    }
+
+    /**
+     * Setter for the multitonKey.
+     * @param key
+     */
+    set multitonKey(key: string) {
+        this.multitonkey = key;
     }
 }

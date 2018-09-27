@@ -31,6 +31,9 @@ export class SquareView extends AbstractView {
     /**Square's glow */
     private readonly squareGlow: PIXI.Graphics;
 
+    /**Ship's Square fill object */
+    private shipSquare: PIXI.Graphics;
+
     /**
      *
      * @param key
@@ -55,7 +58,7 @@ export class SquareView extends AbstractView {
         this.squareGraphics = new PIXI.Graphics();
         this.squareMarking = new PIXI.Graphics();
         this.squareGlow = new PIXI.Graphics();
-
+        this.shipSquare = new PIXI.Graphics();
 
         this.squareGraphics.lineStyle(7, this.borderColor, 1);
         this.squareGraphics.beginFill(this.fillColor);
@@ -67,6 +70,7 @@ export class SquareView extends AbstractView {
         this.squareGlow.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
         this.squareGlow.endFill();
         this.squareGlow.visible = false;
+
 
         this.hitView = HitView.getInstance(Math.random() + '', this.x, this.y, this.width);
         this.hitView.setActive(false);
@@ -161,5 +165,28 @@ export class SquareView extends AbstractView {
      */
     private miss(): void {
         this.missView.setActive(true);
+    }
+
+    /**
+     * Fill a square with a part of a BattleShip
+     * @param gridNumber
+     */
+    private fillSquareWithShip(gridNumber: number): void {
+
+        switch (gridNumber) {
+            case FacadeInformation.PlayerOneShipFillColor:
+                this.shipSquare.lineStyle(1, FacadeInformation.PlayerOneShipFillColor);
+                this.shipSquare.beginFill(FacadeInformation.PlayerTwoShipFillColor, 0.2);
+                this.shipSquare.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
+                this.shipSquare.endFill();
+                break;
+            case FacadeInformation.PlayerTwoShipFillColor:
+                this.shipSquare.lineStyle(1, FacadeInformation.PlayerTwoShipFillColor);
+                this.shipSquare.beginFill(FacadeInformation.PlayerOneShipFillColor, 0.2);
+                this.shipSquare.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
+                this.shipSquare.endFill();
+                break;
+        }
+
     }
 }

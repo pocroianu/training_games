@@ -41,7 +41,8 @@ export class BundleShipViewMediator extends AbstractMediator {
      * The notification that the BattleShipMediator is interested in.
      */
     public listNotificationInterests(): string[] {
-        return [MediatorNotifications.ShipsPlacement];
+        return [MediatorNotifications.ShipsPlacement,
+            MediatorNotifications.Test];
     }
 
     /**
@@ -52,10 +53,8 @@ export class BundleShipViewMediator extends AbstractMediator {
 
         switch (notification.getName()) {
             case MediatorNotifications.ShipsPlacement:
-                console.log(notification.getBody());
-                super.sendNotification(CommandNotifications.ShipsPlacement);
+                super.sendNotification(CommandNotifications.ShipsPlacement, notification.getBody());
                 break;
         }
     }
-
 }

@@ -60,7 +60,7 @@ export class AbstractMediator extends puremvc.Mediator implements puremvc.IMedia
      *
      */
     public onRemove(): void {
-
+        super.onRemove();
     }
 
     /**

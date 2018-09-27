@@ -38,11 +38,11 @@ export class SingleShipView extends AbstractView {
 
 
         for (let i: number = 0; i < numberOfSquares; i++) {
+
             this.shipGraphics.drawRect(this.xPosition + i * FacadeInformation.SquareWidth, this.yPosition,
                 FacadeInformation.SquareWidth, FacadeInformation.SquareWidth,);
         }
         this.shipGraphics.endFill();
-
         this.shipGraphics.interactive = true;
         this.shipGraphics.buttonMode = true;
 
@@ -92,13 +92,22 @@ export class SingleShipView extends AbstractView {
         function onDragEnd(): void {
 
             //Show the end position
-            let newPosition = this.data.getLocalPosition(this.parent.parent);
+            let newPosition = this.data.getLocalPosition(this.parent.parent.parent);
+            /*console.log('Ship Starting X position' + this.getBounds().x);
+            console.log('Ship Starting Y position' + this.getBounds().y);
+            console.log('Ship Width ' + this.width);
+            console.log('Ship height' + this.height);*/
+
+            let body: number[] = [this.getBounds().x, this.getBounds().y, this.width, this.height];
+            let bodyStr: string = body.toString();
+
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
+                .sendNotification(MediatorNotifications.ShipsPlacement, bodyStr);
+
 
             this.alpha = 1;
             this.dragging = false;
 
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
-                .sendNotification(MediatorNotifications.ShipsPlacement, newPosition);
 
             // set the interaction data to null
             this.data = null;

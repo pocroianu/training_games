@@ -15,7 +15,9 @@ import {BundleShipView} from "../view/ships/BundleShipView";
 import {ShipPlaceCommand} from "../command/ShipPlaceCommand";
 
 export enum MediatorNotifications {
-    ShipsPlacement = 'Ships_Placement'
+    ShipsPlacement = 'Ships_Placement',
+    GridShipMarking = 'GridMarking',
+    Test = 'Test'
 }
 
 export enum CommandNotifications {
@@ -382,7 +384,6 @@ export class BattleShipFacade extends AbstractFacade {
                         this.ShipsContainerTwo.position.set(3 * width / 6, 30);
                         this.ShipsContainerTwo.scale.set(0.5);
 
-                        break;
                 }
             }
         );
