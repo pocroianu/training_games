@@ -32,7 +32,7 @@ export class SquareView extends AbstractView {
     private readonly squareGlow: PIXI.Graphics;
 
     /**Ship's Square fill object */
-    private shipSquare: PIXI.Graphics;
+    public shipSquare: PIXI.Graphics;
 
     /**
      *
@@ -80,9 +80,16 @@ export class SquareView extends AbstractView {
         this.squareGraphics.interactive = true;
         this.squareGraphics.buttonMode = true;
 
+        this.shipSquare.lineStyle(1, FacadeInformation.SquareFillColor);
+        this.shipSquare.beginFill(FacadeInformation.SquareFillColor, 0.5);
+        this.shipSquare.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
+        this.shipSquare.endFill();
+        this.shipSquare.visible = false;
+
         this.addToContainer(this.squareGraphics);
         this.addToContainer(this.squareMarking);
         this.addToContainer(this.squareGlow);
+        this.addToContainer(this.shipSquare);
 
         this.initializeSquareInteraction();
     }
@@ -127,7 +134,7 @@ export class SquareView extends AbstractView {
      * Returns the x and y coordinates for this square.
      */
     public getPosition(): [number, number] {
-        return [this.x, this.y];
+        return [this.squareGraphics.getBounds().x, this.squareGraphics.getBounds().y];
     }
 
     /**
@@ -169,24 +176,18 @@ export class SquareView extends AbstractView {
 
     /**
      * Fill a square with a part of a BattleShip
-     * @param gridNumber
      */
-    private fillSquareWithShip(gridNumber: number): void {
+    public fillSquare(): void {
+        this.shipSquare.visible = true;
+        this.disableInteraction();
+    }
 
-        switch (gridNumber) {
-            case FacadeInformation.PlayerOneShipFillColor:
-                this.shipSquare.lineStyle(1, FacadeInformation.PlayerOneShipFillColor);
-                this.shipSquare.beginFill(FacadeInformation.PlayerTwoShipFillColor, 0.2);
-                this.shipSquare.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
-                this.shipSquare.endFill();
-                break;
-            case FacadeInformation.PlayerTwoShipFillColor:
-                this.shipSquare.lineStyle(1, FacadeInformation.PlayerTwoShipFillColor);
-                this.shipSquare.beginFill(FacadeInformation.PlayerOneShipFillColor, 0.2);
-                this.shipSquare.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
-                this.shipSquare.endFill();
-                break;
-        }
-
+    /**
+     * Disable the Square's interaction
+     */
+    public disableInteraction(): void {
+        this.squareGraphics.interactive = false;
+        this.squareGlow.interactive = false;
+        this.squareMarking.interactive = false;
     }
 }

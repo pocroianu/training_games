@@ -37,10 +37,10 @@ export enum FacadeInformation {
     Grid1XPosition = 100,
     Grid1YPosition = 100,
     Grid1BorderColor = 0x0000ff,
-
     Grid2XPosition = 100,
     Grid2YPosition = 100,
     Grid2BorderColor = 0xff0000,
+    GridScale = 0.5,
 
     GridSquareFillColor = 0x000000,
     RulerTextColor = 0x000000,
@@ -59,10 +59,13 @@ export enum FacadeInformation {
     PlayerOneShipBorderColor = 0xfff000,
     PlayerTwoShipFillColor = 0xfa0000,
     PlayerTwoShipBorderColor = 0xfff000,
+    SquareFillColor = 0x00ff00,
+
 
     ButtonViewXPosition = 100,
     ButtonViewYPosition = 100,
     ButtonViewScale = 0.9,
+
 
     PlayerOne = 'PlayerOne',
     PlayerTwo = 'PlayerTwo',
@@ -257,10 +260,10 @@ export class BattleShipFacade extends AbstractFacade {
             case 90 :
 
                 this.GameBoardContainerOne.position.set(width / 6, height / 2);
-                this.GameBoardContainerOne.scale.set(0.5);
+                this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                 this.GameBoardContainerTwo.position.set(3 * width / 6, height / 2);
-                this.GameBoardContainerTwo.scale.set(0.5);
+                this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                 this.GameInfoContainer.position.set(5 * width / 6, height / 4);
                 this.GameInfoContainer.scale.set(1);
@@ -292,10 +295,10 @@ export class BattleShipFacade extends AbstractFacade {
 
             default:
                 this.GameBoardContainerOne.position.set(width / 6, height / 2);
-                this.GameBoardContainerOne.scale.set(0.5);
+                this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                 this.GameBoardContainerTwo.position.set(3 * width / 6, height / 2);
-                this.GameBoardContainerTwo.scale.set(0.5);
+                this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                 this.GameInfoContainer.position.set(5 * width / 6, height / 4);
                 this.GameInfoContainer.scale.set(1);
@@ -330,10 +333,10 @@ export class BattleShipFacade extends AbstractFacade {
                     case 90 :
 
                         this.GameBoardContainerOne.position.set(width / 6, height / 2);
-                        this.GameBoardContainerOne.scale.set(0.5);
+                        this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                         this.GameBoardContainerTwo.position.set(3 * width / 6, height / 2);
-                        this.GameBoardContainerTwo.scale.set(0.5);
+                        this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                         this.GameInfoContainer.position.set(5 * width / 6, height / 4);
                         this.GameInfoContainer.scale.set(1);
@@ -352,10 +355,10 @@ export class BattleShipFacade extends AbstractFacade {
                     case 0:
 
                         this.GameBoardContainerOne.position.set(width / 2, height / 6);
-                        this.GameBoardContainerOne.scale.set(0.7, 0.7);
+                        this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                         this.GameBoardContainerTwo.position.set(width / 2, 3 * height / 6);
-                        this.GameBoardContainerTwo.scale.set(0.7, 0.7);
+                        this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                         this.GameInfoContainer.position.set(width / 4, 5 * height / 6);
                         this.GameInfoContainer.scale.set(1.6);
@@ -367,10 +370,10 @@ export class BattleShipFacade extends AbstractFacade {
 
                     default:
                         this.GameBoardContainerOne.position.set(width / 6, height / 2);
-                        this.GameBoardContainerOne.scale.set(0.5);
+                        this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                         this.GameBoardContainerTwo.position.set(3 * width / 6, height / 2);
-                        this.GameBoardContainerTwo.scale.set(0.5);
+                        this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                         this.GameInfoContainer.position.set(5 * width / 6, height / 4);
                         this.GameInfoContainer.scale.set(1);

@@ -15,7 +15,7 @@ export class ShipPlaceCommand extends AbstractCommand {
         switch (notification.getName()) {
 
             case CommandNotifications.ShipsPlacement:
-                console.log('ShipsPlacement Request in ShipPlaceCommand');
+                // console.log('ShipsPlacement Request in ShipPlaceCommand');
                 super.sendNotification(MediatorNotifications.GridShipMarking, notification.getBody());
                 break;
         }

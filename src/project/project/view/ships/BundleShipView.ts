@@ -25,9 +25,15 @@ export class BundleShipView extends AbstractView {
 
             this.addToContainer(ship.getUIContainer());
         }
+
         console.log('   #' + this.bundleShipViewName + player);
     }
 
+    /**
+     *
+     * @param key
+     * @param player
+     */
     static getInstance(key: string, player?: string): BundleShipView {
         if (!puremvc.View.instanceMap[key])
             puremvc.View.instanceMap[key] = new BundleShipView(key, player);

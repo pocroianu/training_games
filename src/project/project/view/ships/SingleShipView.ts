@@ -12,6 +12,7 @@ export class SingleShipView extends AbstractView {
     public yPosition: number;
     public shipGraphics: PIXI.Graphics;
     public name: string;
+    public numberOfSquares: number;
 
     /**
      * @param key
@@ -26,21 +27,22 @@ export class SingleShipView extends AbstractView {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.shipGraphics = new PIXI.Graphics();
+        this.numberOfSquares = numberOfSquares;
 
         if (player === FacadeInformation.PlayerOne) {
-            this.shipGraphics.lineStyle(7, FacadeInformation.PlayerOneShipBorderColor);
+            this.shipGraphics.lineStyle(4, FacadeInformation.PlayerOneShipBorderColor);
             this.shipGraphics.beginFill(FacadeInformation.PlayerOneShipFillColor);
         }
         else if (player === FacadeInformation.PlayerTwo) {
-            this.shipGraphics.lineStyle(7, FacadeInformation.PlayerTwoShipBorderColor);
+            this.shipGraphics.lineStyle(4, FacadeInformation.PlayerTwoShipBorderColor);
             this.shipGraphics.beginFill(FacadeInformation.PlayerTwoShipFillColor);
         }
 
 
-        for (let i: number = 0; i < numberOfSquares; i++) {
+        for (let i: number = 0; i < this.numberOfSquares; i++) {
 
             this.shipGraphics.drawRect(this.xPosition + i * FacadeInformation.SquareWidth, this.yPosition,
-                FacadeInformation.SquareWidth, FacadeInformation.SquareWidth,);
+                FacadeInformation.SquareWidth - 5, FacadeInformation.SquareWidth - 5,);
         }
         this.shipGraphics.endFill();
         this.shipGraphics.interactive = true;
@@ -93,12 +95,8 @@ export class SingleShipView extends AbstractView {
 
             //Show the end position
             let newPosition = this.data.getLocalPosition(this.parent.parent.parent);
-            /*console.log('Ship Starting X position' + this.getBounds().x);
-            console.log('Ship Starting Y position' + this.getBounds().y);
-            console.log('Ship Width ' + this.width);
-            console.log('Ship height' + this.height);*/
-
             let body: number[] = [this.getBounds().x, this.getBounds().y, this.width, this.height];
+            let type: any = this;
             let bodyStr: string = body.toString();
 
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
@@ -123,6 +121,7 @@ export class SingleShipView extends AbstractView {
     public initializeView(): void {
         super.initializeView();
     }
+
 
     /**
      *

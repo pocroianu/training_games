@@ -8,10 +8,8 @@ import 'pixi.js'
  * Creates the grid
  */
 export class GridView extends AbstractView {
-    private BoardSquares: SquareView[][];
-    private BoardSquaresXPosition: number[][] = [];
-    private BoardSquaresYPosition: number[][] = [];
-    private _gridNumber: number;
+    private GridSquares: SquareView[][];
+    private readonly _gridNumber: number;
     public RulerName: string = 'RulerForTheGrid';
     public name = 'GridView';
 
@@ -39,8 +37,6 @@ export class GridView extends AbstractView {
                     FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
                 break;
         }
-        // super.registerMediator(new GridViewMediator(key, this, gridNumber));
-
         console.log('   # ' + this.name + ' created');
     }
 
@@ -74,6 +70,92 @@ export class GridView extends AbstractView {
 
     /**
      *
+     * @param position
+     */
+    public fillGridWithBattleShip(position: Array<number>): void {
+        let gridDimensions: PIXI.Rectangle = this.getUIContainer().getBounds();
+        let xPosition: number = position[0];
+        let yPosition: number = position[1];
+
+        console.log('Coordinates received ' + [xPosition, yPosition]);
+
+        let numberOfSquares: number = Math.round(position[2] / FacadeInformation.SquareWidth);
+        let squareWidth: number = FacadeInformation.SquareWidth * FacadeInformation.GridScale;
+
+        if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
+            if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
+
+                // console.log('Ship is in GridView' + this._gridNumber);
+
+                for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
+                    for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
+                        let squareXPosition: number = this.GridSquares[i][j].getPosition()[0];
+                        let squareYPosition: number = this.GridSquares[i][j].getPosition()[1];
+
+
+                        /*if ((xPosition >= squareXPosition) && (xPosition < squareXPosition + squareWidth / 2)) {
+                            if ((yPosition >= squareYPosition) && (yPosition < squareYPosition + squareWidth / 2)) {
+                                console.log([squareXPosition, squareYPosition]);
+                                console.log('Vertical index :' + i + '\nHorizontal index :' + j);
+                                for (let x: number = j-1; x < numberOfSquares; x++) {
+                                    this.GridSquares[i][x].fillSquare();
+                                }
+                            }
+                            else if ((yPosition >= squareYPosition + squareWidth / 2) && (yPosition < squareYPosition + squareWidth)) {
+                                console.log([squareXPosition, squareYPosition]);
+                                console.log('Vertical index :' + i + '\nHorizontal index :' + j);
+                                for (let x: number = j; x < numberOfSquares; x++) {
+                                    this.GridSquares[i + 1][x].fillSquare();
+                                }
+                            }
+
+
+                        }
+
+                        else if ((xPosition >= squareXPosition + squareWidth / 2) && (xPosition < squareXPosition + squareWidth)) {
+                            if ((yPosition >= squareYPosition + squareWidth / 2) && (yPosition < squareYPosition + squareWidth)) {
+                                console.log([squareXPosition, squareYPosition]);
+                                console.log('Vertical index :' + i + '\nHorizontal index :' + j);
+                                for (let x: number = j + 1; x < numberOfSquares; x++) {
+                                    this.GridSquares[i][x].fillSquare();
+                                }
+                            }
+                            else if ((yPosition >= squareYPosition + squareWidth / 2) && (yPosition < squareYPosition + squareWidth)) {
+                                console.log([squareXPosition, squareYPosition]);
+                                console.log('Vertical index :' + i + '\nHorizontal index :' + j);
+                                for (let x: number = j + 1; x < numberOfSquares; x++) {
+                                    this.GridSquares[i + 1][x].fillSquare();
+                                }
+                            }
+                        }*/
+
+                        if ((xPosition >= squareXPosition && xPosition < squareXPosition + squareWidth) &&
+                            (yPosition >= squareYPosition && yPosition < squareYPosition + squareWidth)) {
+
+                            for (let x: number = j; x < j + numberOfSquares; x++) {
+                                this.GridSquares[i][x].fillSquare();
+                            }
+
+                            console.log('GridSquare coordinates : ' + [squareXPosition, squareYPosition] +
+                                '\n Index : ' + [i, j]);
+                        }
+                        // this.logGridSquares();
+                    }
+                }
+            }
+        }
+    }
+
+    public logGridSquares(): void {
+        for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
+            for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
+                console.log(this.GridSquares[i][j].getPosition()[0]);
+            }
+        }
+    }
+
+    /**
+     *
      * @param gridXPosition
      * @param gridYPosition
      * @param squareWidth
@@ -88,18 +170,16 @@ export class GridView extends AbstractView {
             newYPosition: number = gridYPosition,
             square: SquareView, key: number = 0;
 
-        this.BoardSquares = [];
+        this.GridSquares = [];
         for (let i: number = 0; i < numberOfSquaresVertically; i++) {
-            this.BoardSquares[i] = [];
-            this.BoardSquaresXPosition[i] = [];
-            this.BoardSquaresYPosition[i] = [];
+            this.GridSquares[i] = [];
             newXPosition = gridXPosition;
 
             for (let j: number = 0; j < numberOfSquaresHorizontally; j++) {
                 key++;
                 square = SquareView.getInstance('Square' + key + Math.random(), newXPosition + j * squareWidth,
                     newYPosition, squareWidth, gridBorderColor, gridSquareFillColor, j, i);
-                this.BoardSquares[i][j] = square;
+                this.GridSquares[i][j] = square;
 
             }
             newYPosition += squareWidth;
@@ -107,27 +187,9 @@ export class GridView extends AbstractView {
 
         for (let i: number = 0; i < numberOfSquaresVertically; i++)
             for (let j: number = 0; j < numberOfSquaresHorizontally; j++)
-                this._container.addChild(this.BoardSquares[i][j].getUIContainer());
+                this._container.addChild(this.GridSquares[i][j].getUIContainer());
         console.log('   # GridSquares created');
-
     }
-
-    public fillGridWithBattleShip(position: Array<number>): void {
-        let gridDimensions: PIXI.Rectangle = this.getUIContainer().getBounds();
-        let xPosition: number = position[0];
-        let yPosition: number = position[1];
-
-        if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
-            if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
-            }
-
-            console.log('Ship is in GridView' + this._gridNumber);
-
-        }
-
-
-    }
-
 
     /**
      *
@@ -139,8 +201,8 @@ export class GridView extends AbstractView {
      * @param gridBorderColor
      * @param rulerTextColor
      */
-    private createRuler(xPosition: number, yPosition: number, numberOfSquaresVertically: number, numberOfSquaresHorizontally: number, squareWidth: number,
-                        gridBorderColor: number, rulerTextColor: number) {
+    private createRuler(xPosition: number, yPosition: number, numberOfSquaresVertically: number,
+                        numberOfSquaresHorizontally: number, squareWidth: number, gridBorderColor: number, rulerTextColor: number) {
         let rulerView: RulerView = RulerView.getInstance(this.RulerName + '' + Math.random(), xPosition, yPosition, numberOfSquaresVertically,
             numberOfSquaresHorizontally, squareWidth, gridBorderColor, rulerTextColor);
 

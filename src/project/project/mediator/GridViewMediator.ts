@@ -40,20 +40,18 @@ export class GridViewMediator extends AbstractMediator {
         switch (notification.getName()) {
 
             case MediatorNotifications.GridShipMarking :
-                console.log('GridMarkingNotification received');
+                // console.log('GridMarkingNotification received');
                 let array: any = notification.getBody().split(',', 4);
                 let newArray: Array<number> = [];
+
                 for (let i of array) {
                     let j = +i;
                     newArray.push(j);
                 }
 
+
                 super.getViewComponent().fillGridWithBattleShip(newArray);
                 break;
-            //Some test for a notification.
-            /* case MediatorNotifications.Test:
-                 console.log('Test');
-                 break;*/
         }
     }
 }
