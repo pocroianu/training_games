@@ -14,6 +14,7 @@ export class GridView extends AbstractView {
     public name = 'GridView';
     private maxShipsOnThisGrid: number = FacadeInformation.MaximumNumberOfShipsOnAGrid;
     private currentNumberOfShips: number = 0;
+    private _player: string;
 
     /**
      *
@@ -39,6 +40,13 @@ export class GridView extends AbstractView {
                     FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
                 break;
         }
+        if (this._gridNumber == FacadeInformation.GridOne) {
+            this._player = FacadeInformation.PlayerOne;
+        }
+        else if (this._gridNumber == FacadeInformation.GridTwo) {
+            this._player = FacadeInformation.PlayerTwo;
+        }
+
         console.log('   # ' + this.name + ' created');
     }
 
@@ -73,18 +81,19 @@ export class GridView extends AbstractView {
     /**
      *
      * @param position
-     * @param shipType
+     * @param shipInfo
      */
-    public fillGridWithBattleShip(position: Array<number>, shipType: string): void {
+    public fillGridWithBattleShip(position: Array<number>, shipInfo: string): void {
         let gridDimensions: PIXI.Rectangle = this.getUIContainer().getBounds();
         let xPosition: number = position[0];
         let yPosition: number = position[1];
+        let newShipInfo: any = shipInfo.split(',');
+        console.log(shipInfo);
 
         console.log('Coordinates received ' + [xPosition, yPosition]);
-
-
         let squareWidth: number = FacadeInformation.SquareWidth * FacadeInformation.GridScale;
 
+        // if (newShipInfo[1] == this._player) {
 
         if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
             if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
@@ -97,46 +106,10 @@ export class GridView extends AbstractView {
                         let squareYPosition: number = this.GridSquares[i][j].getPosition()[1];
                         let facade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
 
-                        /*if ((xPosition >= squareXPosition) && (xPosition < squareXPosition + squareWidth / 2)) {
-                            if ((yPosition >= squareYPosition) && (yPosition < squareYPosition + squareWidth / 2)) {
-                                console.log([squareXPosition, squareYPosition]);
-                                console.log('Vertical index :' + i + '\nHorizontal index :' + j);
-                                for (let x: number = j-1; x < numberOfSquares; x++) {
-                                    this.GridSquares[i][x].fillSquare();
-                                }
-                            }
-                            else if ((yPosition >= squareYPosition + squareWidth / 2) && (yPosition < squareYPosition + squareWidth)) {
-                                console.log([squareXPosition, squareYPosition]);
-                                console.log('Vertical index :' + i + '\nHorizontal index :' + j);
-                                for (let x: number = j; x < numberOfSquares; x++) {
-                                    this.GridSquares[i + 1][x].fillSquare();
-                                }
-                            }
-
-
-                        }
-
-                        else if ((xPosition >= squareXPosition + squareWidth / 2) && (xPosition < squareXPosition + squareWidth)) {
-                            if ((yPosition >= squareYPosition + squareWidth / 2) && (yPosition < squareYPosition + squareWidth)) {
-                                console.log([squareXPosition, squareYPosition]);
-                                console.log('Vertical index :' + i + '\nHorizontal index :' + j);
-                                for (let x: number = j + 1; x < numberOfSquares; x++) {
-                                    this.GridSquares[i][x].fillSquare();
-                                }
-                            }
-                            else if ((yPosition >= squareYPosition + squareWidth / 2) && (yPosition < squareYPosition + squareWidth)) {
-                                console.log([squareXPosition, squareYPosition]);
-                                console.log('Vertical index :' + i + '\nHorizontal index :' + j);
-                                for (let x: number = j + 1; x < numberOfSquares; x++) {
-                                    this.GridSquares[i + 1][x].fillSquare();
-                                }
-                            }
-                        }*/
-
                         if ((xPosition >= squareXPosition && xPosition < squareXPosition + squareWidth) &&
                             (yPosition >= squareYPosition && yPosition < squareYPosition + squareWidth)) {
 
-                            if (shipType == FacadeInformation.ShipHorizontalType) {
+                            if (newShipInfo[0] == FacadeInformation.ShipHorizontalType) {
                                 let numberOfSquares: number = Math.round(position[2] / FacadeInformation.SquareWidth);
                                 for (let x: number = j; x < j + numberOfSquares; x++) {
 
@@ -145,14 +118,12 @@ export class GridView extends AbstractView {
 
                                     }
                                     else {
-                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached);
+                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._gridNumber.toString());
                                     }
-
-
                                 }
                                 this.currentNumberOfShips++;
                             }
-                            else if (shipType == FacadeInformation.ShipVerticalType) {
+                            else if (newShipInfo[0] == FacadeInformation.ShipVerticalType) {
                                 let numberOfSquares: number = Math.round(position[3] / FacadeInformation.SquareWidth);
                                 for (let x: number = i; x < i + numberOfSquares; x++) {
                                     if (this.currentNumberOfShips <= this.maxShipsOnThisGrid + 1) {
@@ -160,7 +131,7 @@ export class GridView extends AbstractView {
 
                                     }
                                     else {
-                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached);
+                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._gridNumber.toString());
                                     }
                                 }
                                 this.currentNumberOfShips++;
@@ -168,22 +139,13 @@ export class GridView extends AbstractView {
                             console.log('GridSquare coordinates : ' + [squareXPosition, squareYPosition] +
                                 '\n Index : ' + [i, j]);
                         }
+                        }
                     }
                 }
             }
-        }
+        // }
     }
 
-    /**
-     * Unimportant
-     */
-    public logGridSquares(): void {
-        for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
-            for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
-                console.log(this.GridSquares[i][j].getPosition()[0]);
-            }
-        }
-    }
 
     /**
      *

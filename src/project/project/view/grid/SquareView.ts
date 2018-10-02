@@ -156,8 +156,7 @@ export class SquareView extends AbstractView {
      */
     private handleMouseDown(): void {
         this.hit();
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.horizontalIndex, this.verticalIndex].toString());
-        // this.onClickHandler.call(this, [this.x, this.y]);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.verticalIndex, this.horizontalIndex].toString());
     }
 
     /**

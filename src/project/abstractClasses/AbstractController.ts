@@ -14,8 +14,6 @@ export class AbstractController extends puremvc.Controller implements puremvc.IC
         this.multitonkey = key
     }
 
-
-
     /**
      * Initializes the controller.
      * It is called when super is called in the constructor.

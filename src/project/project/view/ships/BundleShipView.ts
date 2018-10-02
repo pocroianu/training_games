@@ -9,7 +9,7 @@ export class BundleShipView extends AbstractView {
 
     public bundleShipViewName = 'BundleShipView';
     public shipView = ['S00', 'S01', 'S02', 'S10', 'S11', 'S12'];
-    public shipsID: Array<string> = [];
+    public shipsArray: Array<SingleShipView> = [];
 
 
     /**
@@ -24,18 +24,17 @@ export class BundleShipView extends AbstractView {
         for (let i: number = 0; i < numberOfShips / 2; i++) {
             let horizontalShip: SingleShipView = SingleShipView.getInstance(this.shipView[i] + player, 150, i * 100,
                 numberOfShips - i - 1, player, FacadeInformation.ShipHorizontalType);
-            this.shipsID.push(this.shipView[i] + player);
+            this.shipsArray.push(horizontalShip);
             this.addToContainer(horizontalShip.getUIContainer());
         }
 
         /**Adds the vertical ships to the bundle */
         for (let i: number = numberOfShips / 2; i < numberOfShips; i++) {
-            let verticalShip: SingleShipView = SingleShipView.getInstance(this.shipView[i] + player, -500 + i * 100, 100,
-                numberOfShips - Math.round(i / 2) - 1, player, FacadeInformation.ShipVerticalType);
-            this.shipsID.push(this.shipView[i] + player);
+            let verticalShip: SingleShipView = SingleShipView.getInstance(this.shipView[i] + player, -500 + i * 100, -20,
+                i, player, FacadeInformation.ShipVerticalType);
+            this.shipsArray.push(verticalShip);
             this.addToContainer(verticalShip.getUIContainer());
         }
-
         console.log('   #' + this.bundleShipViewName + player);
     }
 
@@ -50,17 +49,6 @@ export class BundleShipView extends AbstractView {
             puremvc.View.instanceMap[key] = new BundleShipView(key, player, numberOfShips);
 
         return puremvc.View.instanceMap[key] as BundleShipView;
-    }
-
-    /**
-     * Verifies if a ship is contained in this BundleShip
-     * @param shipID
-     */
-    public hasShip(shipID: string): boolean {
-        for (let i of this.shipsID) {
-            if (i == shipID) return true;
-        }
-        return false;
     }
 
     /**

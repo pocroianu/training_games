@@ -1,5 +1,7 @@
 import {AbstractController} from "../../abstractClasses/AbstractController";
 import 'pixi.js'
+import {GridController} from "./GridController";
+import {ControllerNames, FacadeInformation} from "../facade/BattleShipFacade";
 
 /**
  * The BattleShip controller.
@@ -13,7 +15,7 @@ export class BattleShipController extends AbstractController {
     constructor(key: string) {
         super(key);
 
-        // super.registerCommand(CommandNotifications.ShipsPlacement,ShipPlaceCommand);
+        GridController.getInstance(ControllerNames.GridControllerName, FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally);
         console.log('BattleShipController created');
     }
 

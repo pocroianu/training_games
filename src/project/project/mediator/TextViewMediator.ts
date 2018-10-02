@@ -7,7 +7,7 @@ import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
  */
 export class TextViewMediator extends AbstractMediator {
     public name: String = 'TextViewMediator';
-    public count: number = 0;
+    public count: number[] = [0, 0];
 
     /**
      *
@@ -48,10 +48,24 @@ export class TextViewMediator extends AbstractMediator {
 
         switch (notification.getName()) {
             case MediatorNotifications.TextUpdate:
-                if (this.count <= 0) {
-                    this.addTextToTheView(notification.getBody());
-                    this.count++;
+                let gridNumber: number = +notification.getType();
+                switch (gridNumber) {
+                    case FacadeInformation.GridOne:
+                        if (this.count[0] <= 0) {
+                            this.addTextToTheView(notification.getBody() + ' \nfor Player' + gridNumber);
+                            this.count[0]++;
+                        }
+                        break;
+
+                    case FacadeInformation.GridTwo:
+                        if (this.count[1] <= 0) {
+                            this.addTextToTheView(notification.getBody() + ' \nfor Player' + gridNumber);
+                            this.count[1]++;
+                        }
+                        break;
                 }
+
+
                 break;
         }
     }

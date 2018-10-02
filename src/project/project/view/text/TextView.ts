@@ -6,7 +6,7 @@ import {AbstractView} from "../../../abstractClasses/AbstractView";
 export class TextView extends AbstractView {
 
     /**Here we save the text string */
-    private text: PIXI.Text;
+    private readonly text: PIXI.Text;
 
     /**
      * @param key

@@ -1,6 +1,7 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
-import {CommandNotifications} from "../facade/BattleShipFacade";
+import {CommandNotifications, ControllerNames} from "../facade/BattleShipFacade";
 import 'pixi.js'
+import {GridController} from "../controller/GridController";
 
 /**
  * Command used when a grid's square is clicked by a player.
@@ -16,6 +17,9 @@ export class SquareClickCommand extends AbstractCommand {
 
             case CommandNotifications.ClickHandle:
                 console.log('SquareClick Handle Request');
+
+                GridController.getInstance(ControllerNames.GridControllerName).updatePosition(notification.getBody());
+
                 break;
         }
         //TODO: Add extra things for the square's interaction

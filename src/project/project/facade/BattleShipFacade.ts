@@ -34,6 +34,10 @@ export enum CommandNotifications {
     ShipsPlacement = 'SHIPS_PLACEMENT_COMMAND'
 }
 
+export enum ControllerNames {
+    GridControllerName = 'John'
+}
+
 export enum FacadeInformation {
 
 

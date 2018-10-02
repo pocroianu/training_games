@@ -13,6 +13,7 @@ export class SingleShipView extends AbstractView {
     public shipGraphics: PIXI.Graphics;
     public name: string;
     public numberOfSquares: number;
+    public player: string;
 
     /**
      * @param key
@@ -29,6 +30,7 @@ export class SingleShipView extends AbstractView {
         this.yPosition = yPosition;
         this.shipGraphics = new PIXI.Graphics();
         this.numberOfSquares = numberOfSquares;
+        this.player = player;
 
         if (player === FacadeInformation.PlayerOne) {
             this.shipGraphics.lineStyle(6, FacadeInformation.PlayerOneShipBorderColor);
@@ -56,7 +58,6 @@ export class SingleShipView extends AbstractView {
                 }
                 break;
         }
-
         this.shipGraphics.endFill();
         this.shipGraphics.interactive = true;
         this.shipGraphics.buttonMode = true;
@@ -104,7 +105,7 @@ export class SingleShipView extends AbstractView {
         }
 
         /**
-         * When the player stops grabbing the ship.
+         * When the player stops dragging the ship.
          */
         function onDragEnd(): void {
 
