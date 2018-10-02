@@ -53,7 +53,7 @@ export class BundleShipViewMediator extends AbstractMediator {
 
         switch (notification.getName()) {
             case MediatorNotifications.ShipsPlacement:
-                super.sendNotification(CommandNotifications.ShipsPlacement, notification.getBody());
+                super.sendNotification(CommandNotifications.ShipsPlacement, notification.getBody(), notification.getType());
                 break;
         }
     }

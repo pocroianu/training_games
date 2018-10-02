@@ -17,7 +17,13 @@ import {ShipPlaceCommand} from "../command/ShipPlaceCommand";
 export enum MediatorNotifications {
     ShipsPlacement = 'Ships_Placement',
     GridShipMarking = 'GridMarking',
+    TextUpdate = 'TextUpdate',
     Test = 'Test'
+}
+
+export enum TextErrors {
+
+    MaximumNumberOfShipReached = 'Max Number Of Ships to Place Reached'
 }
 
 export enum CommandNotifications {
@@ -47,20 +53,21 @@ export enum FacadeInformation {
     HitColor = 0x00ff00,
     MissColor = 0xff3300,
 
+    SquareFillColor = 0x00ff00,
     SquareWidth = 80,
     NumberOfSquaresVertically = 12,
     NumberOfSquaresHorizontally = 12,
 
     TextViewText = 'Game status : \nShips placement',
-    TextViewColor = 0xffffff,
+    TextViewColor = 0x42d1f4,
     FontSize = 30,
 
     PlayerOneShipFillColor = 0x0000ff,
     PlayerOneShipBorderColor = 0xfff000,
     PlayerTwoShipFillColor = 0xfa0000,
     PlayerTwoShipBorderColor = 0xfff000,
-    SquareFillColor = 0x00ff00,
-
+    PlayerOneNumberOfShips = 6,
+    PlayerTwoNumberOfShips = 6,
 
     ButtonViewXPosition = 100,
     ButtonViewYPosition = 100,
@@ -70,7 +77,10 @@ export enum FacadeInformation {
     PlayerOne = 'PlayerOne',
     PlayerTwo = 'PlayerTwo',
 
-    BattleShipFacadeKey = 'BattleShip'
+    BattleShipFacadeKey = 'BattleShip',
+    ShipVerticalType = 'Vertical',
+    ShipHorizontalType = 'Horizontal',
+    MaximumNumberOfShipsOnAGrid = 3
 }
 
 /**
@@ -107,6 +117,8 @@ export class BattleShipFacade extends AbstractFacade {
      */
     constructor(key: string) {
         super(key);
+
+
     }
 
     /**
@@ -159,11 +171,23 @@ export class BattleShipFacade extends AbstractFacade {
         super.registerMediator(new TextViewMediator(this.textViewMediator, TextView.getInstance(this.textView,
             FacadeInformation.TextViewText, FacadeInformation.FontSize, FacadeInformation.TextViewColor)));
 
+
         /**Registering the Ships Mediator */
         super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[0],
-            BundleShipView.getInstance(this.bundleShipView[0], FacadeInformation.PlayerOne), FacadeInformation.PlayerOne));
+            BundleShipView.getInstance(this.bundleShipView[0], FacadeInformation.PlayerOne, FacadeInformation.PlayerOneNumberOfShips), FacadeInformation.PlayerOne));
         super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[1],
-            BundleShipView.getInstance(this.bundleShipView[1], FacadeInformation.PlayerTwo), FacadeInformation.PlayerTwo));
+            BundleShipView.getInstance(this.bundleShipView[1], FacadeInformation.PlayerTwo, FacadeInformation.PlayerTwoNumberOfShips), FacadeInformation.PlayerTwo));
+
+        let count: number = 0;
+        // console.log(super.hasMediator(this.textViewMediator));
+        this.app.ticker.add((delta) => {
+            count += 0.1;
+
+            let text: any = super.retrieveMediator(this.textViewMediator).getViewComponent().getUIContainer();
+            text.scale.set(1 + Math.sin(count) * 0.05);
+
+        });
+
     }
 
     /**
@@ -229,6 +253,7 @@ export class BattleShipFacade extends AbstractFacade {
         this.ShipsContainerTwo = new PIXI.Container;
         this.app.stage.addChild(this.GameBoardContainerOne, this.GameBoardContainerTwo,
             this.GameInfoContainer, this.GameButtonContainer, this.ShipsContainerOne, this.ShipsContainerTwo);
+
 
         this.checkStartOrientation();
         this.changeOrientation();

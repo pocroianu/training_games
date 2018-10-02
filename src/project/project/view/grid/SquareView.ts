@@ -80,8 +80,8 @@ export class SquareView extends AbstractView {
         this.squareGraphics.interactive = true;
         this.squareGraphics.buttonMode = true;
 
-        this.shipSquare.lineStyle(1, FacadeInformation.SquareFillColor);
-        this.shipSquare.beginFill(FacadeInformation.SquareFillColor, 0.5);
+        this.shipSquare.lineStyle(0, FacadeInformation.SquareFillColor);
+        this.shipSquare.beginFill(FacadeInformation.SquareFillColor, 0.6);
         this.shipSquare.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
         this.shipSquare.endFill();
         this.shipSquare.visible = false;

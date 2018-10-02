@@ -78,6 +78,14 @@ export class AbstractView extends puremvc.View implements puremvc.IView {
 
     /**
      *
+     * @param mediatorName
+     */
+    public hasMediator(mediatorName: string): boolean {
+        return super.hasMediator(mediatorName);
+    }
+
+    /**
+     *
      */
     public activateUpdate(): void {
         //todo: override where needed

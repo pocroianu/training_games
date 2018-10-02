@@ -48,9 +48,7 @@ export class GridViewMediator extends AbstractMediator {
                     let j = +i;
                     newArray.push(j);
                 }
-
-
-                super.getViewComponent().fillGridWithBattleShip(newArray);
+                super.getViewComponent().fillGridWithBattleShip(newArray, notification.getType());
                 break;
         }
     }

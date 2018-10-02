@@ -79,5 +79,4 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
     public hasMediator(mediatorName: string): boolean {
         return super.hasMediator(mediatorName);
     }
-
 }

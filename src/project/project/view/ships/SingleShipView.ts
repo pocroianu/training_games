@@ -20,8 +20,9 @@ export class SingleShipView extends AbstractView {
      * @param yPosition
      * @param numberOfSquares
      * @param player
+     * @param type
      */
-    constructor(key: string, xPosition: number, yPosition: number, numberOfSquares: number, player: string) {
+    constructor(key: string, xPosition: number, yPosition: number, numberOfSquares: number, player: string, type: string) {
         super(key);
         this.name = key;
         this.xPosition = xPosition;
@@ -30,20 +31,32 @@ export class SingleShipView extends AbstractView {
         this.numberOfSquares = numberOfSquares;
 
         if (player === FacadeInformation.PlayerOne) {
-            this.shipGraphics.lineStyle(4, FacadeInformation.PlayerOneShipBorderColor);
+            this.shipGraphics.lineStyle(6, FacadeInformation.PlayerOneShipBorderColor);
             this.shipGraphics.beginFill(FacadeInformation.PlayerOneShipFillColor);
         }
         else if (player === FacadeInformation.PlayerTwo) {
-            this.shipGraphics.lineStyle(4, FacadeInformation.PlayerTwoShipBorderColor);
+            this.shipGraphics.lineStyle(6, FacadeInformation.PlayerTwoShipBorderColor);
             this.shipGraphics.beginFill(FacadeInformation.PlayerTwoShipFillColor);
         }
 
 
-        for (let i: number = 0; i < this.numberOfSquares; i++) {
+        switch (type) {
+            case FacadeInformation.ShipHorizontalType:
+                for (let i: number = 0; i < this.numberOfSquares; i++) {
 
-            this.shipGraphics.drawRect(this.xPosition + i * FacadeInformation.SquareWidth, this.yPosition,
-                FacadeInformation.SquareWidth - 5, FacadeInformation.SquareWidth - 5,);
+                    this.shipGraphics.drawRect(this.xPosition + i * FacadeInformation.SquareWidth, this.yPosition,
+                        FacadeInformation.SquareWidth - 3, FacadeInformation.SquareWidth - 3,);
+                }
+                break;
+            case FacadeInformation.ShipVerticalType:
+                for (let i: number = 0; i < this.numberOfSquares; i++) {
+
+                    this.shipGraphics.drawRect(this.xPosition, this.yPosition + i * FacadeInformation.SquareWidth,
+                        FacadeInformation.SquareWidth - 3, FacadeInformation.SquareWidth - 3,);
+                }
+                break;
         }
+
         this.shipGraphics.endFill();
         this.shipGraphics.interactive = true;
         this.shipGraphics.buttonMode = true;
@@ -75,6 +88,7 @@ export class SingleShipView extends AbstractView {
             // the mouse on the screen. I'm not certain why, but this is necessary.
             this.position.set(this.data.x, this.data.y);
             this.dragging = true;
+            this.mousedown = false;
         }
 
         /**
@@ -82,6 +96,7 @@ export class SingleShipView extends AbstractView {
          */
         function onDragMove(): void {
             if (this.dragging) {
+                this.alpha = 0.5;
                 let newPosition = this.data.getLocalPosition(this.parent);
                 this.x = newPosition.x;
                 this.y = newPosition.y;
@@ -94,13 +109,23 @@ export class SingleShipView extends AbstractView {
         function onDragEnd(): void {
 
             //Show the end position
+
+            let shipType: string;
+            if (this.width > this.height) {
+                shipType = FacadeInformation.ShipHorizontalType;
+            }
+            else if (this.width < this.height) {
+                shipType = FacadeInformation.ShipVerticalType;
+            }
+
             let newPosition = this.data.getLocalPosition(this.parent.parent.parent);
+
             let body: number[] = [this.getBounds().x, this.getBounds().y, this.width, this.height];
-            let type: any = this;
+            let notificationType: string = shipType;
             let bodyStr: string = body.toString();
 
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
-                .sendNotification(MediatorNotifications.ShipsPlacement, bodyStr);
+                .sendNotification(MediatorNotifications.ShipsPlacement, bodyStr, notificationType);
 
 
             this.alpha = 1;
@@ -130,10 +155,11 @@ export class SingleShipView extends AbstractView {
      * @param yPosition
      * @param numberOfSquares
      * @param player
+     * @param type
      */
-    static getInstance(key: string, xPosition?: number, yPosition?: number, numberOfSquares?: number, player?: string): SingleShipView {
+    static getInstance(key: string, xPosition?: number, yPosition?: number, numberOfSquares?: number, player?: string, type?: string): SingleShipView {
         if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new SingleShipView(key, xPosition, yPosition, numberOfSquares, player);
+            puremvc.View.instanceMap[key] = new SingleShipView(key, xPosition, yPosition, numberOfSquares, player, type);
 
         return puremvc.View.instanceMap[key] as SingleShipView;
     }
@@ -151,4 +177,5 @@ export class SingleShipView extends AbstractView {
     public getUIContainer(): PIXI.Container {
         return this.shipGraphics;
     }
+
 }
