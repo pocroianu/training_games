@@ -1,7 +1,10 @@
 /**
  * Extends this.
  */
-export class AbstractMediator extends puremvc.Mediator implements puremvc.IMediator {
+import {AbstractNotifier} from "./AbstractNotifier";
+import {AbstractFacade} from "./AbstractFacade";
+
+export class AbstractMediator extends puremvc.Mediator implements puremvc.IMediator, AbstractNotifier {
 
     /**
      *
@@ -76,9 +79,13 @@ export class AbstractMediator extends puremvc.Mediator implements puremvc.IMedia
      * @param name
      * @param body
      * @param type
+     * @param arrayOfStrings
+     * @param arrayOfNumbers
+     * @param objectReference
      */
-    public sendNotification(name: string, body?: any, type?: string): void {
-        super.sendNotification(name, body, type);
+    public sendNotification(name: string, body?: any, type?: string, arrayOfStrings?: Array<string>, arrayOfNumbers?: Array<number>, objectReference?: any): void {
+        let facade: any = AbstractFacade.getInstance(this.multitonKey);
+        facade.sendNotification(name, body, type, arrayOfStrings, arrayOfNumbers, objectReference);
     }
 
 }

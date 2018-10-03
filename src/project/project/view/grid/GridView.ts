@@ -78,6 +78,7 @@ export class GridView extends AbstractView {
      * @param shipInfo
      */
     public fillGridWithBattleShip(position: Array<number>, shipInfo: string): void {
+
         let gridDimensions: PIXI.Rectangle = this.getUIContainer().getBounds();
         let xPosition: number = position[0];
         let yPosition: number = position[1];

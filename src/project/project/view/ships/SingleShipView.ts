@@ -115,23 +115,17 @@ export class SingleShipView extends AbstractView {
             if (this.width > this.height) {
                 shipType = FacadeInformation.ShipHorizontalType;
             }
-            else if (this.width < this.height) {
+            else if (this.width <= this.height) {
                 shipType = FacadeInformation.ShipVerticalType;
             }
-
             let newPosition = this.data.getLocalPosition(this.parent.parent.parent);
 
-            let body: number[] = [this.getBounds().x, this.getBounds().y, this.width, this.height];
-            let notificationType: string = shipType;
-            let bodyStr: string = body.toString();
-
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
-                .sendNotification(MediatorNotifications.ShipsPlacement, bodyStr, notificationType);
+                .sendNotification(MediatorNotifications.ShipsPlacement, undefined, shipType, undefined, [this.getBounds().x, this.getBounds().y, this.width, this.height]);
 
 
             this.alpha = 1;
             this.dragging = false;
-
 
             // set the interaction data to null
             this.data = null;

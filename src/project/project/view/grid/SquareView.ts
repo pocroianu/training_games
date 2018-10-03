@@ -1,6 +1,6 @@
 import {HitView} from "../hits/HitView";
 import {MissView} from "../hits/MissView";
-import {BattleShipFacade, CommandNotifications, FacadeInformation} from "../../facade/BattleShipFacade";
+import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../../facade/BattleShipFacade";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 
 /**
@@ -159,7 +159,8 @@ export class SquareView extends AbstractView {
      */
     private handleMouseDown(): void {
         this.hit();
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.verticalIndex, this.horizontalIndex].toString(), '', ['Mama']);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
+            .sendNotification(MediatorNotifications.SquareClickRequest, undefined, undefined, undefined, [this.verticalIndex, this.horizontalIndex]);
     }
 
     /**

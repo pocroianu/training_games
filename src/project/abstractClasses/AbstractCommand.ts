@@ -33,12 +33,13 @@ export class AbstractCommand extends puremvc.SimpleCommand implements puremvc.IC
      * @param body
      * @param type
      * @param arrayOfStrings
+     * @param arrayOfNumbers
      * @param objectReference
      */
-    public sendNotification(name: string, body?: any, type?: string, arrayOfStrings?: Array<string>, objectReference?: any): void {
+    public sendNotification(name: string, body?: any, type?: string, arrayOfStrings?: Array<string>, arrayOfNumbers?: Array<number>, objectReference?: any): void {
 
         let facade: any = AbstractFacade.getInstance(this.multitonKey);
-        facade.sendNotification(name, body, type, arrayOfStrings, objectReference);
+        facade.sendNotification(name, body, type, arrayOfStrings, arrayOfNumbers, objectReference);
 
     };
 

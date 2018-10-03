@@ -29,10 +29,11 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
      * @param body
      * @param type
      * @param arrayOfStrings
+     * @param arrayOfNumbers
      * @param objectReference
      */
-    public sendNotification(name: string, body: string, type?: string, arrayOfStrings?: Array<string>, objectReference?: any): void {
-        this.notifyObservers(new AbstractNotification(name, body, type, arrayOfStrings, objectReference));
+    public sendNotification(name: string, body: string, type?: string, arrayOfStrings?: Array<string>, arrayOfNumbers?: Array<number>, objectReference?: any): void {
+        this.notifyObservers(new AbstractNotification(name, body, type, arrayOfStrings, arrayOfNumbers, objectReference));
     }
 
     /**

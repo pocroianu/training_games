@@ -7,6 +7,7 @@ import {
 } from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {BattleShipView} from "../view/mainView/BattleShipView";
+import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 
 /**
  *
@@ -50,11 +51,13 @@ export class BundleShipViewMediator extends AbstractMediator {
      *  This is where the notifications are handled.
      * @param notification
      */
-    public handleNotification(notification: puremvc.INotification): void {
+    public handleNotification(notification: AbstractNotification): void {
 
         switch (notification.getName()) {
             case MediatorNotifications.ShipsPlacement:
-                super.sendNotification(CommandNotifications.ShipsPlacement, notification.getBody(), notification.getType());
+                let shipPositionInfo: Array<number> = notification.getArrayOfNumbers();
+                super.sendNotification(CommandNotifications.ShipsPlacement, undefined,
+                    notification.getType(), undefined, shipPositionInfo);
                 break;
         }
     }

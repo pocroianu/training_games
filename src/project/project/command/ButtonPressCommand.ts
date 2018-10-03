@@ -1,5 +1,4 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
-import {CommandNotifications} from "../facade/BattleShipFacade";
 import 'pixi.js'
 
 /**
@@ -12,11 +11,7 @@ export class ButtonPressCommand extends AbstractCommand {
      * @param notification
      */
     public execute(notification: puremvc.Notification): void {
-        switch (notification.getName()) {
+        console.log('ButtonPress Handle Request');
 
-            case CommandNotifications.ButtonPress:
-                console.log('ButtonPress Handle Request');
-                break;
-        }
     }
 }

@@ -18,6 +18,7 @@ export enum MediatorNotifications {
     ShipsPlacement = 'Ships_Placement',
     GridShipMarking = 'GridMarking',
     TextUpdate = 'TextUpdate',
+    SquareClickRequest = 'SquareClickR',
     Test = 'Test'
 }
 
@@ -28,7 +29,7 @@ export enum TextErrors {
 
 export enum CommandNotifications {
 
-    ClickHandle = 'CLICK_HANDLE_COMMAND',
+    SquareClickNotification = 'CLICK_HANDLE_COMMAND',
     ButtonPress = 'BUTTON_PRESS_COMMAND',
     StartGame = 'START_GAME_COMMAND',
     ShipsPlacement = 'SHIPS_PLACEMENT_COMMAND'
@@ -173,7 +174,7 @@ export class BattleShipFacade extends AbstractFacade {
             BundleShipView.getInstance(this.bundleShipView[1], FacadeInformation.PlayerTwo, FacadeInformation.PlayerTwoNumberOfShips), FacadeInformation.PlayerTwo));
 
         let count: number = 0;
-        // console.log(super.hasMediator(this.textViewMediator));
+
         this.app.ticker.add((delta) => {
             count += 0.1;
 
@@ -190,7 +191,7 @@ export class BattleShipFacade extends AbstractFacade {
         if (!this.controller)
             this.controller = BattleShipController.getInstance(this.multitonKey);
 
-        super.registerCommand(CommandNotifications.ClickHandle, SquareClickCommand);
+        super.registerCommand(CommandNotifications.SquareClickNotification, SquareClickCommand);
         super.registerCommand(CommandNotifications.ButtonPress, ButtonPressCommand);
         super.registerCommand(CommandNotifications.ShipsPlacement, ShipPlaceCommand);
     }

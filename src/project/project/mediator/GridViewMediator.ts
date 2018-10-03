@@ -1,5 +1,10 @@
 import 'pixi.js'
-import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
+import {
+    BattleShipFacade,
+    CommandNotifications,
+    FacadeInformation,
+    MediatorNotifications
+} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 
@@ -32,7 +37,8 @@ export class GridViewMediator extends AbstractMediator {
      */
     public listNotificationInterests(): string[] {
         return [MediatorNotifications.GridShipMarking,
-            MediatorNotifications.Test];
+            MediatorNotifications.Test,
+            MediatorNotifications.SquareClickRequest];
     }
 
     /**
@@ -43,16 +49,15 @@ export class GridViewMediator extends AbstractMediator {
         switch (notification.getName()) {
 
             case MediatorNotifications.GridShipMarking :
-                // console.log('GridMarkingNotification received');
-                let array: any = notification.getBody().split(',', 4);
-                let newArray: Array<number> = [];
-
-                for (let i of array) {
-                    let j = +i;
-                    newArray.push(j);
-                }
-                super.getViewComponent().fillGridWithBattleShip(newArray, notification.getType());
+                let shipPositionInfo: Array<number> = notification.getArrayOfNumbers();
+                super.getViewComponent().fillGridWithBattleShip(shipPositionInfo, notification.getType());
                 break;
+
+            case MediatorNotifications.SquareClickRequest:
+                let squareClickCoordinates: Array<number> = notification.getArrayOfNumbers();
+                super.sendNotification(CommandNotifications.SquareClickNotification, undefined, undefined, undefined, squareClickCoordinates);
+                break;
+
             case MediatorNotifications.Test:
                 console.log(notification.getArrayOfStrings());
                 break;

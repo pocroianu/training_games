@@ -62,18 +62,12 @@ export class GridController extends AbstractController {
      * Updates the grid with the hits or the misses.
      * @param position
      */
-    public updatePosition(position: string): void {
-
-        let newArray: Array<number> = [];
-        let newIndex = position.split(',');
-        for (let i of newIndex) {
-            newArray.push(+i);
-        }
+    public updatePosition(position: Array<number>): void {
 
         /**
          * Updates the element in the 2 dimensional array with a hit.
          */
-        this.GridSquares[newArray[0]][newArray[1]] = 5;
+        this.GridSquares[position[0]][position[1]] = 5;
         this.logGridSquares();
     }
 }
