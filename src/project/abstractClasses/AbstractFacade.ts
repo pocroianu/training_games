@@ -31,4 +31,52 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
         super.sendNotification(name, body, type);
     }
 
+    /**
+     *
+     * @param notificationName
+     * @param commandClassRef
+     */
+    public registerCommand(notificationName: string, commandClassRef: Function): void {
+        super.registerCommand(notificationName, commandClassRef);
+    }
+
+    /**
+     *
+     * @param proxy
+     */
+    public registerProxy(proxy: puremvc.IProxy): void {
+        super.registerProxy(proxy);
+    }
+
+    /**
+     *
+     * @param proxyName
+     */
+    public retrieveProxy(proxyName: string): puremvc.IProxy {
+        return super.retrieveProxy(proxyName);
+    }
+
+    /**
+     *
+     * @param mediator
+     */
+    public registerMediator(mediator: puremvc.IMediator): void {
+        super.registerMediator(mediator);
+    }
+
+    /**
+     *
+     * @param mediatorName
+     */
+    public retrieveMediator(mediatorName: string): puremvc.IMediator {
+        return super.retrieveMediator(mediatorName);
+    }
+
+    /**
+     *
+     * @param mediatorName
+     */
+    public hasMediator(mediatorName: string): boolean {
+        return super.hasMediator(mediatorName);
+    }
 }

@@ -1,5 +1,5 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
-import {CommandNotifications} from "../facade/BattleShipFacade";
+import {CommandNotifications, MediatorNotifications} from "../facade/BattleShipFacade";
 import 'pixi.js'
 
 /**
@@ -11,11 +11,12 @@ export class ShipPlaceCommand extends AbstractCommand {
      * Execute this command
      * @param notification
      */
-    public execute(notification: puremvc.Notification): void {
+    public execute(notification: puremvc.INotification): void {
         switch (notification.getName()) {
 
             case CommandNotifications.ShipsPlacement:
-                console.log('ShipsPlacement Request');
+                // console.log('ShipsPlacement Request in ShipPlaceCommand');
+                super.sendNotification(MediatorNotifications.GridShipMarking, notification.getBody(), notification.getType());
                 break;
         }
     }

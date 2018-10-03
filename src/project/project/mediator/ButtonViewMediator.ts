@@ -1,12 +1,14 @@
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import 'pixi.js'
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
+import {ButtonView} from "../view/button/ButtonView";
 
 /**
  * The button's mediator.
  */
 export class ButtonViewMediator extends AbstractMediator {
     public name: String = 'ButtonViewMediator';
+    public buttonViewName = 'ButtonView';
 
     /**
      *
@@ -18,13 +20,13 @@ export class ButtonViewMediator extends AbstractMediator {
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList,3);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 3);
 
-        console.log('   # '+this.name+' created');
+        console.log('   # ' + this.name + ' created');
     }
 
     /**
-     * The notification that the ViewMediator is interested in.
+     * The notification that the BattleShipMediator is interested in.
      */
     public listNotificationInterests(): string[] {
         return [];
@@ -36,5 +38,12 @@ export class ButtonViewMediator extends AbstractMediator {
      */
     public handleNotification(notification: puremvc.Notification): void {
         let name: String = notification.name;
+    }
+
+    /**
+     *
+     */
+    public onRegister(): void {
+
     }
 }
