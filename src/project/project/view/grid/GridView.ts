@@ -9,7 +9,6 @@ import 'pixi.js'
  */
 export class GridView extends AbstractView {
     private GridSquares: SquareView[][];
-    private readonly _gridNumber: number;
     public RulerName: string = 'RulerForTheGrid';
     public name = 'GridView';
     private maxShipsOnThisGrid: number = FacadeInformation.MaximumNumberOfShipsOnAGrid;
@@ -19,33 +18,28 @@ export class GridView extends AbstractView {
     /**
      *
      * @param key
-     * @param gridNumber
+     * @param player
      */
-    constructor(key: string, gridNumber: number) {
+    constructor(key: string, player: string) {
         super(key);
-        this.name = this.name.concat(gridNumber.toString());
-        this._gridNumber = gridNumber;
-        switch (gridNumber) {
-            case 1:
+        this.name = this.name.concat(player);
+        this._player = player;
+        switch (this._player) {
+            case FacadeInformation.PlayerOne:
                 this.createBoard(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.SquareWidth,
                     FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid1BorderColor, FacadeInformation.GridSquareFillColor);
                 this.createRuler(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.NumberOfSquaresVertically,
                     FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid1BorderColor, FacadeInformation.RulerTextColor);
                 break;
 
-            case 2:
+            case FacadeInformation.PlayerTwo:
                 this.createBoard(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.SquareWidth,
                     FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid2BorderColor, FacadeInformation.GridSquareFillColor);
                 this.createRuler(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.NumberOfSquaresVertically,
                     FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
                 break;
         }
-        if (this._gridNumber == FacadeInformation.GridOne) {
-            this._player = FacadeInformation.PlayerOne;
-        }
-        else if (this._gridNumber == FacadeInformation.GridTwo) {
-            this._player = FacadeInformation.PlayerTwo;
-        }
+
 
         console.log('   # ' + this.name + ' created');
     }
@@ -60,11 +54,11 @@ export class GridView extends AbstractView {
     /**
      * Get an instance of the Grid's view
      * @param key
-     * @param gridNumber
+     * @param player
      */
-    static getInstance(key: string, gridNumber?: number): GridView {
+    static getInstance(key: string, player?: string): GridView {
         if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new GridView(key, gridNumber);
+            puremvc.View.instanceMap[key] = new GridView(key, player);
 
         return puremvc.View.instanceMap[key] as GridView;
     }
@@ -118,7 +112,7 @@ export class GridView extends AbstractView {
 
                                     }
                                     else {
-                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._gridNumber.toString());
+                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._player);
                                     }
                                 }
                                 this.currentNumberOfShips++;
@@ -131,7 +125,7 @@ export class GridView extends AbstractView {
 
                                     }
                                     else {
-                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._gridNumber.toString());
+                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._player);
                                     }
                                 }
                                 this.currentNumberOfShips++;
@@ -139,10 +133,10 @@ export class GridView extends AbstractView {
                             console.log('GridSquare coordinates : ' + [squareXPosition, squareYPosition] +
                                 '\n Index : ' + [i, j]);
                         }
-                        }
                     }
                 }
             }
+        }
         // }
     }
 

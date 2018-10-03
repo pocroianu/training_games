@@ -1,9 +1,12 @@
 import 'pixi.js';
+import {AbstractNotification} from "./AbstractNotification";
+import {AbstractNotifier} from "./AbstractNotifier";
+import {AbstractFacade} from "./AbstractFacade";
 
 /**
  *  Extend this class.
  */
-export class AbstractCommand extends puremvc.SimpleCommand implements puremvc.ICommand, puremvc.INotifier {
+export class AbstractCommand extends puremvc.SimpleCommand implements puremvc.ICommand, AbstractNotifier {
 
     public name: string = 'Command';
 
@@ -11,7 +14,7 @@ export class AbstractCommand extends puremvc.SimpleCommand implements puremvc.IC
      *
      * @param notification
      */
-    public execute(notification: puremvc.INotification): void {
+    public execute(notification: AbstractNotification): void {
         super.execute(notification);
     }
 
@@ -23,13 +26,20 @@ export class AbstractCommand extends puremvc.SimpleCommand implements puremvc.IC
         super.initializeNotifier(key);
     }
 
+
     /**
      *
      * @param name
      * @param body
      * @param type
+     * @param arrayOfStrings
+     * @param objectReference
      */
-    public sendNotification(name: string, body?: any, type?: string): void {
-        super.sendNotification(name, body, type);
-    }
+    public sendNotification(name: string, body?: any, type?: string, arrayOfStrings?: Array<string>, objectReference?: any): void {
+
+        let facade: any = AbstractFacade.getInstance(this.multitonKey);
+        facade.sendNotification(name, body, type, arrayOfStrings, objectReference);
+
+    };
+
 }

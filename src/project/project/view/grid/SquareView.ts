@@ -16,12 +16,15 @@ export class SquareView extends AbstractView {
     public borderColor: number;
     public fillColor: number;
 
-    public squareGraphics: PIXI.Graphics;
     /**Contains the square's border */
-    public squareMarking: PIXI.Graphics;
+    public squareGraphics: PIXI.Graphics;
+
     /**Contains the marking which will be either a hit either a miss */
-    public onClickHandler: Function;
+    public squareMarking: PIXI.Graphics;
+
     /**Will call a function within the grid class */
+    public onClickHandler: Function;
+
     public squareEvent: string = 'pointertap';
 
     /**The HitView and the MissView */
@@ -156,7 +159,7 @@ export class SquareView extends AbstractView {
      */
     private handleMouseDown(): void {
         this.hit();
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.verticalIndex, this.horizontalIndex].toString());
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.verticalIndex, this.horizontalIndex].toString(), '', ['Mama']);
     }
 
     /**

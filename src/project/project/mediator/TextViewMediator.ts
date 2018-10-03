@@ -1,6 +1,7 @@
 import 'pixi.js'
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
+import {BattleShipView} from "../view/mainView/BattleShipView";
 
 /**
  *  TextViewMediator
@@ -20,7 +21,7 @@ export class TextViewMediator extends AbstractMediator {
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 2);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, BattleShipView.GameInfoContainer);
         console.log('   # ' + this.name + ' created');
     }
 
@@ -50,14 +51,14 @@ export class TextViewMediator extends AbstractMediator {
             case MediatorNotifications.TextUpdate:
                 let gridNumber: number = +notification.getType();
                 switch (gridNumber) {
-                    case FacadeInformation.GridOne:
+                    case FacadeInformation.PlayerOne:
                         if (this.count[0] <= 0) {
                             this.addTextToTheView(notification.getBody() + ' \nfor Player' + gridNumber);
                             this.count[0]++;
                         }
                         break;
 
-                    case FacadeInformation.GridTwo:
+                    case FacadeInformation.PlayerTwo:
                         if (this.count[1] <= 0) {
                             this.addTextToTheView(notification.getBody() + ' \nfor Player' + gridNumber);
                             this.count[1]++;

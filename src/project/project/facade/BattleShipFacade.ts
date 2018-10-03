@@ -34,15 +34,7 @@ export enum CommandNotifications {
     ShipsPlacement = 'SHIPS_PLACEMENT_COMMAND'
 }
 
-export enum ControllerNames {
-    GridControllerName = 'John'
-}
-
 export enum FacadeInformation {
-
-
-    GridOne = 1,
-    GridTwo = 2,
 
     Grid1XPosition = 100,
     Grid1YPosition = 100,
@@ -78,8 +70,8 @@ export enum FacadeInformation {
     ButtonViewScale = 0.9,
 
 
-    PlayerOne = 'PlayerOne',
-    PlayerTwo = 'PlayerTwo',
+    PlayerOne = '1',
+    PlayerTwo = '2',
 
     BattleShipFacadeKey = 'BattleShip',
     ShipVerticalType = 'Vertical',
@@ -121,8 +113,6 @@ export class BattleShipFacade extends AbstractFacade {
      */
     constructor(key: string) {
         super(key);
-
-
     }
 
     /**
@@ -167,16 +157,16 @@ export class BattleShipFacade extends AbstractFacade {
 
         /**Registering the two GridViews */
         super.registerMediator(new GridViewMediator(this.gridViewMediator[0],
-            GridView.getInstance(this.gridView[0], FacadeInformation.GridOne), FacadeInformation.GridOne));
+            GridView.getInstance(this.gridView[0], FacadeInformation.PlayerOne), FacadeInformation.PlayerOne));
         super.registerMediator(new GridViewMediator(this.gridViewMediator[1],
-            GridView.getInstance(this.gridView[1], FacadeInformation.GridTwo), FacadeInformation.GridTwo));
+            GridView.getInstance(this.gridView[1], FacadeInformation.PlayerTwo), FacadeInformation.PlayerTwo));
 
         /**Registering the TextMediator */
         super.registerMediator(new TextViewMediator(this.textViewMediator, TextView.getInstance(this.textView,
             FacadeInformation.TextViewText, FacadeInformation.FontSize, FacadeInformation.TextViewColor)));
 
 
-        /**Registering the Ships Mediator */
+        /**Registering the Ships Mediators */
         super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[0],
             BundleShipView.getInstance(this.bundleShipView[0], FacadeInformation.PlayerOne, FacadeInformation.PlayerOneNumberOfShips), FacadeInformation.PlayerOne));
         super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[1],
@@ -191,7 +181,6 @@ export class BattleShipFacade extends AbstractFacade {
             text.scale.set(1 + Math.sin(count) * 0.05);
 
         });
-
     }
 
     /**
@@ -213,28 +202,28 @@ export class BattleShipFacade extends AbstractFacade {
      */
     public addContainersToView(containersList: Array<PIXI.Container>, type: number): void {
         for (let item of containersList) {
-            if (type === 0) {
-                /**Adding to the GameBoardOne Container */
+            if (type === BattleShipView.PlayerOneGridContainer) {
+                /**Adding to the PlayerOneGrid Container */
                 this.GameBoardContainerOne.addChild(item);
             }
-            else if (type === 1) {
-                /**Adding to the GameBoardTwo Container */
+            else if (type === BattleShipView.PlayerTwoGridContainer) {
+                /**Adding to the PlayerTwoGrid Container */
                 this.GameBoardContainerTwo.addChild(item);
             }
-            else if (type === 2) {
+            else if (type === BattleShipView.GameInfoContainer) {
                 /**Adding to the GameInfo Container */
                 this.GameInfoContainer.addChild(item);
             }
-            else if (type === 3) {
+            else if (type === BattleShipView.GameButtonContainer) {
                 /**Adding to the GameButton Container */
                 this.GameButtonContainer.addChild(item);
             }
-            else if (type === 4) {
-                /**Adding to the Ships Container */
+            else if (type === BattleShipView.PlayerOneShipsContainer) {
+                /**Adding to the PlayerOneShips Container */
                 this.ShipsContainerOne.addChild(item);
             }
-            else if (type === 5) {
-                /**Adding to the Ships Container */
+            else if (type === BattleShipView.PlayerTwoShipsContainer) {
+                /**Adding to the PlayerTwoShips Container */
                 this.ShipsContainerTwo.addChild(item);
             }
         }

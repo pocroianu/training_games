@@ -1,25 +1,28 @@
 import 'pixi.js'
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
+import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 
 /**
  * The grid's mediator.
  */
 export class GridViewMediator extends AbstractMediator {
 
+    private _player: string;
 
     /**
      *
      * @param mediatorName
      * @param viewComponent
-     * @param gridNumber
+     * @param player
      */
-    constructor(mediatorName: string, viewComponent: any, gridNumber: number) {
+    constructor(mediatorName: string, viewComponent: any, player: string) {
         super(mediatorName, viewComponent);
+        this._player = player;
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, gridNumber - 1);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, +player - 1);
 
         console.log('   # ' + super.getMediatorName() + ' created');
     }
@@ -36,7 +39,7 @@ export class GridViewMediator extends AbstractMediator {
      *  This is where the notifications are handled.
      * @param notification
      */
-    public handleNotification(notification: puremvc.INotification): void {
+    public handleNotification(notification: AbstractNotification): void {
         switch (notification.getName()) {
 
             case MediatorNotifications.GridShipMarking :
@@ -49,6 +52,9 @@ export class GridViewMediator extends AbstractMediator {
                     newArray.push(j);
                 }
                 super.getViewComponent().fillGridWithBattleShip(newArray, notification.getType());
+                break;
+            case MediatorNotifications.Test:
+                console.log(notification.getArrayOfStrings());
                 break;
         }
     }

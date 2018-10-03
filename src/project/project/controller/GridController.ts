@@ -1,9 +1,9 @@
-/**
- * Controls the grid's functionality.
- */
 import {AbstractController} from "../../abstractClasses/AbstractController";
 
 
+/**
+ * Controls the grid's functionality.
+ */
 export class GridController extends AbstractController {
 
     public GridSquares: number[][] = [];
@@ -38,7 +38,7 @@ export class GridController extends AbstractController {
     }
 
     /**
-     * Creates the GRID
+     * Creates the Grid
      */
     public createGridSquares(): void {
         for (let i: number = 0; i < this.numberOfSquaresVertically; i++) {
@@ -50,7 +50,7 @@ export class GridController extends AbstractController {
     }
 
     /**
-     *
+     *  print the grid on the screen.
      */
     public logGridSquares(): void {
         for (let i: number = 0; i < this.numberOfSquaresVertically; i++) {
@@ -59,18 +59,20 @@ export class GridController extends AbstractController {
     }
 
     /**
-     *
-     * @param index
+     * Updates the grid with the hits or the misses.
+     * @param position
      */
-    public updatePosition(index: string): void {
+    public updatePosition(position: string): void {
 
         let newArray: Array<number> = [];
-        let newIndex = index.split(',');
+        let newIndex = position.split(',');
         for (let i of newIndex) {
             newArray.push(+i);
         }
 
-        // console.log(newArray);
+        /**
+         * Updates the element in the 2 dimensional array with a hit.
+         */
         this.GridSquares[newArray[0]][newArray[1]] = 5;
         this.logGridSquares();
     }

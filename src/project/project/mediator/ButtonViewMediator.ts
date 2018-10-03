@@ -2,6 +2,7 @@ import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import 'pixi.js'
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {ButtonView} from "../view/button/ButtonView";
+import {BattleShipView} from "../view/mainView/BattleShipView";
 
 /**
  * The button's mediator.
@@ -20,7 +21,7 @@ export class ButtonViewMediator extends AbstractMediator {
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 3);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, BattleShipView.GameButtonContainer);
 
         console.log('   # ' + this.name + ' created');
     }

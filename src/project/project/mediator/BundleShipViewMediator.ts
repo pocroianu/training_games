@@ -6,6 +6,7 @@ import {
     MediatorNotifications
 } from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
+import {BattleShipView} from "../view/mainView/BattleShipView";
 
 /**
  *
@@ -28,10 +29,10 @@ export class BundleShipViewMediator extends AbstractMediator {
         containersList.push(super.getViewComponent().getUIContainer());
 
         if (player == FacadeInformation.PlayerOne) {
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 4);
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, BattleShipView.PlayerOneShipsContainer);
         }
         else if (player == FacadeInformation.PlayerTwo) {
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 5);
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, BattleShipView.PlayerTwoShipsContainer);
         }
 
         console.log('   # ' + super.getMediatorName() + ' created');

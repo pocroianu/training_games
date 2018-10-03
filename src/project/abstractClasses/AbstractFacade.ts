@@ -1,3 +1,5 @@
+import {AbstractNotification} from "./AbstractNotification";
+
 /**
  * Extend this.
  */
@@ -26,9 +28,11 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
      * @param name
      * @param body
      * @param type
+     * @param arrayOfStrings
+     * @param objectReference
      */
-    public sendNotification(name: string, body: string, type?: string): void {
-        super.sendNotification(name, body, type);
+    public sendNotification(name: string, body: string, type?: string, arrayOfStrings?: Array<string>, objectReference?: any): void {
+        this.notifyObservers(new AbstractNotification(name, body, type, arrayOfStrings, objectReference));
     }
 
     /**

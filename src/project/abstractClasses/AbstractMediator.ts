@@ -45,7 +45,7 @@ export class AbstractMediator extends puremvc.Mediator implements puremvc.IMedia
      *
      * @param notification
      */
-    public handleNotification(notification: puremvc.INotification): void {
+    public handleNotification(notification): void {
         return super.handleNotification(notification);
     }
 

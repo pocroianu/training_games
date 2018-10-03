@@ -3,16 +3,21 @@
  */
 export class AbstractNotification extends puremvc.Notification {
 
-    public reference: any;
+    public objectReference: any;
+    public arrayOfStrings: Array<string> = [];
 
     /**
      *
-     * @param key
-     * @param reference
+     * @param name
+     * @param body
+     * @param type
+     * @param arrayOfStrings
+     * @param objectReference
      */
-    constructor(key: string, reference: any) {
-        super(key);
-        this.reference = reference;
+    constructor(name: string, body: string, type?: string, arrayOfStrings?: Array<string>, objectReference?: any) {
+        super(name, body, type);
+        this.objectReference = objectReference;
+        this.arrayOfStrings = arrayOfStrings;
     }
 
     /**
@@ -62,8 +67,23 @@ export class AbstractNotification extends puremvc.Notification {
     /**
      * Return a reference of something we need in the future.
      */
-    public getReference(): any {
-        return this.reference;
+    public getObjectReference(): any {
+        return this.objectReference;
+    }
+
+    /**
+     *
+     * @param objectReference
+     */
+    public setObjectReference(objectReference: any): void {
+        this.objectReference = objectReference;
+    }
+
+    /**
+     *
+     */
+    public getArrayOfStrings(): Array<string> {
+        return this.arrayOfStrings;
     }
 }
 
