@@ -13,6 +13,9 @@ import {TextViewMediator} from "../mediator/TextViewMediator";
 import {BundleShipViewMediator} from "../mediator/BundleShipViewMediator";
 import {BundleShipView} from "../view/ships/BundleShipView";
 import {ShipPlaceCommand} from "../command/ShipPlaceCommand";
+import {PlayerFinishedPlacingTheShipsCommand} from "../command/PlayerFinishedPlacingTheShipsCommand";
+import {StartGamePlayCommand} from "../command/StartGamePlayCommand";
+import {HideTheShipsCommand} from "../command/HideTheShipsCommand";
 
 export enum MediatorNotifications {
     ShipsPlacement = 'Ships_Placement',
@@ -175,6 +178,7 @@ export class BattleShipFacade extends AbstractFacade {
 
         let count: number = 0;
 
+        //Just for fun
         this.app.ticker.add((delta) => {
             count += 0.1;
 
@@ -191,9 +195,13 @@ export class BattleShipFacade extends AbstractFacade {
         if (!this.controller)
             this.controller = BattleShipController.getInstance(this.multitonKey);
 
+        /**Registering the commands */
         super.registerCommand(CommandNotifications.SquareClickNotification, SquareClickCommand);
         super.registerCommand(CommandNotifications.ButtonPress, ButtonPressCommand);
         super.registerCommand(CommandNotifications.ShipsPlacement, ShipPlaceCommand);
+        super.registerCommand(BattleShipController.PlayerFinishedPlacingTheShipsCommand, PlayerFinishedPlacingTheShipsCommand);
+        super.registerCommand(BattleShipController.StartGamePlayCommand, StartGamePlayCommand);
+        super.registerCommand(BattleShipController.HideTheShipCommand, HideTheShipsCommand);
     }
 
     /**

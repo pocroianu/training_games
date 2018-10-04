@@ -21,7 +21,8 @@ export class TextViewMediator extends AbstractMediator {
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, BattleShipView.GameInfoContainer);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
+            .addContainersToView(containersList, BattleShipView.GameInfoContainer);
         console.log('   # ' + this.name + ' created');
     }
 
@@ -30,7 +31,8 @@ export class TextViewMediator extends AbstractMediator {
      * The notification that the BattleShipMediator is interested in.
      */
     public listNotificationInterests(): string[] {
-        return [MediatorNotifications.TextUpdate];
+        return [MediatorNotifications.TextUpdate,
+            BattleShipView.GamePlayStateText];
     }
 
     /**
@@ -49,25 +51,22 @@ export class TextViewMediator extends AbstractMediator {
 
         switch (notification.getName()) {
             case MediatorNotifications.TextUpdate:
-                let gridNumber: number = +notification.getType();
-                switch (gridNumber) {
+                let player: string = notification.getType();
+                switch (player) {
                     case FacadeInformation.PlayerOne:
-                        if (this.count[0] <= 0) {
-                            this.addTextToTheView(notification.getBody() + ' \nfor Player' + gridNumber);
-                            this.count[0]++;
-                        }
+                        this.addTextToTheView(notification.getBody() + ' \nfor Player' + player);
                         break;
 
                     case FacadeInformation.PlayerTwo:
-                        if (this.count[1] <= 0) {
-                            this.addTextToTheView(notification.getBody() + ' \nfor Player' + gridNumber);
-                            this.count[1]++;
-                        }
+                        this.addTextToTheView(notification.getBody() + ' \nfor Player' + player);
                         break;
                 }
-
-
                 break;
+            case BattleShipView.GamePlayStateText:
+                super.getViewComponent().showGamePlayStateText();
+                break;
+
+
         }
     }
 }

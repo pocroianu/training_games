@@ -1,7 +1,5 @@
 import {AbstractController} from "../../abstractClasses/AbstractController";
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
-import {BattleShipController} from "./BattleShipController";
-
+import {FacadeInformation} from "../facade/BattleShipFacade";
 
 /**
  * The Player controller.
@@ -9,7 +7,8 @@ import {BattleShipController} from "./BattleShipController";
 export class PlayerController extends AbstractController {
 
     private _shipsPlaced: number = 0;
-    private _player: string;
+    private readonly _player: string;
+    private _shipPlacementFinished: boolean = false;
 
     /**
      *
@@ -35,15 +34,24 @@ export class PlayerController extends AbstractController {
     /**
      * Updates the number of ships placed for a Player.
      */
-    public updateNumberOfShipsPlaced(): void {
-        if (this._shipsPlaced <= FacadeInformation.MaximumNumberOfShipsOnAGrid) {
-            this._shipsPlaced++;
-            console.log('Ships placed in PlayerController' + this._shipsPlaced);
+    public updateNumberOfShipsPlaced(player: string): void {
+        if (player == this._player) {
+            if (this._shipsPlaced <= FacadeInformation.MaximumNumberOfShipsOnAGrid) {
+                this._shipsPlaced++;
+            }
+            if (this._shipsPlaced === FacadeInformation.MaximumNumberOfShipsOnAGrid) {
+                this._shipPlacementFinished = true;
+            }
         }
     }
 
-    public shipsPlacementFinished(): void {
-        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
-        facade.sendNotification(BattleShipController.PlayerOneFinishedPlacingTheShips, '');
+    /**
+     *
+     */
+    public shipsPlacementFinished(): boolean {
+        if (this._shipPlacementFinished == true) {
+            console.log('Player' + this._player + ' finished placing the ships');
+        }
+        return this._shipPlacementFinished;
     }
 }

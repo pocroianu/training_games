@@ -2,7 +2,6 @@ import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {MediatorNotifications} from "../facade/BattleShipFacade";
 import 'pixi.js'
 import {PlayerController} from "../controller/PlayerController";
-import {BattleShipController} from "../controller/BattleShipController";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 
 /**
@@ -16,8 +15,9 @@ export class ShipPlaceCommand extends AbstractCommand {
      */
     public execute(notification: AbstractNotification): void {
 
-        PlayerController.getInstance(BattleShipController.PlayerOneControllerName).updateNumberOfShipsPlaced();
-        super.sendNotification(MediatorNotifications.GridShipMarking, undefined, notification.getType(), undefined, notification.getArrayOfNumbers());
-
+        let player = notification.getBody();
+        console.log(player);
+        PlayerController.getInstance('P' + player).updateNumberOfShipsPlaced('P' + player);
+        super.sendNotification(MediatorNotifications.GridShipMarking, player, notification.getType(), undefined, notification.getArrayOfNumbers());
     }
 }

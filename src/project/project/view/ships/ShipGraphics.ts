@@ -10,7 +10,7 @@ export class ShipGraphics extends PIXI.Graphics {
      * @param player
      * @param nativeLines
      */
-    constructor(player: string, nativeLines: boolean) {
+    constructor(player: string, nativeLines?: boolean) {
         super(nativeLines);
         this.player = player;
     }

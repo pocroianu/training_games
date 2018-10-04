@@ -3,6 +3,7 @@ import {SquareView} from "./SquareView";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications, TextErrors} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
 import 'pixi.js'
+import {BattleShipController} from "../../controller/BattleShipController";
 
 /**
  * Creates the grid
@@ -13,7 +14,7 @@ export class GridView extends AbstractView {
     public name = 'GridView';
     private maxShipsOnThisGrid: number = FacadeInformation.MaximumNumberOfShipsOnAGrid;
     private currentNumberOfShips: number = 0;
-    private _player: string;
+    private readonly _player: string;
 
     /**
      *
@@ -76,71 +77,69 @@ export class GridView extends AbstractView {
      *
      * @param position
      * @param shipInfo
+     * @param player
      */
-    public fillGridWithBattleShip(position: Array<number>, shipInfo: string): void {
+    public fillGridWithBattleShip(position: Array<number>, shipInfo: string, player: string): void {
 
         let gridDimensions: PIXI.Rectangle = this.getUIContainer().getBounds();
         let xPosition: number = position[0];
         let yPosition: number = position[1];
         let newShipInfo: any = shipInfo.split(',');
-        console.log(shipInfo);
-
-        console.log('Coordinates received ' + [xPosition, yPosition]);
         let squareWidth: number = FacadeInformation.SquareWidth * FacadeInformation.GridScale;
 
-        // if (newShipInfo[1] == this._player) {
+        if (player == this._player) {
 
-        if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
-            if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
+            if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
+                if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
+                    for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
+                        for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
+                            let squareXPosition: number = this.GridSquares[i][j].getPosition()[0];
+                            let squareYPosition: number = this.GridSquares[i][j].getPosition()[1];
 
-                // console.log('Ship is in GridView' + this._gridNumber);
 
-                for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
-                    for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
-                        let squareXPosition: number = this.GridSquares[i][j].getPosition()[0];
-                        let squareYPosition: number = this.GridSquares[i][j].getPosition()[1];
-                        let facade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+                            if ((xPosition >= squareXPosition && xPosition < squareXPosition + squareWidth) &&
+                                (yPosition >= squareYPosition && yPosition < squareYPosition + squareWidth)) {
 
-                        if ((xPosition >= squareXPosition && xPosition < squareXPosition + squareWidth) &&
-                            (yPosition >= squareYPosition && yPosition < squareYPosition + squareWidth)) {
+                                if (newShipInfo[0] == FacadeInformation.ShipHorizontalType) {
+                                    let numberOfSquares: number = Math.round(position[2] / FacadeInformation.SquareWidth);
 
-                            if (newShipInfo[0] == FacadeInformation.ShipHorizontalType) {
-                                let numberOfSquares: number = Math.round(position[2] / FacadeInformation.SquareWidth);
-                                for (let x: number = j; x < j + numberOfSquares; x++) {
-
-                                    if (this.currentNumberOfShips <= this.maxShipsOnThisGrid + 1) {
-                                        this.GridSquares[i][x].fillSquare();
-
-                                    }
-                                    else {
-                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._player);
+                                    if (this.currentNumberOfShips < this.maxShipsOnThisGrid) {
+                                        for (let x: number = j; x < j + numberOfSquares; x++) {
+                                            this.GridSquares[i][x].fillSquare();
+                                        }
+                                        this.currentNumberOfShips++;
+                                        this.notifyThatPlayerFinishedPlacingTheShips();
                                     }
                                 }
-                                this.currentNumberOfShips++;
-                            }
-                            else if (newShipInfo[0] == FacadeInformation.ShipVerticalType) {
-                                let numberOfSquares: number = Math.round(position[3] / FacadeInformation.SquareWidth);
-                                for (let x: number = i; x < i + numberOfSquares; x++) {
-                                    if (this.currentNumberOfShips <= this.maxShipsOnThisGrid + 1) {
-                                        this.GridSquares[x][j].fillSquare();
+                                else if (newShipInfo[0] == FacadeInformation.ShipVerticalType) {
+                                    let numberOfSquares: number = Math.round(position[3] / FacadeInformation.SquareWidth);
 
-                                    }
-                                    else {
-                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._player);
+                                    if (this.currentNumberOfShips < this.maxShipsOnThisGrid) {
+                                        for (let x: number = i; x < i + numberOfSquares; x++) {
+                                            this.GridSquares[x][j].fillSquare();
+                                        }
+                                        this.currentNumberOfShips++;
+                                        this.notifyThatPlayerFinishedPlacingTheShips();
                                     }
                                 }
-                                this.currentNumberOfShips++;
                             }
-                            console.log('GridSquare coordinates : ' + [squareXPosition, squareYPosition] +
-                                '\n Index : ' + [i, j]);
                         }
                     }
                 }
             }
         }
-        // }
     }
 
+    /**
+     *
+     */
+    private notifyThatPlayerFinishedPlacingTheShips() {
+        if (this.currentNumberOfShips === this.maxShipsOnThisGrid) {
+            let facade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+            facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._player);
+            facade.sendNotification(BattleShipController.PlayerFinishedPlacingTheShipsCommand, this._player);
+        }
+    }
 
     /**
      *

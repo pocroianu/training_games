@@ -84,4 +84,8 @@ export class GridController extends AbstractController {
             this.logGridSquares();
         }
     }
+
+    public updateShipsPosition(position: Array<number>, player: string): void {
+
+    }
 }

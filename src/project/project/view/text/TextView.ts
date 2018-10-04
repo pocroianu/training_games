@@ -1,4 +1,5 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {BattleShipView} from "../mainView/BattleShipView";
 
 /**
  * Class that has the responsibility to show text notifications on the screen
@@ -6,7 +7,7 @@ import {AbstractView} from "../../../abstractClasses/AbstractView";
 export class TextView extends AbstractView {
 
     /**Here we save the text string */
-    private readonly text: PIXI.Text;
+    private text: PIXI.Text;
 
     /**
      * @param key
@@ -37,6 +38,12 @@ export class TextView extends AbstractView {
         this.text.text += '\n' + text;
     }
 
+    /**
+     *
+     */
+    public showGamePlayStateText(): void {
+        this.text.text = BattleShipView.GamePlayStateText;
+    }
 
 
     /**

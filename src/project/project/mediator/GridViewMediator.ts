@@ -50,7 +50,9 @@ export class GridViewMediator extends AbstractMediator {
 
             case MediatorNotifications.GridShipMarking :
                 let shipPositionInfo: Array<number> = notification.getArrayOfNumbers();
-                super.getViewComponent().fillGridWithBattleShip(shipPositionInfo, notification.getType());
+                let player: string = notification.getBody();
+                if (player == this._player)
+                    super.getViewComponent().fillGridWithBattleShip(shipPositionInfo, notification.getType(), player);
                 break;
 
             case MediatorNotifications.SquareClickRequest:

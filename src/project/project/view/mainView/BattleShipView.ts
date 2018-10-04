@@ -16,6 +16,9 @@ export class BattleShipView extends AbstractView {
     public static PlayerOneShipsContainer: number = 5;
     public static PlayerTwoShipsContainer: number = 6;
 
+    public static GamePlayStateText: string = 'GamePlay State';
+
+
     /**
      *
      * @param key

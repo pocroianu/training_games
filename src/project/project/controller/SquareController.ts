@@ -51,6 +51,9 @@ export class SquareController extends AbstractController {
         this.squareState = this.miss;
     }
 
+    /**
+     * If a ship's part is on this square.
+     */
     public shipOnSquare(): void {
         this.squareState = this.containsShip;
     }

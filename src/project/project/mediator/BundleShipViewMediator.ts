@@ -55,9 +55,12 @@ export class BundleShipViewMediator extends AbstractMediator {
 
         switch (notification.getName()) {
             case MediatorNotifications.ShipsPlacement:
+                let player: string = notification.getBody();
                 let shipPositionInfo: Array<number> = notification.getArrayOfNumbers();
-                super.sendNotification(CommandNotifications.ShipsPlacement, undefined,
-                    notification.getType(), undefined, shipPositionInfo);
+                if (player == this._player) {
+                    super.sendNotification(CommandNotifications.ShipsPlacement, player,
+                        notification.getType(), undefined, shipPositionInfo);
+                }
                 break;
         }
     }

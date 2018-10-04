@@ -1,6 +1,7 @@
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../../facade/BattleShipFacade";
 import {AbstractView} from "../../../abstractClasses/AbstractView";
 import 'pixi.js';
+import {ShipGraphics} from "./ShipGraphics";
 
 
 /**
@@ -27,7 +28,7 @@ export class SingleShipView extends AbstractView {
         this.name = key;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        this.shipGraphics = new PIXI.Graphics();
+        this.shipGraphics = new ShipGraphics(player);
         this.numberOfSquares = numberOfSquares;
 
         if (player === FacadeInformation.PlayerOne) {
@@ -119,7 +120,7 @@ export class SingleShipView extends AbstractView {
             let newPosition = this.data.getLocalPosition(this.parent.parent.parent);
 
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
-                .sendNotification(MediatorNotifications.ShipsPlacement, undefined, shipType, undefined, [this.getBounds().x, this.getBounds().y, this.width, this.height]);
+                .sendNotification(MediatorNotifications.ShipsPlacement, this.player, shipType, undefined, [this.getBounds().x, this.getBounds().y, this.width, this.height]);
 
 
             this.alpha = 1;
