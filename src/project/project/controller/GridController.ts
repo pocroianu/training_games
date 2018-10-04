@@ -1,4 +1,5 @@
 import {AbstractController} from "../../abstractClasses/AbstractController";
+import {SquareController} from "./SquareController";
 
 
 /**
@@ -6,21 +7,25 @@ import {AbstractController} from "../../abstractClasses/AbstractController";
  */
 export class GridController extends AbstractController {
 
-    public GridSquares: number[][] = [];
+    public static SquareControllerKey = 'SquareControllerGG';
     public numberOfSquaresHorizontally: number;
     public numberOfSquaresVertically: number;
+    public GridSquares: SquareController[][] = [];
+    private readonly _player: string;
 
     /**
      *
      * @param key
      * @param numberOfSquaresVertically
      * @param numberOfSquaresHorizontally
+     * @param player
      */
-    constructor(key: string, numberOfSquaresVertically?: number, numberOfSquaresHorizontally?: number) {
+    constructor(key: string, numberOfSquaresVertically?: number, numberOfSquaresHorizontally?: number, player?: string) {
 
         super(key);
         this.numberOfSquaresHorizontally = numberOfSquaresHorizontally;
         this.numberOfSquaresVertically = numberOfSquaresVertically;
+        this._player = player;
         this.createGridSquares();
     }
 
@@ -29,10 +34,11 @@ export class GridController extends AbstractController {
      * @param key
      * @param numberOfSquaresHorizontally
      * @param numberOfSquaresVertically
+     * @param player
      */
-    static getInstance(key: string, numberOfSquaresVertically?: number, numberOfSquaresHorizontally?: number): GridController {
+    static getInstance(key: string, numberOfSquaresVertically?: number, numberOfSquaresHorizontally?: number, player?: string): GridController {
         if (!puremvc.Controller.instanceMap[key])
-            puremvc.Controller.instanceMap[key] = new GridController(key, numberOfSquaresHorizontally, numberOfSquaresVertically);
+            puremvc.Controller.instanceMap[key] = new GridController(key, numberOfSquaresHorizontally, numberOfSquaresVertically, player);
 
         return puremvc.Controller.instanceMap[key] as GridController;
     }
@@ -44,30 +50,38 @@ export class GridController extends AbstractController {
         for (let i: number = 0; i < this.numberOfSquaresVertically; i++) {
             this.GridSquares[i] = [];
             for (let j: number = 0; j < this.numberOfSquaresHorizontally; j++) {
-                this.GridSquares[i][j] = -1;
+                this.GridSquares[i][j] = SquareController.getInstance(GridController.SquareControllerKey + '' + i + j + this.multitonKey);
             }
         }
     }
 
     /**
-     *  print the grid on the screen.
+     *  Print the grid on the screen.
      */
     public logGridSquares(): void {
+
         for (let i: number = 0; i < this.numberOfSquaresVertically; i++) {
-            console.log(this.GridSquares[i]);
+            let printArray: Array<any> = [];
+            for (let j: number = 0; j < this.numberOfSquaresHorizontally; j++) {
+                printArray.push(this.GridSquares[i][j].printSquareState());
+            }
+            console.log(printArray);
         }
     }
 
     /**
      * Updates the grid with the hits or the misses.
      * @param position
+     * @param player
      */
-    public updatePosition(position: Array<number>): void {
+    public updatePosition(position: Array<number>, player: string): void {
 
         /**
-         * Updates the element in the 2 dimensional array with a hit.
+         * Updates the element in the 2 dimensional array with a hit or a miss.
          */
-        this.GridSquares[position[0]][position[1]] = 5;
-        this.logGridSquares();
+        if (player == this._player) {
+            this.GridSquares[position[0]][position[1]].squareHit();
+            this.logGridSquares();
+        }
     }
 }

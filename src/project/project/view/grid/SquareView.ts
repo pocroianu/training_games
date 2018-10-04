@@ -160,7 +160,7 @@ export class SquareView extends AbstractView {
     private handleMouseDown(): void {
         this.hit();
         BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
-            .sendNotification(MediatorNotifications.SquareClickRequest, undefined, undefined, undefined, [this.verticalIndex, this.horizontalIndex]);
+            .sendNotification(MediatorNotifications.SquareClickRequest, undefined, undefined, undefined, [this.verticalIndex, this.horizontalIndex], this);
     }
 
     /**
@@ -168,6 +168,7 @@ export class SquareView extends AbstractView {
      */
     private hit(): void {
         this.hitView.setActive(true);
+        this.disableInteraction();
     }
 
     /**
@@ -175,6 +176,7 @@ export class SquareView extends AbstractView {
      */
     private miss(): void {
         this.missView.setActive(true);
+        this.disableInteraction();
     }
 
     /**

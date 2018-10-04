@@ -13,7 +13,8 @@ export class SquareClickCommand extends AbstractCommand {
      */
     public execute(notification): void {
         console.log('SquareClick Handle Request');
-        notification.getArrayOfNumbers();
-        GridController.getInstance(BattleShipController.GridPlayerOneControllerName).updatePosition(notification.getArrayOfNumbers());
+        let player: string = notification.getBody();
+        console.log(player);
+        GridController.getInstance(BattleShipController.GridPlayerOneControllerName).updatePosition(notification.getArrayOfNumbers(), player);
     }
 }

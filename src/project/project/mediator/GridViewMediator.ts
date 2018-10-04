@@ -13,7 +13,7 @@ import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
  */
 export class GridViewMediator extends AbstractMediator {
 
-    private _player: string;
+    private readonly _player: string;
 
     /**
      *
@@ -54,9 +54,13 @@ export class GridViewMediator extends AbstractMediator {
                 break;
 
             case MediatorNotifications.SquareClickRequest:
-                let squareClickCoordinates: Array<number> = notification.getArrayOfNumbers();
-                super.sendNotification(CommandNotifications.SquareClickNotification, undefined, undefined, undefined, squareClickCoordinates);
+                let square = notification.getObjectReference();
+                if (super.getViewComponent().hasSquare(square)) {  //if the Grid has this square
+                    let squareClickCoordinates: Array<number> = notification.getArrayOfNumbers();
+                    super.sendNotification(CommandNotifications.SquareClickNotification, this._player, undefined, undefined, squareClickCoordinates);
+                }
                 break;
+
 
             case MediatorNotifications.Test:
                 console.log(notification.getArrayOfStrings());

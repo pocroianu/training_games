@@ -13,8 +13,12 @@ export class BattleShipController extends AbstractController {
     public static PlayerOneControllerName: string = 'P1';
     public static PlayerTwoControllerName: string = 'P2';
 
-    public static PlayerOneFinishedPlacingTheShips = 'Player1FBTS';
-    public static PlayerTwoFinishedPlacingTheShips = 'Player2FBTS';
+    public static PlayerOneFinishedPlacingTheShips: string = 'Player1FBTS';
+    public static PlayerTwoFinishedPlacingTheShips: string = 'Player2FBTS';
+    public static HitText: string = 'Hit';
+    public static MissText: string = 'Miss';
+    public static StateText: string = 'Non';
+    public static ShipOnSquare: string = 'S';
 
     /**
      *
@@ -23,8 +27,10 @@ export class BattleShipController extends AbstractController {
     constructor(key: string) {
         super(key);
 
-        GridController.getInstance(BattleShipController.GridPlayerOneControllerName, FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally);
-        GridController.getInstance(BattleShipController.GridPlayerTwoControllerName, FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally);
+        GridController.getInstance(BattleShipController.GridPlayerOneControllerName,
+            FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.PlayerOne);
+        GridController.getInstance(BattleShipController.GridPlayerTwoControllerName,
+            FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.PlayerTwo);
 
         PlayerController.getInstance(BattleShipController.PlayerOneControllerName);
         PlayerController.getInstance(BattleShipController.PlayerTwoControllerName);

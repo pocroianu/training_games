@@ -13,7 +13,6 @@ export class SingleShipView extends AbstractView {
     public shipGraphics: PIXI.Graphics;
     public name: string;
     public numberOfSquares: number;
-    public player: string;
 
     /**
      * @param key
@@ -30,7 +29,6 @@ export class SingleShipView extends AbstractView {
         this.yPosition = yPosition;
         this.shipGraphics = new PIXI.Graphics();
         this.numberOfSquares = numberOfSquares;
-        this.player = player;
 
         if (player === FacadeInformation.PlayerOne) {
             this.shipGraphics.lineStyle(6, FacadeInformation.PlayerOneShipBorderColor);

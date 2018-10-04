@@ -196,4 +196,18 @@ export class GridView extends AbstractView {
 
         this._container.addChild(rulerView.getUIContainer());
     }
+
+    /**
+     * Search for a Square in this Grid.
+     * @param squareView
+     */
+    public hasSquare(squareView: SquareView): boolean {
+        for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
+            for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
+                if (this.GridSquares[i][j] === squareView)
+                    return true;
+            }
+        }
+        return false;
+    }
 }
