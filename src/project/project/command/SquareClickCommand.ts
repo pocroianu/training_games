@@ -1,6 +1,7 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {GridController} from "../controller/GridController";
 import {BattleShipController} from "../controller/BattleShipController";
+import {FacadeInformation} from "../facade/BattleShipFacade";
 
 /**
  * Command used when a grid's square is clicked by a player.
@@ -14,7 +15,13 @@ export class SquareClickCommand extends AbstractCommand {
     public execute(notification): void {
         console.log('SquareClick Handle Request');
         let player: string = notification.getBody();
-        console.log(player);
-        GridController.getInstance(BattleShipController.GridPlayerOneControllerName).updatePosition(notification.getArrayOfNumbers(), player);
+        switch (player) {
+            case FacadeInformation.PlayerOne:
+                GridController.getInstance(BattleShipController.GridPlayerOneControllerName).checkIfPlayerHasHitAShip(notification.getArrayOfNumbers(), player);
+                break;
+            case FacadeInformation.PlayerTwo:
+                GridController.getInstance(BattleShipController.GridPlayerTwoControllerName).checkIfPlayerHasHitAShip(notification.getArrayOfNumbers(), player);
+                break;
+        }
     }
 }

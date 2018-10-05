@@ -88,7 +88,7 @@ export class AbstractView extends puremvc.View implements puremvc.IView {
      *
      */
     public activateUpdate(): void {
-        //todo: override where needed
+
     }
 
 
@@ -97,7 +97,7 @@ export class AbstractView extends puremvc.View implements puremvc.IView {
      * @param id
      */
     public onClick(id: number): void {
-        //todo: override where needed
+
     }
 
     /**
@@ -106,7 +106,7 @@ export class AbstractView extends puremvc.View implements puremvc.IView {
      * @param res
      */
     public onAssetsLoaded(loader, res): void {
-        //todo: override where needed
+
     }
 
     /**
@@ -115,6 +115,6 @@ export class AbstractView extends puremvc.View implements puremvc.IView {
      * @param res
      */
     public onConfigLoaded(loader, res): void {
-        //todo: override where needed
+
     }
 }

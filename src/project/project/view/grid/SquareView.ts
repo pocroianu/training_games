@@ -78,8 +78,8 @@ export class SquareView extends AbstractView {
         this.hitView = HitView.getInstance(Math.random() + '', this.x, this.y, this.width);
         this.hitView.setActive(false);
         this.missView = MissView.getInstance(Math.random() + '', this.x, this.y, this.width);
-        this.missView.setActive(true);
-        this.squareMarking.addChild(this.hitView.getUIContainer());
+        this.missView.setActive(false);
+        this.squareMarking.addChild(this.hitView.getUIContainer(), this.missView.getUIContainer());
         this.squareGraphics.interactive = true;
         this.squareGraphics.buttonMode = true;
 
@@ -158,7 +158,6 @@ export class SquareView extends AbstractView {
      *  Handles the clicked down event
      */
     private handleMouseDown(): void {
-        this.hit();
         BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
             .sendNotification(MediatorNotifications.SquareClickRequest, undefined, undefined, undefined, [this.verticalIndex, this.horizontalIndex], this);
     }
@@ -166,7 +165,7 @@ export class SquareView extends AbstractView {
     /**
      * Shows an X on the square.
      */
-    private hit(): void {
+    public hit(): void {
         this.hitView.setActive(true);
         this.disableInteraction();
     }
@@ -174,7 +173,7 @@ export class SquareView extends AbstractView {
     /**
      * Shows a miss on the square.
      */
-    private miss(): void {
+    public miss(): void {
         this.missView.setActive(true);
         this.disableInteraction();
     }
@@ -191,8 +190,11 @@ export class SquareView extends AbstractView {
      * Disable the Square's interaction
      */
     public disableInteraction(): void {
-        this.squareGraphics.interactive = false;
         this.squareGlow.interactive = false;
-        this.squareMarking.interactive = false;
+        // this.squareMarking.interactive = false;
+    }
+
+    public hideTheShipPart(): void {
+        this.shipSquare.visible = false;
     }
 }

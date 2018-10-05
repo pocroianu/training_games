@@ -14,15 +14,15 @@ export class BattleShipController extends AbstractController {
     public static PlayerTwoControllerName: string = 'P2';
     public static GamePlayControllerName: string = 'GamePlayController';
 
-
+    public static ShipPositionInfoCommand: string = 'ShipPositionCommand';
     public static PlayerFinishedPlacingTheShipsCommand: string = 'PlayerFBTS';
     public static StartGamePlayCommand: string = 'StartGamePlay';
     public static HideTheShipCommand: string = 'HideTheShipCommand';
 
     public static HitText: string = 'Hit';
     public static MissText: string = 'Miss';
-    public static StateText: string = 'Non';
-    public static ShipOnSquare: string = 'S';
+    public static DefaultStateText: string = 'Non';
+    public static ShipOnSquare: string = 'Shp';
 
     /**
      *

@@ -16,12 +16,17 @@ import {ShipPlaceCommand} from "../command/ShipPlaceCommand";
 import {PlayerFinishedPlacingTheShipsCommand} from "../command/PlayerFinishedPlacingTheShipsCommand";
 import {StartGamePlayCommand} from "../command/StartGamePlayCommand";
 import {HideTheShipsCommand} from "../command/HideTheShipsCommand";
+import {ShipPositionInfoCommand} from "../command/ShipPositionInfoCommand";
 
 export enum MediatorNotifications {
     ShipsPlacement = 'Ships_Placement',
     GridShipMarking = 'GridMarking',
     TextUpdate = 'TextUpdate',
     SquareClickRequest = 'SquareClickR',
+    ShipPosition = 'ShipPosition',
+    HideTheShips = 'HideThoseDamnShips',
+    PlayerHitAShip = 'PlayerHitAShip',
+    PlayerMissed = 'PlayerMissed',
     Test = 'Test'
 }
 
@@ -99,7 +104,6 @@ export class BattleShipFacade extends AbstractFacade {
     public textView: string;
     public textViewMediator: string;
 
-    //TODO - Add more containers if needed
     /**The containers that contains the GameBoards */
     public GameBoardContainerOne: PIXI.Container;
     public GameBoardContainerTwo: PIXI.Container;
@@ -176,9 +180,9 @@ export class BattleShipFacade extends AbstractFacade {
         super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[1],
             BundleShipView.getInstance(this.bundleShipView[1], FacadeInformation.PlayerTwo, FacadeInformation.PlayerTwoNumberOfShips), FacadeInformation.PlayerTwo));
 
-        let count: number = 0;
 
         //Just for fun
+        let count: number = 0;
         this.app.ticker.add((delta) => {
             count += 0.1;
 
@@ -199,6 +203,7 @@ export class BattleShipFacade extends AbstractFacade {
         super.registerCommand(CommandNotifications.SquareClickNotification, SquareClickCommand);
         super.registerCommand(CommandNotifications.ButtonPress, ButtonPressCommand);
         super.registerCommand(CommandNotifications.ShipsPlacement, ShipPlaceCommand);
+        super.registerCommand(BattleShipController.ShipPositionInfoCommand, ShipPositionInfoCommand);
         super.registerCommand(BattleShipController.PlayerFinishedPlacingTheShipsCommand, PlayerFinishedPlacingTheShipsCommand);
         super.registerCommand(BattleShipController.StartGamePlayCommand, StartGamePlayCommand);
         super.registerCommand(BattleShipController.HideTheShipCommand, HideTheShipsCommand);

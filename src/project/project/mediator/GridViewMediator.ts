@@ -7,6 +7,7 @@ import {
 } from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
+import {BattleShipController} from "../controller/BattleShipController";
 
 /**
  * The grid's mediator.
@@ -38,7 +39,11 @@ export class GridViewMediator extends AbstractMediator {
     public listNotificationInterests(): string[] {
         return [MediatorNotifications.GridShipMarking,
             MediatorNotifications.Test,
-            MediatorNotifications.SquareClickRequest];
+            MediatorNotifications.SquareClickRequest,
+            MediatorNotifications.ShipPosition,
+            MediatorNotifications.HideTheShips,
+            MediatorNotifications.PlayerHitAShip,
+            MediatorNotifications.PlayerMissed];
     }
 
     /**
@@ -62,7 +67,28 @@ export class GridViewMediator extends AbstractMediator {
                     super.sendNotification(CommandNotifications.SquareClickNotification, this._player, undefined, undefined, squareClickCoordinates);
                 }
                 break;
+            case MediatorNotifications.ShipPosition:
+                let player1: string = notification.getBody();
+                let shipType: string = notification.getType();
+                super.sendNotification(BattleShipController.ShipPositionInfoCommand, player1,
+                    shipType, undefined, notification.getArrayOfNumbers());
+                break;
 
+            case MediatorNotifications.HideTheShips:
+                super.getViewComponent().hideTheShips();
+                break;
+            case MediatorNotifications.PlayerHitAShip:
+                let playerL: string = notification.getBody();
+                if (this._player == playerL) {
+                    super.getViewComponent().updateTheViewWithAHit(notification.getArrayOfNumbers());
+                }
+                break;
+            case MediatorNotifications.PlayerMissed:
+                let playerK: string = notification.getBody();
+                if (this._player == playerK) {
+                    super.getViewComponent().updateTheViewWithAMiss(notification.getArrayOfNumbers());
+                }
+                break;
 
             case MediatorNotifications.Test:
                 console.log(notification.getArrayOfStrings());

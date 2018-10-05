@@ -1,5 +1,6 @@
 import {AbstractController} from "../../abstractClasses/AbstractController";
 import {SquareController} from "./SquareController";
+import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 
 
 /**
@@ -61,7 +62,7 @@ export class GridController extends AbstractController {
     public logGridSquares(): void {
 
         for (let i: number = 0; i < this.numberOfSquaresVertically; i++) {
-            let printArray: Array<any> = [];
+            let printArray: Array<string> = [];
             for (let j: number = 0; j < this.numberOfSquaresHorizontally; j++) {
                 printArray.push(this.GridSquares[i][j].printSquareState());
             }
@@ -74,18 +75,47 @@ export class GridController extends AbstractController {
      * @param position
      * @param player
      */
-    public updatePosition(position: Array<number>, player: string): void {
-
+    public checkIfPlayerHasHitAShip(position: Array<number>, player: string): void {
+        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
         /**
          * Updates the element in the 2 dimensional array with a hit or a miss.
          */
         if (player == this._player) {
-            this.GridSquares[position[0]][position[1]].squareHit();
+            if (this.GridSquares[position[0]][position[1]].checkIfItIsAHit()) {
+                this.GridSquares[position[0]][position[1]].squareHit();
+                facade.sendNotification(MediatorNotifications.PlayerHitAShip, this._player,
+                    undefined, undefined, [position[0], position[1]]);
+            }
+            else {
+                this.GridSquares[position[0]][position[1]].squareMiss();
+                facade.sendNotification(MediatorNotifications.PlayerMissed, this._player,
+                    undefined, undefined, [position[0], position[1]]);
+            }
             this.logGridSquares();
         }
     }
 
-    public updateShipsPosition(position: Array<number>, player: string): void {
-
+    /**
+     *
+     * @param position
+     * @param player
+     * @param shipType
+     */
+    public updateShipsPosition(position: Array<number>, player: string, shipType: string): void {
+        if (player === this._player) {
+            let i: number = position[0], j: number = position[1], numberOfSquares: number = position[2];
+            switch (shipType) {
+                case FacadeInformation.ShipHorizontalType:
+                    for (let x: number = j; x < j + numberOfSquares; x++) {
+                        this.GridSquares[i][x].shipOnSquare();
+                    }
+                    break;
+                case FacadeInformation.ShipVerticalType:
+                    for (let x: number = i; x < i + numberOfSquares; x++) {
+                        this.GridSquares[x][j].shipOnSquare();
+                    }
+                    break;
+            }
+        }
     }
 }

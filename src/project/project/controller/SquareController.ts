@@ -8,7 +8,7 @@ export class SquareController extends AbstractController {
 
     public hit: string = BattleShipController.HitText;
     public miss: string = BattleShipController.MissText;
-    public squareState: string = BattleShipController.StateText;
+    public squareState: string = BattleShipController.DefaultStateText;
     public containsShip: string = BattleShipController.ShipOnSquare;
 
     /**
@@ -42,6 +42,13 @@ export class SquareController extends AbstractController {
      */
     public squareHit(): void {
         this.squareState = this.hit;
+    }
+
+    /**
+     *
+     */
+    public checkIfItIsAHit(): boolean {
+        return this.squareState == this.containsShip;
     }
 
     /**

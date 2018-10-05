@@ -107,6 +107,7 @@ export class GridView extends AbstractView {
                                         for (let x: number = j; x < j + numberOfSquares; x++) {
                                             this.GridSquares[i][x].fillSquare();
                                         }
+                                        this.notifyGridController(i, j, numberOfSquares, FacadeInformation.ShipHorizontalType);
                                         this.currentNumberOfShips++;
                                         this.notifyThatPlayerFinishedPlacingTheShips();
                                     }
@@ -118,6 +119,7 @@ export class GridView extends AbstractView {
                                         for (let x: number = i; x < i + numberOfSquares; x++) {
                                             this.GridSquares[x][j].fillSquare();
                                         }
+                                        this.notifyGridController(i, j, numberOfSquares, FacadeInformation.ShipVerticalType);
                                         this.currentNumberOfShips++;
                                         this.notifyThatPlayerFinishedPlacingTheShips();
                                     }
@@ -208,5 +210,46 @@ export class GridView extends AbstractView {
             }
         }
         return false;
+    }
+
+    /**
+     *
+     */
+    public hideTheShips(): void {
+
+        for (let i = 0; i < FacadeInformation.NumberOfSquaresHorizontally; i++) {
+            for (let j = 0; j < FacadeInformation.NumberOfSquaresVertically; j++) {
+                this.GridSquares[i][j].hideTheShipPart();
+            }
+        }
+    }
+
+    /**
+     * If a player missed,the controller notifies the View to show the miss on the grid.
+     */
+    public updateTheViewWithAHit(squarePosition: Array<number>): void {
+        let i: number = squarePosition[0], j: number = squarePosition[1];
+        this.GridSquares[i][j].hit();
+    }
+
+    /**
+     * If a player hits,the controller notifies the View to show the miss on the grid.
+     * @param squarePosition
+     */
+    public updateTheViewWithAMiss(squarePosition: Array<number>): void {
+        let i: number = squarePosition[0], j: number = squarePosition[1];
+        this.GridSquares[i][j].miss();
+    }
+
+    /**
+     *
+     * @param i
+     * @param j
+     * @param numberOfSquares
+     * @param shipType
+     */
+    private notifyGridController(i: number, j: number, numberOfSquares: number, shipType: FacadeInformation): void {
+        let facade: any = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        facade.sendNotification(MediatorNotifications.ShipPosition, this._player, shipType, undefined, [i, j, numberOfSquares]);
     }
 }
