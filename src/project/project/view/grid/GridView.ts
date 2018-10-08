@@ -1,4 +1,4 @@
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 import {SquareView} from "./SquareView";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications, TextErrors} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
@@ -8,7 +8,7 @@ import {BattleShipController} from "../../controller/BattleShipController";
 /**
  * Creates the grid
  */
-export class GridView extends AbstractView {
+export class GridView extends AbstractSimpleView {
     private GridSquares: SquareView[][];
     public RulerName: string = 'RulerForTheGrid';
     public name = 'GridView';
@@ -18,11 +18,10 @@ export class GridView extends AbstractView {
 
     /**
      *
-     * @param key
      * @param player
      */
-    constructor(key: string, player: string) {
-        super(key);
+    constructor(player: string) {
+        super();
         this.name = this.name.concat(player);
         this._player = player;
         switch (this._player) {
@@ -50,18 +49,6 @@ export class GridView extends AbstractView {
      */
     public initializeView(): void {
         super.initializeView();
-    }
-
-    /**
-     * Get an instance of the Grid's view
-     * @param key
-     * @param player
-     */
-    static getInstance(key: string, player?: string): GridView {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new GridView(key, player);
-
-        return puremvc.View.instanceMap[key] as GridView;
     }
 
     /**
@@ -166,7 +153,7 @@ export class GridView extends AbstractView {
 
             for (let j: number = 0; j < numberOfSquaresHorizontally; j++) {
                 key++;
-                square = SquareView.getInstance('Square' + key + Math.random(), newXPosition + j * squareWidth,
+                square = new SquareView(newXPosition + j * squareWidth,
                     newYPosition, squareWidth, gridBorderColor, gridSquareFillColor, j, i);
                 this.GridSquares[i][j] = square;
 
@@ -192,7 +179,7 @@ export class GridView extends AbstractView {
      */
     private createRuler(xPosition: number, yPosition: number, numberOfSquaresVertically: number,
                         numberOfSquaresHorizontally: number, squareWidth: number, gridBorderColor: number, rulerTextColor: number) {
-        let rulerView: RulerView = RulerView.getInstance(this.RulerName + '' + Math.random(), xPosition, yPosition, numberOfSquaresVertically,
+        let rulerView: RulerView = new RulerView(xPosition, yPosition, numberOfSquaresVertically,
             numberOfSquaresHorizontally, squareWidth, gridBorderColor, rulerTextColor);
 
         this._container.addChild(rulerView.getUIContainer());

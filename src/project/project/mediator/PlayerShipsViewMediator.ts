@@ -6,13 +6,13 @@ import {
     MediatorNotifications
 } from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
-import {BattleShipView} from "../view/mainView/BattleShipView";
+import {ViewManager} from "../view/mainView/ViewManager";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 
 /**
  *
  */
-export class BundleShipViewMediator extends AbstractMediator {
+export class PlayerShipsViewMediator extends AbstractMediator {
 
     private readonly _player: string;
 
@@ -30,17 +30,17 @@ export class BundleShipViewMediator extends AbstractMediator {
         containersList.push(super.getViewComponent().getUIContainer());
 
         if (player == FacadeInformation.PlayerOne) {
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, BattleShipView.PlayerOneShipsContainer);
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, ViewManager.PlayerOneShipsContainer);
         }
         else if (player == FacadeInformation.PlayerTwo) {
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, BattleShipView.PlayerTwoShipsContainer);
+            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, ViewManager.PlayerTwoShipsContainer);
         }
 
         console.log('   # ' + super.getMediatorName() + ' created');
     }
 
     /**
-     * The notification that the BattleShipMediator is interested in.
+     * The notification that the ViewManagerMediator is interested in.
      */
     public listNotificationInterests(): string[] {
         return [MediatorNotifications.ShipsPlacement,

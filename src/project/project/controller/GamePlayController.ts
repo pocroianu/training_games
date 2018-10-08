@@ -1,7 +1,7 @@
 import {AbstractController} from "../../abstractClasses/AbstractController";
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import {BattleShipController} from "./BattleShipController";
-import {BattleShipView} from "../view/mainView/BattleShipView";
+import {ViewManager} from "../view/mainView/ViewManager";
 
 /**
  *
@@ -25,6 +25,6 @@ export class GamePlayController extends AbstractController {
     public startGamePlayState(): void {
         let facade: any = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
         facade.sendNotification(BattleShipController.HideTheShipCommand, undefined);
-        facade.sendNotification(BattleShipView.GamePlayStateText, undefined);
+        facade.sendNotification(ViewManager.GamePlayStateText, undefined);
     }
 }

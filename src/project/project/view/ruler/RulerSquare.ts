@@ -1,14 +1,13 @@
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 
 /**
  * Has the responsibility to create a single square and inside it to put the coresponding letter
  */
-export class RulerSquare extends AbstractView {
+export class RulerSquare extends AbstractSimpleView {
 
 
     /**
      *
-     * @param key
      * @param xPosition
      * @param yPosition
      * @param squareWidth
@@ -17,9 +16,9 @@ export class RulerSquare extends AbstractView {
      * @param type
      * @param asciiCode
      */
-    constructor(key: string, xPosition: number, yPosition: number, squareWidth: number, borderColor: number, textColor: number, type: string, asciiCode: number) {
+    constructor(xPosition: number, yPosition: number, squareWidth: number, borderColor: number, textColor: number, type: string, asciiCode: number) {
 
-        super(key);
+        super();
         this._container = new PIXI.Container();
 
         let graphics = new PIXI.Graphics();
@@ -41,24 +40,5 @@ export class RulerSquare extends AbstractView {
         }
 
         this._container.addChild(graphics, text);
-    }
-
-    /**
-     * Getter for an instance of this class
-     * @param key
-     * @param xPosition
-     * @param yPosition
-     * @param squareWidth
-     * @param borderColor
-     * @param textColor
-     * @param type
-     * @param asciiCode
-     */
-    static getInstance(key: string, xPosition?: number, yPosition?: number, squareWidth?: number, borderColor?: number,
-                       textColor?: number, type?: string, asciiCode?: number): RulerSquare {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new RulerSquare(key, xPosition, yPosition, squareWidth, borderColor, textColor, type, asciiCode);
-
-        return puremvc.View.instanceMap[key] as RulerSquare;
     }
 }

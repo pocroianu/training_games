@@ -1,5 +1,5 @@
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../../facade/BattleShipFacade";
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 import 'pixi.js';
 import {ShipGraphics} from "./ShipGraphics";
 
@@ -7,7 +7,7 @@ import {ShipGraphics} from "./ShipGraphics";
 /**
  *  Class that represents a single Ship.
  */
-export class SingleShipView extends AbstractView {
+export class SingleShipView extends AbstractSimpleView {
 
     public xPosition: number;
     public yPosition: number;
@@ -16,16 +16,14 @@ export class SingleShipView extends AbstractView {
     public numberOfSquares: number;
 
     /**
-     * @param key
      * @param xPosition
      * @param yPosition
      * @param numberOfSquares
      * @param player
      * @param type
      */
-    constructor(key: string, xPosition: number, yPosition: number, numberOfSquares: number, player: string, type: string) {
-        super(key);
-        this.name = key;
+    constructor(xPosition: number, yPosition: number, numberOfSquares: number, player: string, type: string) {
+        super();
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.shipGraphics = new ShipGraphics(player);
@@ -139,30 +137,6 @@ export class SingleShipView extends AbstractView {
      */
     public initializeView(): void {
         super.initializeView();
-    }
-
-
-    /**
-     *
-     * @param key
-     * @param xPosition
-     * @param yPosition
-     * @param numberOfSquares
-     * @param player
-     * @param type
-     */
-    static getInstance(key: string, xPosition?: number, yPosition?: number, numberOfSquares?: number, player?: string, type?: string): SingleShipView {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new SingleShipView(key, xPosition, yPosition, numberOfSquares, player, type);
-
-        return puremvc.View.instanceMap[key] as SingleShipView;
-    }
-
-    /**
-     *
-     */
-    public getName(): string {
-        return this.name;
     }
 
     /**

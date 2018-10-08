@@ -1,12 +1,12 @@
 import {HitView} from "../hits/HitView";
 import {MissView} from "../hits/MissView";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../../facade/BattleShipFacade";
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 
 /**
  * Small rectangle class
  */
-export class SquareView extends AbstractView {
+export class SquareView extends AbstractSimpleView {
 
     public x: number;
     public y: number;
@@ -39,7 +39,6 @@ export class SquareView extends AbstractView {
 
     /**
      *
-     * @param key
      * @param squareXPosition
      * @param squareYPosition
      * @param squareWidth
@@ -48,8 +47,8 @@ export class SquareView extends AbstractView {
      * @param horizontalIndex
      * @param verticalIndex
      */
-    constructor(key: string, squareXPosition: number, squareYPosition: number, squareWidth: number, borderColor: number, fillColor: number, horizontalIndex?: number, verticalIndex?: number) {
-        super(key);
+    constructor(squareXPosition: number, squareYPosition: number, squareWidth: number, borderColor: number, fillColor: number, horizontalIndex?: number, verticalIndex?: number) {
+        super();
         this.x = squareXPosition;
         this.y = squareYPosition;
         this.width = squareWidth;
@@ -75,9 +74,9 @@ export class SquareView extends AbstractView {
         this.squareGlow.visible = false;
 
 
-        this.hitView = HitView.getInstance(Math.random() + '', this.x, this.y, this.width);
+        this.hitView = new HitView(this.x, this.y, this.width);
         this.hitView.setActive(false);
-        this.missView = MissView.getInstance(Math.random() + '', this.x, this.y, this.width);
+        this.missView = new MissView(this.x, this.y, this.width);
         this.missView.setActive(false);
         this.squareMarking.addChild(this.hitView.getUIContainer(), this.missView.getUIContainer());
         this.squareGraphics.interactive = true;
@@ -103,25 +102,6 @@ export class SquareView extends AbstractView {
     public initializeView(): void {
         super.initializeView();
     }
-
-    /**
-     * Returns an instance of the square view
-     * @param key
-     * @param squareXPosition
-     * @param squareYPosition
-     * @param squareWidth
-     * @param borderColor
-     * @param fillColor
-     * @param horizontalIndex
-     * @param verticalIndex
-     */
-    static getInstance(key: string, squareXPosition?: number, squareYPosition?: number, squareWidth?: number, borderColor?: number, fillColor?: number, horizontalIndex?: number, verticalIndex?: number): SquareView {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new SquareView(key, squareXPosition, squareYPosition, squareWidth, borderColor, fillColor, horizontalIndex, verticalIndex);
-
-        return puremvc.View.instanceMap[key] as SquareView;
-    }
-
 
     /**
      *
@@ -183,17 +163,23 @@ export class SquareView extends AbstractView {
      */
     public fillSquare(): void {
         this.shipSquare.visible = true;
-        this.disableInteraction();
+
+
     }
 
     /**
      * Disable the Square's interaction
      */
     public disableInteraction(): void {
-        this.squareGlow.interactive = false;
-        // this.squareMarking.interactive = false;
+        this.squareGraphics.interactive = false;
+        this.squareGlow.destroy();
+        this.squareMarking.interactive = false;
+
     }
 
+    /**
+     * Hides the ships.
+     */
     public hideTheShipPart(): void {
         this.shipSquare.visible = false;
     }

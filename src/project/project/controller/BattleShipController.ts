@@ -23,6 +23,12 @@ export class BattleShipController extends AbstractController {
     public static MissText: string = 'Miss';
     public static DefaultStateText: string = 'Non';
     public static ShipOnSquare: string = 'Shp';
+    public static ShipPartIsHit: number = 1;
+    public static ShipPartIsNotHit: number = 0;
+    public static ShipController: string = 'ShipController';
+    public static PlayerOneShips: string = 'PlayerOneShips';
+    public static PlayerTwoShips: string = 'PlayerTwoShips';
+
 
     /**
      *
@@ -41,6 +47,9 @@ export class BattleShipController extends AbstractController {
         console.log('BattleShipController created');
     }
 
+    /**
+     *
+     */
     public checkIfBothPlayersFinishedPlacingTheShips(): boolean {
         if (PlayerController.getInstance(BattleShipController.PlayerOneControllerName).shipsPlacementFinished() === true &&
             PlayerController.getInstance(BattleShipController.PlayerTwoControllerName).shipsPlacementFinished() === true) {

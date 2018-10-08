@@ -1,5 +1,5 @@
 /**
- *
+ * A view that represents a single ship.
  */
 export class ShipGraphics extends PIXI.Graphics {
 

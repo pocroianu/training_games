@@ -1,7 +1,7 @@
 import 'pixi.js'
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
-import {BattleShipView} from "../view/mainView/BattleShipView";
+import {ViewManager} from "../view/mainView/ViewManager";
 
 /**
  *  TextViewMediator
@@ -22,17 +22,17 @@ export class TextViewMediator extends AbstractMediator {
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
         BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
-            .addContainersToView(containersList, BattleShipView.GameInfoContainer);
+            .addContainersToView(containersList, ViewManager.GameInfoContainer);
         console.log('   # ' + this.name + ' created');
     }
 
 
     /**
-     * The notification that the BattleShipMediator is interested in.
+     * The notification that the ViewManagerMediator is interested in.
      */
     public listNotificationInterests(): string[] {
         return [MediatorNotifications.TextUpdate,
-            BattleShipView.GamePlayStateText];
+            ViewManager.GamePlayStateText];
     }
 
     /**
@@ -62,7 +62,7 @@ export class TextViewMediator extends AbstractMediator {
                         break;
                 }
                 break;
-            case BattleShipView.GamePlayStateText:
+            case ViewManager.GamePlayStateText:
                 super.getViewComponent().showGamePlayStateText();
                 break;
 

@@ -1,12 +1,12 @@
-import {BattleShipMediator} from "../../mediator/BattleShipMediator";
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {ViewManagerMediator} from "../../mediator/ViewManagerMediator";
 import 'pixi.js'
+import {AbstractViewManager} from "../../../abstractClasses/AbstractViewManager";
 
 
 /**
- * The main BattleShip view class
+ * The main view manager.
  */
-export class BattleShipView extends AbstractView {
+export class ViewManager extends AbstractViewManager {
 
     /** */
     public static PlayerOneGridContainer: number = 0;
@@ -26,9 +26,18 @@ export class BattleShipView extends AbstractView {
     constructor(key: string) {
         super(key);
         this.multitonKey = key;
+        super.registerMediator(new ViewManagerMediator(key, this));
+    }
 
-        super.registerMediator(new BattleShipMediator(key, this));
+    /**
+     *
+     * @param key
+     */
+    static getInstance(key: string): ViewManager {
+        if (!puremvc.View.instanceMap[key])
+            puremvc.View.instanceMap[key] = new ViewManager(key);
 
+        return puremvc.View.instanceMap[key] as ViewManager;
     }
 
     /**
@@ -36,17 +45,6 @@ export class BattleShipView extends AbstractView {
      */
     public initializeView(): void {
         super.initializeView();
-        console.log('BattleShipView created');
-    }
-
-    /**
-     *
-     * @param key
-     */
-    static getInstance(key: string): AbstractView {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new BattleShipView(key);
-
-        return puremvc.View.instanceMap[key] as AbstractView;
+        console.log('ViewManager created');
     }
 }

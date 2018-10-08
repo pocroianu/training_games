@@ -1,5 +1,5 @@
 import {BattleShipController} from "../controller/BattleShipController";
-import {BattleShipView} from "../view/mainView/BattleShipView";
+import {ViewManager} from "../view/mainView/ViewManager";
 import {AbstractFacade} from "../../abstractClasses/AbstractFacade";
 import 'pixi.js';
 import {GridView} from "../view/grid/GridView";
@@ -10,8 +10,8 @@ import {ButtonPressCommand} from "../command/ButtonPressCommand";
 import {ButtonViewMediator} from "../mediator/ButtonViewMediator";
 import {GridViewMediator} from "../mediator/GridViewMediator";
 import {TextViewMediator} from "../mediator/TextViewMediator";
-import {BundleShipViewMediator} from "../mediator/BundleShipViewMediator";
-import {BundleShipView} from "../view/ships/BundleShipView";
+import {PlayerShipsViewMediator} from "../mediator/PlayerShipsViewMediator";
+import {PlayerShipsView} from "../view/ships/PlayerShipsView";
 import {ShipPlaceCommand} from "../command/ShipPlaceCommand";
 import {PlayerFinishedPlacingTheShipsCommand} from "../command/PlayerFinishedPlacingTheShipsCommand";
 import {StartGamePlayCommand} from "../command/StartGamePlayCommand";
@@ -146,39 +146,34 @@ export class BattleShipFacade extends AbstractFacade {
      */
     public initializeView(): void {
         if (!this.view)
-            this.view = BattleShipView.getInstance(this.multitonKey);
+            this.view = ViewManager.getInstance(this.multitonKey);
 
-        /**Keys for the views and the mediators */
-        this.gridView = ['GridOneBoard', 'GridTwoBoard'];
+        /**Keys for the mediators */
+
         this.gridViewMediator = ['GridOneMediator', 'GridTwoMediator'];
-        this.buttonView = 'ButtonView';
         this.buttonViewMediator = 'ButtonViewMediator';
-        this.bundleShipView = ['ShipPlayerOneView', 'ShipPlayerTwoView'];
         this.bundleShipViewMediator = ['ShipPlayerOneMediator', 'ShipPlayerTwoMediator'];
-        this.textView = 'TextView';
         this.textViewMediator = 'TextViewMediator';
 
-
         /**Registering a ButtonMediator */
-        super.registerMediator(new ButtonViewMediator(this.buttonViewMediator, ButtonView.getInstance(this.buttonView,
-            FacadeInformation.ButtonViewXPosition, FacadeInformation.ButtonViewYPosition, FacadeInformation.ButtonViewScale)));
+        super.registerMediator(new ButtonViewMediator(this.buttonViewMediator, new ButtonView(FacadeInformation.ButtonViewXPosition, FacadeInformation.ButtonViewYPosition, FacadeInformation.ButtonViewScale)));
 
         /**Registering the two GridViews */
         super.registerMediator(new GridViewMediator(this.gridViewMediator[0],
-            GridView.getInstance(this.gridView[0], FacadeInformation.PlayerOne), FacadeInformation.PlayerOne));
+            new GridView(FacadeInformation.PlayerOne), FacadeInformation.PlayerOne));
         super.registerMediator(new GridViewMediator(this.gridViewMediator[1],
-            GridView.getInstance(this.gridView[1], FacadeInformation.PlayerTwo), FacadeInformation.PlayerTwo));
+            new GridView(FacadeInformation.PlayerTwo), FacadeInformation.PlayerTwo));
 
         /**Registering the TextMediator */
-        super.registerMediator(new TextViewMediator(this.textViewMediator, TextView.getInstance(this.textView,
-            FacadeInformation.TextViewText, FacadeInformation.FontSize, FacadeInformation.TextViewColor)));
+        super.registerMediator(new TextViewMediator(this.textViewMediator, new TextView(FacadeInformation.TextViewText,
+            FacadeInformation.FontSize, FacadeInformation.TextViewColor)));
 
 
         /**Registering the Ships Mediators */
-        super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[0],
-            BundleShipView.getInstance(this.bundleShipView[0], FacadeInformation.PlayerOne, FacadeInformation.PlayerOneNumberOfShips), FacadeInformation.PlayerOne));
-        super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[1],
-            BundleShipView.getInstance(this.bundleShipView[1], FacadeInformation.PlayerTwo, FacadeInformation.PlayerTwoNumberOfShips), FacadeInformation.PlayerTwo));
+        super.registerMediator(new PlayerShipsViewMediator(this.bundleShipViewMediator[0],
+            new PlayerShipsView(FacadeInformation.PlayerOne, FacadeInformation.PlayerOneNumberOfShips), FacadeInformation.PlayerOne));
+        super.registerMediator(new PlayerShipsViewMediator(this.bundleShipViewMediator[1],
+            new PlayerShipsView(FacadeInformation.PlayerTwo, FacadeInformation.PlayerTwoNumberOfShips), FacadeInformation.PlayerTwo));
 
 
         //Just for fun
@@ -216,27 +211,27 @@ export class BattleShipFacade extends AbstractFacade {
      */
     public addContainersToView(containersList: Array<PIXI.Container>, type: number): void {
         for (let item of containersList) {
-            if (type === BattleShipView.PlayerOneGridContainer) {
+            if (type === ViewManager.PlayerOneGridContainer) {
                 /**Adding to the PlayerOneGrid Container */
                 this.GameBoardContainerOne.addChild(item);
             }
-            else if (type === BattleShipView.PlayerTwoGridContainer) {
+            else if (type === ViewManager.PlayerTwoGridContainer) {
                 /**Adding to the PlayerTwoGrid Container */
                 this.GameBoardContainerTwo.addChild(item);
             }
-            else if (type === BattleShipView.GameInfoContainer) {
+            else if (type === ViewManager.GameInfoContainer) {
                 /**Adding to the GameInfo Container */
                 this.GameInfoContainer.addChild(item);
             }
-            else if (type === BattleShipView.GameButtonContainer) {
+            else if (type === ViewManager.GameButtonContainer) {
                 /**Adding to the GameButton Container */
                 this.GameButtonContainer.addChild(item);
             }
-            else if (type === BattleShipView.PlayerOneShipsContainer) {
+            else if (type === ViewManager.PlayerOneShipsContainer) {
                 /**Adding to the PlayerOneShips Container */
                 this.ShipsContainerOne.addChild(item);
             }
-            else if (type === BattleShipView.PlayerTwoShipsContainer) {
+            else if (type === ViewManager.PlayerTwoShipsContainer) {
                 /**Adding to the PlayerTwoShips Container */
                 this.ShipsContainerTwo.addChild(item);
             }

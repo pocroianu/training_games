@@ -1,6 +1,8 @@
 import {AbstractController} from "../../abstractClasses/AbstractController";
 import {SquareController} from "./SquareController";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
+import {PlayerShipsController} from "./PlayerShipsController";
+import {BattleShipController} from "./BattleShipController";
 
 
 /**
@@ -45,7 +47,7 @@ export class GridController extends AbstractController {
     }
 
     /**
-     * Creates the Grid
+     * Creates the Grid.
      */
     public createGridSquares(): void {
         for (let i: number = 0; i < this.numberOfSquaresVertically; i++) {
@@ -70,6 +72,21 @@ export class GridController extends AbstractController {
         }
     }
 
+
+    /**
+     *
+     */
+    public getPlayerShipsController(): PlayerShipsController {
+        let playerShips: PlayerShipsController;
+        if (this._player == FacadeInformation.PlayerOne) {
+            playerShips = PlayerShipsController.getInstance(BattleShipController.PlayerOneShips);
+        }
+        if (this._player == FacadeInformation.PlayerTwo) {
+            playerShips = PlayerShipsController.getInstance(BattleShipController.PlayerTwoShips);
+        }
+        return playerShips;
+    }
+
     /**
      * Updates the grid with the hits or the misses.
      * @param position
@@ -83,6 +100,7 @@ export class GridController extends AbstractController {
         if (player == this._player) {
             if (this.GridSquares[position[0]][position[1]].checkIfItIsAHit()) {
                 this.GridSquares[position[0]][position[1]].squareHit();
+                //TODO check if a ship was destroyed
                 facade.sendNotification(MediatorNotifications.PlayerHitAShip, this._player,
                     undefined, undefined, [position[0], position[1]]);
             }
@@ -108,11 +126,13 @@ export class GridController extends AbstractController {
                 case FacadeInformation.ShipHorizontalType:
                     for (let x: number = j; x < j + numberOfSquares; x++) {
                         this.GridSquares[i][x].shipOnSquare();
+                        this.getPlayerShipsController().addShip(i, j, numberOfSquares, shipType);
                     }
                     break;
                 case FacadeInformation.ShipVerticalType:
                     for (let x: number = i; x < i + numberOfSquares; x++) {
                         this.GridSquares[x][j].shipOnSquare();
+                        this.getPlayerShipsController().addShip(i, j, numberOfSquares, shipType);
                     }
                     break;
             }
