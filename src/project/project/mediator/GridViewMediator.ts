@@ -40,7 +40,7 @@ export class GridViewMediator extends AbstractMediator {
         return [MediatorNotifications.GridShipMarking,
             MediatorNotifications.Test,
             MediatorNotifications.SquareClickRequest,
-            MediatorNotifications.ShipPosition,
+            MediatorNotifications.ShipPositionInfo,
             MediatorNotifications.HideTheShips,
             MediatorNotifications.PlayerHitAShip,
             MediatorNotifications.PlayerMissed];
@@ -54,44 +54,48 @@ export class GridViewMediator extends AbstractMediator {
         switch (notification.getName()) {
 
             case MediatorNotifications.GridShipMarking :
-                let shipPositionInfo: Array<number> = notification.getArrayOfNumbers();
-                let player: string = notification.getBody();
+                let shipPositionInfo: Array<number> = notification.getBody()[0];
+                console.log(shipPositionInfo);
+                let player: string = notification.getBody()[1];
+                let shipType: string = notification.getType();
                 if (player == this._player)
-                    super.getViewComponent().fillGridWithBattleShip(shipPositionInfo, notification.getType(), player);
+                    super.getViewComponent().fillGridWithBattleShip(shipPositionInfo, shipType, player);
                 break;
 
             case MediatorNotifications.SquareClickRequest:
-                let square = notification.getObjectReference();
-                if (super.getViewComponent().hasSquare(square)) {  //if the Grid has this square
-                    let squareClickCoordinates: Array<number> = notification.getArrayOfNumbers();
-                    super.sendNotification(CommandNotifications.SquareClickNotification, this._player, undefined, undefined, squareClickCoordinates);
+                let square = notification.getBody()[1];
+                if (super.getViewComponent().hasSquare(square)) {  //if the Grid has this square.
+                    let squareClickCoordinates = notification.getBody()[0];
+                    super.sendNotification(CommandNotifications.SquareClickNotification, squareClickCoordinates, this._player);
                 }
                 break;
-            case MediatorNotifications.ShipPosition:
-                let player1: string = notification.getBody();
-                let shipType: string = notification.getType();
-                super.sendNotification(BattleShipController.ShipPositionInfoCommand, player1,
-                    shipType, undefined, notification.getArrayOfNumbers());
+
+            case MediatorNotifications.ShipPositionInfo:
+                let player1: string = notification.getBody()[1];
+                let shipType1: string = notification.getType();
+                let shipPositionInfo1 = notification.getBody()[0];
+                super.sendNotification(BattleShipController.ShipPositionInfoCommand, notification.getBody(), shipType1);
                 break;
 
             case MediatorNotifications.HideTheShips:
                 super.getViewComponent().hideTheShips();
                 break;
+
             case MediatorNotifications.PlayerHitAShip:
-                let playerL: string = notification.getBody();
+                let playerL: string = notification.getType();
+                let hitCoordinates = notification.getBody();
+
                 if (this._player == playerL) {
-                    super.getViewComponent().updateTheViewWithAHit(notification.getArrayOfNumbers());
-                }
-                break;
-            case MediatorNotifications.PlayerMissed:
-                let playerK: string = notification.getBody();
-                if (this._player == playerK) {
-                    super.getViewComponent().updateTheViewWithAMiss(notification.getArrayOfNumbers());
+                    super.getViewComponent().updateTheViewWithAHit(hitCoordinates);
                 }
                 break;
 
-            case MediatorNotifications.Test:
-                console.log(notification.getArrayOfStrings());
+            case MediatorNotifications.PlayerMissed:
+                let playerK: string = notification.getType();
+                let missCoordinates = notification.getBody();
+                if (this._player == playerK) {
+                    super.getViewComponent().updateTheViewWithAMiss(missCoordinates);
+                }
                 break;
         }
     }

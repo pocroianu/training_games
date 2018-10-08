@@ -101,13 +101,11 @@ export class GridController extends AbstractController {
             if (this.GridSquares[position[0]][position[1]].checkIfItIsAHit()) {
                 this.GridSquares[position[0]][position[1]].squareHit();
                 //TODO check if a ship was destroyed
-                facade.sendNotification(MediatorNotifications.PlayerHitAShip, this._player,
-                    undefined, undefined, [position[0], position[1]]);
+                facade.sendNotification(MediatorNotifications.PlayerHitAShip, position, this._player);
             }
             else {
                 this.GridSquares[position[0]][position[1]].squareMiss();
-                facade.sendNotification(MediatorNotifications.PlayerMissed, this._player,
-                    undefined, undefined, [position[0], position[1]]);
+                facade.sendNotification(MediatorNotifications.PlayerMissed, position, this._player);
             }
             this.logGridSquares();
         }

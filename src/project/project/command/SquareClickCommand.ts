@@ -14,13 +14,14 @@ export class SquareClickCommand extends AbstractCommand {
      */
     public execute(notification): void {
         console.log('SquareClick Handle Request');
-        let player: string = notification.getBody();
+        let player: string = notification.getType();
+        let squareClickCoordinates = notification.getBody();
         switch (player) {
             case FacadeInformation.PlayerOne:
-                GridController.getInstance(BattleShipController.GridPlayerOneControllerName).checkIfPlayerHasHitAShip(notification.getArrayOfNumbers(), player);
+                GridController.getInstance(BattleShipController.GridPlayerOneControllerName).checkIfPlayerHasHitAShip(squareClickCoordinates, player);
                 break;
             case FacadeInformation.PlayerTwo:
-                GridController.getInstance(BattleShipController.GridPlayerTwoControllerName).checkIfPlayerHasHitAShip(notification.getArrayOfNumbers(), player);
+                GridController.getInstance(BattleShipController.GridPlayerTwoControllerName).checkIfPlayerHasHitAShip(squareClickCoordinates, player);
                 break;
         }
     }

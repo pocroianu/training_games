@@ -15,15 +15,18 @@ export class ShipPositionInfoCommand extends AbstractCommand {
      */
     public execute(notification: AbstractNotification): void {
 
-        let player: string = notification.getBody();
+        let player: string = notification.getBody()[1];
+        let shipType: string = notification.getType();
+        let shipPosition = notification.getBody()[0];
+
         switch (player) {
             case FacadeInformation.PlayerOne:
                 GridController.getInstance(BattleShipController.GridPlayerOneControllerName)
-                    .updateShipsPosition(notification.getArrayOfNumbers(), notification.getBody(), notification.getType());
+                    .updateShipsPosition(shipPosition, player, shipType);
                 break;
             case FacadeInformation.PlayerTwo:
                 GridController.getInstance(BattleShipController.GridPlayerTwoControllerName)
-                    .updateShipsPosition(notification.getArrayOfNumbers(), notification.getBody(), notification.getType());
+                    .updateShipsPosition(shipPosition, player, shipType);
                 break;
         }
     }

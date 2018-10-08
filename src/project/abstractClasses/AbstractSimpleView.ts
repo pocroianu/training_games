@@ -48,5 +48,4 @@ export class AbstractSimpleView {
     public addToContainer(item: any): void {
         this._container.addChild(item);
     }
-
 }

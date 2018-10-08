@@ -3,24 +3,14 @@
  */
 export class AbstractNotification extends puremvc.Notification {
 
-    public objectReference: any;
-    public arrayOfStrings: Array<string> = [];
-    public arrayOfNumbers: Array<number> = [];
-
     /**
      *
      * @param name
      * @param body
      * @param type
-     * @param arrayOfStrings
-     * @param arrayOfNumbers
-     * @param objectReference
      */
-    constructor(name: string, body: string, type?: string, arrayOfStrings?: Array<string>, arrayOfNumbers?: Array<number>, objectReference?: any) {
+    constructor(name: string, body: string, type?: string) {
         super(name, body, type);
-        this.objectReference = objectReference;
-        this.arrayOfStrings = arrayOfStrings;
-        this.arrayOfNumbers = arrayOfNumbers;
     }
 
     /**
@@ -41,7 +31,7 @@ export class AbstractNotification extends puremvc.Notification {
     /**
      *
      */
-    public getBody(): string {
+    public getBody(): any {
         return super.getBody();
     }
 
@@ -67,33 +57,5 @@ export class AbstractNotification extends puremvc.Notification {
         return super.toString();
     }
 
-    /**
-     * Return a reference of something we need in the future.
-     */
-    public getObjectReference(): any {
-        return this.objectReference;
-    }
-
-    /**
-     *
-     * @param objectReference
-     */
-    public setObjectReference(objectReference: any): void {
-        this.objectReference = objectReference;
-    }
-
-    /**
-     *
-     */
-    public getArrayOfStrings(): Array<string> {
-        return this.arrayOfStrings;
-    }
-
-    /**
-     *
-     */
-    public getArrayOfNumbers(): Array<number> {
-        return this.arrayOfNumbers;
-    }
 }
 

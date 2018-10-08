@@ -23,7 +23,7 @@ export enum MediatorNotifications {
     GridShipMarking = 'GridMarking',
     TextUpdate = 'TextUpdate',
     SquareClickRequest = 'SquareClickR',
-    ShipPosition = 'ShipPosition',
+    ShipPositionInfo = 'ShipPosition',
     HideTheShips = 'HideThoseDamnShips',
     PlayerHitAShip = 'PlayerHitAShip',
     PlayerMissed = 'PlayerMissed',

@@ -139,7 +139,7 @@ export class SquareView extends AbstractSimpleView {
      */
     private handleMouseDown(): void {
         BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
-            .sendNotification(MediatorNotifications.SquareClickRequest, undefined, undefined, undefined, [this.verticalIndex, this.horizontalIndex], this);
+            .sendNotification(MediatorNotifications.SquareClickRequest, [[this.verticalIndex, this.horizontalIndex], this], undefined);
     }
 
     /**

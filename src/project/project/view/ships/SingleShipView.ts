@@ -118,7 +118,7 @@ export class SingleShipView extends AbstractSimpleView {
             let newPosition = this.data.getLocalPosition(this.parent.parent.parent);
 
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
-                .sendNotification(MediatorNotifications.ShipsPlacement, this.player, shipType, undefined, [this.getBounds().x, this.getBounds().y, this.width, this.height]);
+                .sendNotification(MediatorNotifications.ShipsPlacement, [this.getBounds().x, this.getBounds().y, this.width, this.height, this.player], shipType);
 
 
             this.alpha = 1;

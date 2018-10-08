@@ -237,6 +237,6 @@ export class GridView extends AbstractSimpleView {
      */
     private notifyGridController(i: number, j: number, numberOfSquares: number, shipType: FacadeInformation): void {
         let facade: any = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
-        facade.sendNotification(MediatorNotifications.ShipPosition, this._player, shipType, undefined, [i, j, numberOfSquares]);
+        facade.sendNotification(MediatorNotifications.ShipPositionInfo, [[i, j, numberOfSquares], this._player], shipType);
     }
 }
