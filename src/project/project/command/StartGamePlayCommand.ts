@@ -1,7 +1,7 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 import {GamePlayController} from "../controller/GamePlayController";
-import {BattleShipController} from "../controller/BattleShipController";
+import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 
 /**
  *
@@ -14,8 +14,8 @@ export class StartGamePlayCommand extends AbstractCommand {
      */
     public execute(notification: AbstractNotification): void {
 
-        GamePlayController.getInstance(BattleShipController.GamePlayControllerName).startGamePlayState();
+        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        let gamePlay: GamePlayController = facade.retrieveProxy(BattleShipFacade.GamePlayProxyName).getData();
+        gamePlay.startGamePlayState();
     }
-
-
 }

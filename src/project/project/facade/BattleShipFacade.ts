@@ -1,4 +1,4 @@
-import {BattleShipController} from "../controller/BattleShipController";
+import {ControllerManager} from "../controller/ControllerManager";
 import {ViewManager} from "../view/mainView/ViewManager";
 import {AbstractFacade} from "../../abstractClasses/AbstractFacade";
 import 'pixi.js';
@@ -17,6 +17,10 @@ import {PlayerFinishedPlacingTheShipsCommand} from "../command/PlayerFinishedPla
 import {StartGamePlayCommand} from "../command/StartGamePlayCommand";
 import {HideTheShipsCommand} from "../command/HideTheShipsCommand";
 import {ShipPositionInfoCommand} from "../command/ShipPositionInfoCommand";
+import {ModelManager} from "../model/ModelManager";
+import {GridProxy} from "../proxy/GridProxy";
+import {PlayerProxy} from "../proxy/PlayerProxy";
+import {GamePlayProxy} from "../proxy/GamePlayProxy";
 
 export enum MediatorNotifications {
     ShipsPlacement = 'Ships_Placement',
@@ -39,7 +43,6 @@ export enum CommandNotifications {
 
     SquareClickNotification = 'CLICK_HANDLE_COMMAND',
     ButtonPress = 'BUTTON_PRESS_COMMAND',
-    StartGame = 'START_GAME_COMMAND',
     ShipsPlacement = 'SHIPS_PLACEMENT_COMMAND'
 }
 
@@ -95,13 +98,9 @@ export class BattleShipFacade extends AbstractFacade {
 
     public app: PIXI.Application;
 
-    public gridView: string[];
     public gridViewMediator: string[];
-    public buttonView: string;
     public buttonViewMediator: string;
-    public bundleShipView: string[];
     public bundleShipViewMediator: string[];
-    public textView: string;
     public textViewMediator: string;
 
     /**The containers that contains the GameBoards */
@@ -114,6 +113,11 @@ export class BattleShipFacade extends AbstractFacade {
     /**The container that holds information about the battleships */
     public ShipsContainerOne: PIXI.Container;
     public ShipsContainerTwo: PIXI.Container;
+
+    public static GridProxyName: string = 'GridProxy';
+    public static PlayerProxyName: string = 'PlayerProxy';
+    public static GamePlayProxyName: string = 'GamePlayProxy';
+
 
     /**
      *
@@ -138,7 +142,13 @@ export class BattleShipFacade extends AbstractFacade {
      * Initializing the Facade's Model
      */
     public initializeModel(): void {
-        // no model needed yet
+        if (!this.model)
+            this.model = ModelManager.getInstance(this.multitonKey);
+
+        /**Registering the proxies */
+        super.registerProxy(new GridProxy(BattleShipFacade.GridProxyName));
+        super.registerProxy(new PlayerProxy(BattleShipFacade.PlayerProxyName));
+        super.registerProxy(new GamePlayProxy(BattleShipFacade.GamePlayProxyName));
     }
 
     /**
@@ -178,7 +188,7 @@ export class BattleShipFacade extends AbstractFacade {
 
         //Just for fun
         let count: number = 0;
-        this.app.ticker.add((delta) => {
+        this.app.ticker.add(() => {
             count += 0.1;
 
             let text: any = super.retrieveMediator(this.textViewMediator).getViewComponent().getUIContainer();
@@ -192,16 +202,18 @@ export class BattleShipFacade extends AbstractFacade {
      */
     public initializeController(): void {
         if (!this.controller)
-            this.controller = BattleShipController.getInstance(this.multitonKey);
+            this.controller = ControllerManager.getInstance(this.multitonKey);
+
+        console.log(this.controller);
 
         /**Registering the commands */
         super.registerCommand(CommandNotifications.SquareClickNotification, SquareClickCommand);
         super.registerCommand(CommandNotifications.ButtonPress, ButtonPressCommand);
         super.registerCommand(CommandNotifications.ShipsPlacement, ShipPlaceCommand);
-        super.registerCommand(BattleShipController.ShipPositionInfoCommand, ShipPositionInfoCommand);
-        super.registerCommand(BattleShipController.PlayerFinishedPlacingTheShipsCommand, PlayerFinishedPlacingTheShipsCommand);
-        super.registerCommand(BattleShipController.StartGamePlayCommand, StartGamePlayCommand);
-        super.registerCommand(BattleShipController.HideTheShipCommand, HideTheShipsCommand);
+        super.registerCommand(ControllerManager.ShipPositionInfoCommand, ShipPositionInfoCommand);
+        super.registerCommand(ControllerManager.PlayerFinishedPlacingTheShipsCommand, PlayerFinishedPlacingTheShipsCommand);
+        super.registerCommand(ControllerManager.StartGamePlayCommand, StartGamePlayCommand);
+        super.registerCommand(ControllerManager.HideTheShipCommand, HideTheShipsCommand);
     }
 
     /**
@@ -259,9 +271,11 @@ export class BattleShipFacade extends AbstractFacade {
 
         this.checkStartOrientation();
         this.changeOrientation();
-        this.initializeView();
+
         this.initializeModel();
         this.initializeController();
+        this.initializeView();
+
         console.log('BattleShipFacade created');
     }
 

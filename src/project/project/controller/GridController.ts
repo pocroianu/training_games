@@ -1,49 +1,31 @@
-import {AbstractController} from "../../abstractClasses/AbstractController";
 import {SquareController} from "./SquareController";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {PlayerShipsController} from "./PlayerShipsController";
-import {BattleShipController} from "./BattleShipController";
+import {ControllerManager} from "./ControllerManager";
 
 
 /**
  * Controls the grid's functionality.
  */
-export class GridController extends AbstractController {
+export class GridController {
 
-    public static SquareControllerKey = 'SquareControllerGG';
     public numberOfSquaresHorizontally: number;
     public numberOfSquaresVertically: number;
     public GridSquares: SquareController[][] = [];
     private readonly _player: string;
 
+
     /**
      *
-     * @param key
      * @param numberOfSquaresVertically
      * @param numberOfSquaresHorizontally
      * @param player
      */
-    constructor(key: string, numberOfSquaresVertically?: number, numberOfSquaresHorizontally?: number, player?: string) {
-
-        super(key);
+    constructor(numberOfSquaresVertically?: number, numberOfSquaresHorizontally?: number, player?: string) {
         this.numberOfSquaresHorizontally = numberOfSquaresHorizontally;
         this.numberOfSquaresVertically = numberOfSquaresVertically;
         this._player = player;
         this.createGridSquares();
-    }
-
-    /**
-     *
-     * @param key
-     * @param numberOfSquaresHorizontally
-     * @param numberOfSquaresVertically
-     * @param player
-     */
-    static getInstance(key: string, numberOfSquaresVertically?: number, numberOfSquaresHorizontally?: number, player?: string): GridController {
-        if (!puremvc.Controller.instanceMap[key])
-            puremvc.Controller.instanceMap[key] = new GridController(key, numberOfSquaresHorizontally, numberOfSquaresVertically, player);
-
-        return puremvc.Controller.instanceMap[key] as GridController;
     }
 
     /**
@@ -53,7 +35,7 @@ export class GridController extends AbstractController {
         for (let i: number = 0; i < this.numberOfSquaresVertically; i++) {
             this.GridSquares[i] = [];
             for (let j: number = 0; j < this.numberOfSquaresHorizontally; j++) {
-                this.GridSquares[i][j] = SquareController.getInstance(GridController.SquareControllerKey + '' + i + j + this.multitonKey);
+                this.GridSquares[i][j] = new SquareController();
             }
         }
     }
@@ -79,10 +61,10 @@ export class GridController extends AbstractController {
     public getPlayerShipsController(): PlayerShipsController {
         let playerShips: PlayerShipsController;
         if (this._player == FacadeInformation.PlayerOne) {
-            playerShips = PlayerShipsController.getInstance(BattleShipController.PlayerOneShips);
+            playerShips = PlayerShipsController.getInstance(ControllerManager.PlayerOneShips);
         }
         if (this._player == FacadeInformation.PlayerTwo) {
-            playerShips = PlayerShipsController.getInstance(BattleShipController.PlayerTwoShips);
+            playerShips = PlayerShipsController.getInstance(ControllerManager.PlayerTwoShips);
         }
         return playerShips;
     }

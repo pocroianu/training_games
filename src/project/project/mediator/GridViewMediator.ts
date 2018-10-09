@@ -7,7 +7,7 @@ import {
 } from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {BattleShipController} from "../controller/BattleShipController";
+import {ControllerManager} from "../controller/ControllerManager";
 
 /**
  * The grid's mediator.
@@ -74,7 +74,7 @@ export class GridViewMediator extends AbstractMediator {
                 let player1: string = notification.getBody()[1];
                 let shipType1: string = notification.getType();
                 let shipPositionInfo1 = notification.getBody()[0];
-                super.sendNotification(BattleShipController.ShipPositionInfoCommand, notification.getBody(), shipType1);
+                super.sendNotification(ControllerManager.ShipPositionInfoCommand, notification.getBody(), shipType1);
                 break;
 
             case MediatorNotifications.HideTheShips:

@@ -1,6 +1,6 @@
 import {AbstractController} from "../../abstractClasses/AbstractController";
 import {ShipController} from "./ShipController";
-import {BattleShipController} from "./BattleShipController";
+import {ControllerManager} from "./ControllerManager";
 
 /**
  *
@@ -8,7 +8,7 @@ import {BattleShipController} from "./BattleShipController";
 export class PlayerShipsController extends AbstractController {
 
     /**Store the ships's references for later use. */
-        // public ships: Array<string> = [BattleShipController.];
+        // public ships: Array<string> = [ControllerManager.];
     public currentNumberOfShips: number = 0;
 
     /**
@@ -39,7 +39,7 @@ export class PlayerShipsController extends AbstractController {
      */
     public addShip(i: number, j: number, numberOfSquares: number, shipType: string): void {
 
-        ShipController.getInstance(BattleShipController.ShipController, i, j, numberOfSquares, shipType);
+        ShipController.getInstance(ControllerManager.ShipController, i, j, numberOfSquares, shipType);
         // TODO IMPLEMENT THIS WITH NOTIFICATIONS
     }
 }

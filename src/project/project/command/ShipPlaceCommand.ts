@@ -3,7 +3,7 @@ import {FacadeInformation, MediatorNotifications} from "../facade/BattleShipFaca
 import 'pixi.js'
 import {PlayerController} from "../controller/PlayerController";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {BattleShipController} from "../controller/BattleShipController";
+import {ControllerManager} from "../controller/ControllerManager";
 
 /**
  * Command called when a ship is placed on the screen by a player
@@ -21,10 +21,10 @@ export class ShipPlaceCommand extends AbstractCommand {
         switch (player) {
 
             case FacadeInformation.PlayerOne:
-                PlayerController.getInstance(BattleShipController.PlayerOneControllerName).updateNumberOfShipsPlaced('P' + player);
+                PlayerController.getInstance(ControllerManager.PlayerOneControllerName).updateNumberOfShipsPlaced('P' + player);
                 break;
             case FacadeInformation.PlayerTwo:
-                PlayerController.getInstance(BattleShipController.PlayerTwoControllerName).updateNumberOfShipsPlaced('P' + player);
+                PlayerController.getInstance(ControllerManager.PlayerTwoControllerName).updateNumberOfShipsPlaced('P' + player);
                 break;
         }
         super.sendNotification(MediatorNotifications.GridShipMarking, notification.getBody(), notification.getType());

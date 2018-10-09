@@ -1,5 +1,5 @@
 import {AbstractController} from "../../abstractClasses/AbstractController";
-import {BattleShipController} from "./BattleShipController";
+import {ControllerManager} from "./ControllerManager";
 import {FacadeInformation} from "../facade/BattleShipFacade";
 
 /**
@@ -9,8 +9,8 @@ export class ShipController extends AbstractController {
 
 
     public positionsOccupied: Array<number[]> = [];
-    public shipPartIsHit: any = BattleShipController.ShipPartIsHit;
-    public shipPartIsNotHit: any = BattleShipController.ShipPartIsNotHit;
+    public shipPartIsHit: any = ControllerManager.ShipPartIsHit;
+    public shipPartIsNotHit: any = ControllerManager.ShipPartIsNotHit;
 
 
     /**

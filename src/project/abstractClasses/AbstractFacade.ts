@@ -14,6 +14,7 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
         this.multitonKey = key;
     }
 
+
     /**
      * Notifies the facade's view observers.
      * @param notification
@@ -81,4 +82,26 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
     public hasMediator(mediatorName: string): boolean {
         return super.hasMediator(mediatorName);
     }
+
+    /**
+     *
+     */
+    public getView(): puremvc.IView {
+        return this.view;
+    }
+
+    /**
+     *
+     */
+    public getController(): puremvc.IController {
+        return this.controller;
+    }
+
+    /**
+     *
+     */
+    public getModel(): puremvc.IModel {
+        return this.model;
+    }
+
 }

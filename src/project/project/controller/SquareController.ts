@@ -1,33 +1,19 @@
-import {AbstractController} from "../../abstractClasses/AbstractController";
-import {BattleShipController} from "./BattleShipController";
+import {ControllerManager} from "./ControllerManager";
 
 /**
  *
  */
-export class SquareController extends AbstractController {
+export class SquareController {
 
-    public hit: string = BattleShipController.HitText;
-    public miss: string = BattleShipController.MissText;
-    public squareState: string = BattleShipController.DefaultStateText;
-    public containsShip: string = BattleShipController.ShipOnSquare;
-
-    /**
-     *
-     * @param key
-     */
-    constructor(key: string) {
-        super(key);
-    }
+    public hit: string = ControllerManager.HitText;
+    public miss: string = ControllerManager.MissText;
+    public squareState: string = ControllerManager.DefaultStateText;
+    public containsShip: string = ControllerManager.ShipOnSquare;
 
     /**
      *
-     * @param key
      */
-    static getInstance(key: string): SquareController {
-        if (!puremvc.Controller.instanceMap[key])
-            puremvc.Controller.instanceMap[key] = new SquareController(key);
-
-        return puremvc.Controller.instanceMap[key] as SquareController;
+    constructor() {
     }
 
     /**

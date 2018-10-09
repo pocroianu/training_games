@@ -1,10 +1,9 @@
-import {AbstractController} from "../../abstractClasses/AbstractController";
 import {FacadeInformation} from "../facade/BattleShipFacade";
 
 /**
  * The Player controller.
  */
-export class PlayerController extends AbstractController {
+export class PlayerController {
 
     private _shipsPlaced: number = 0;
     private readonly _player: string;
@@ -12,11 +11,11 @@ export class PlayerController extends AbstractController {
 
     /**
      *
-     * @param key
+     * @param player
      */
-    constructor(key: string) {
-        super(key);
-        this._player = key;
+    constructor(player: string) {
+
+        this._player = player;
         console.log('PlayerController created');
     }
 

@@ -3,7 +3,7 @@ import {SquareView} from "./SquareView";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications, TextErrors} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
 import 'pixi.js'
-import {BattleShipController} from "../../controller/BattleShipController";
+import {ControllerManager} from "../../controller/ControllerManager";
 
 /**
  * Creates the grid
@@ -126,7 +126,7 @@ export class GridView extends AbstractSimpleView {
         if (this.currentNumberOfShips === this.maxShipsOnThisGrid) {
             let facade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
             facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._player);
-            facade.sendNotification(BattleShipController.PlayerFinishedPlacingTheShipsCommand, this._player);
+            facade.sendNotification(ControllerManager.PlayerFinishedPlacingTheShipsCommand, this._player);
         }
     }
 
