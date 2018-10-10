@@ -22,4 +22,11 @@ export class Grid {
         this.gridSquares = gridSquares;
     }
 
+    /**
+     *
+     */
+    public getGridSquares(): Square[][] {
+        return this.gridSquares;
+    }
+
 }

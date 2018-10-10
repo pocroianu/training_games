@@ -1,6 +1,8 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {CommandInformation} from "../staticInformation/CommandInformation";
+import {Square} from "../proxy/Square";
+import {Grid} from "../proxy/Grid";
 
 /**
  * Command used when a grid's square is clicked by a player.
@@ -30,14 +32,15 @@ export class SquareClickHandleCommand extends AbstractCommand {
      * @param squareClickCoordinates
      * @param player
      */
-    private checkIfPlayerHitAShip(grid: any, squareClickCoordinates: any, player: string) {
+    private checkIfPlayerHitAShip(grid: Grid, squareClickCoordinates: any, player: string) {
         let x: number = squareClickCoordinates[0], y: number = squareClickCoordinates[1];
-        if (grid[x][y].checkIfItIsAHit()) {
-            grid[x][y].squareHit();
+        let gridSquares: Square[][] = grid.getGridSquares();
+        if (gridSquares[x][y].checkIfItIsAHit()) {
+            gridSquares[x][y].squareHit();
             this.sendNotification(MediatorNotifications.PlayerHitAShip, squareClickCoordinates, player);
         }
         else {
-            grid[x][y].squareMiss();
+            gridSquares[x][y].squareMiss();
             this.sendNotification(MediatorNotifications.PlayerMissed, squareClickCoordinates, player);
         }
     }

@@ -2,6 +2,7 @@ import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import {Grid} from "../proxy/Grid";
+import {Square} from "../proxy/Square";
 
 /**
  *
@@ -30,15 +31,16 @@ export class UpdateShipPositionCommand extends AbstractCommand {
      */
     private checkShipType(shipPosition, shipType: string, grid: Grid): void {
         let i: number = shipPosition[0], j: number = shipPosition[1], numberOfSquares: number = shipPosition[2];
+        let gridSquares: Square[][] = grid.getGridSquares();
         switch (shipType) {
             case FacadeInformation.ShipHorizontalType:
                 for (let x: number = j; x < j + numberOfSquares; x++) {
-                    grid[i][x].shipOnSquare();
+                    gridSquares[i][x].shipOnSquare();
                 }
                 break;
             case FacadeInformation.ShipVerticalType:
                 for (let x: number = i; x < i + numberOfSquares; x++) {
-                    grid[x][j].shipOnSquare();
+                    gridSquares[x][j].shipOnSquare();
                 }
                 break;
         }

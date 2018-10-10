@@ -1,7 +1,6 @@
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import 'pixi.js'
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
-import {ButtonView} from "../view/button/ButtonView";
 import {ViewManager} from "../view/mainView/ViewManager";
 
 /**
@@ -9,7 +8,6 @@ import {ViewManager} from "../view/mainView/ViewManager";
  */
 export class ButtonViewMediator extends AbstractMediator {
     public name: String = 'ButtonViewMediator';
-    public buttonViewName = 'ButtonView';
 
     /**
      *

@@ -1,8 +1,8 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {ControllerManager} from "../controller/ControllerManager";
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import {PlayerProxy} from "../proxy/PlayerProxy";
+import {CommandInformation} from "../staticInformation/CommandInformation";
 
 /**
  *
@@ -32,7 +32,7 @@ export class CheckIfPlayerFinishedPlacingTheShipsCommand extends AbstractCommand
 
         if (CheckIfPlayerFinishedPlacingTheShipsCommand.checkIfBothPlayersFinishedPlacingTheShips()) {
             console.log('Finished');
-            this.sendNotification(ControllerManager.StartGamePlayCommand);
+            this.sendNotification(CommandInformation.StartGamePlayCommand);
         }
     }
 }

@@ -1,8 +1,8 @@
 import 'pixi.js'
-import {BattleShipFacade, Commands, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
+import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {ControllerManager} from "../controller/ControllerManager";
+import {CommandInformation} from "../staticInformation/CommandInformation";
 
 /**
  * The grid's mediator.
@@ -54,14 +54,14 @@ export class GridViewMediator extends AbstractMediator {
                 let player: string = notification.getBody()[1];
                 let shipType: string = notification.getType();
                 if (player == this._player)
-                    super.getViewComponent().fillGridWithBattleShip(shipPositionInfo, shipType, player);
+                    this.getViewComponent().fillGridWithBattleShip(shipPositionInfo, shipType, player);
                 break;
 
             case MediatorNotifications.SquareClickRequest:
                 let square = notification.getBody()[1];
-                if (super.getViewComponent().hasSquare(square)) {  //if the Grid has this square.
+                if (this.getViewComponent().hasSquare(square)) {  //if the Grid has this square.
                     let squareClickCoordinates = notification.getBody()[0];
-                    super.sendNotification(Commands.SquareClickNotification, squareClickCoordinates, this._player);
+                    this.sendNotification(CommandInformation.SquareClickHandleCommand, squareClickCoordinates, this._player);
                 }
                 break;
 
@@ -69,7 +69,7 @@ export class GridViewMediator extends AbstractMediator {
                 let player1: string = notification.getBody()[1];
                 let shipType1: string = notification.getType();
                 let shipPositionInfo1 = notification.getBody()[0];
-                super.sendNotification(ControllerManager.ShipPositionInfoCommand, notification.getBody(), shipType1);
+                super.sendNotification(CommandInformation.ShipPositionInfoCommand, notification.getBody(), shipType1);
                 break;
 
             case MediatorNotifications.HideTheShips:

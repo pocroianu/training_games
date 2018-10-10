@@ -4,9 +4,7 @@ import {AbstractFacade} from "../../abstractClasses/AbstractFacade";
 import 'pixi.js';
 import {GridView} from "../view/grid/GridView";
 import {TextView} from "../view/text/TextView";
-import {ButtonView} from "../view/button/ButtonView";
 import {SquareClickHandleCommand} from "../command/SquareClickHandleCommand";
-import {ButtonPressCommand} from "../command/ButtonPressCommand";
 import {ButtonViewMediator} from "../mediator/ButtonViewMediator";
 import {GridViewMediator} from "../mediator/GridViewMediator";
 import {TextViewMediator} from "../mediator/TextViewMediator";
@@ -43,12 +41,6 @@ export enum TextErrors {
     MaximumNumberOfShipReached = 'Max Number Of Ships to Place Reached'
 }
 
-export enum Commands {
-
-    SquareClickNotification = 'CLICK_HANDLE_COMMAND',
-    ButtonPress = 'BUTTON_PRESS_COMMAND',
-    ShipsPlacement = 'SHIPS_PLACEMENT_COMMAND'
-}
 
 export enum FacadeInformation {
 
@@ -171,8 +163,6 @@ export class BattleShipFacade extends AbstractFacade {
         this.bundleShipViewMediator = ['ShipPlayerOneMediator', 'ShipPlayerTwoMediator'];
         this.textViewMediator = 'TextViewMediator';
 
-        /**Registering a ButtonMediator */
-        this.registerMediator(new ButtonViewMediator(this.buttonViewMediator, new ButtonView(FacadeInformation.ButtonViewXPosition, FacadeInformation.ButtonViewYPosition, FacadeInformation.ButtonViewScale)));
         /**Registering the two GridViews */
         this.registerMediator(new GridViewMediator(this.gridViewMediator[0],
             new GridView(FacadeInformation.PlayerOne), FacadeInformation.PlayerOne));
@@ -206,13 +196,14 @@ export class BattleShipFacade extends AbstractFacade {
         console.log(this.controller);
 
         /**Registering the commands */
-        this.registerCommand(Commands.ButtonPress, ButtonPressCommand);
-        this.registerCommand(Commands.ShipsPlacement, ShipPlaceCommand);
-        this.registerCommand(ControllerManager.ShipPositionInfoCommand, UpdateShipPositionCommand);
-        this.registerCommand(ControllerManager.PlayerFinishedPlacingTheShipsCommand, CheckIfPlayerFinishedPlacingTheShipsCommand);
-        this.registerCommand(ControllerManager.StartGamePlayCommand, StartGamePlayCommand);
-        this.registerCommand(ControllerManager.HideTheShipCommand, HideTheShipsCommand);
 
+        this.registerCommand(CommandInformation.ShipPositionInfoCommand, UpdateShipPositionCommand);
+        this.registerCommand(CommandInformation.PlayerFinishedPlacingTheShipsCommand, CheckIfPlayerFinishedPlacingTheShipsCommand);
+        this.registerCommand(CommandInformation.StartGamePlayCommand, StartGamePlayCommand);
+        this.registerCommand(CommandInformation.HideTheShipCommand, HideTheShipsCommand);
+
+
+        this.registerCommand(CommandInformation.ShipsPlacement, ShipPlaceCommand);
         this.registerCommand(CommandInformation.StartGameCommand, StartUpCommand);
         this.registerCommand(CommandInformation.CreateGridCommand, CreateGridCommand);
         this.registerCommand(CommandInformation.SquareClickHandleCommand, SquareClickHandleCommand);

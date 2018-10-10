@@ -7,7 +7,7 @@ import {Grid} from "./Grid";
  */
 export class GridProxy extends AbstractProxy {
 
-    public grid: Array<Grid> = [];
+    public grids: Array<Grid>;
 
     /**
      *
@@ -23,19 +23,19 @@ export class GridProxy extends AbstractProxy {
      * @param grids
      */
     public setData(grids: Array<Grid>): void {
-        this.grid = grids;
+        this.grids = grids;
     }
 
     /**
      *
      * @param player
      */
-    public getGrid(player: string): any {
+    public getGrid(player: string): Grid {
         if (player == FacadeInformation.PlayerOne) {
-            return this.grid[0];
+            return this.grids[0];
         }
         else if (player == FacadeInformation.PlayerTwo) {
-            return this.grid[1];
+            return this.grids[1];
         }
     }
 }
