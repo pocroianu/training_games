@@ -63,7 +63,7 @@ export class ControllerManager extends AbstractController {
     /**
      *
      */
-    public checkIfBothPlayersFinishedPlacingTheShips(): boolean {
+    public static checkIfBothPlayersFinishedPlacingTheShips(): boolean {
         let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
         let playerProxy: PlayerProxy = facade.retrieveProxy(BattleShipFacade.PlayerProxyName);
 

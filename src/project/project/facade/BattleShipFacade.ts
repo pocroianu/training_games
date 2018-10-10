@@ -291,9 +291,9 @@ export class BattleShipFacade extends AbstractFacade {
     /**
      *
      */
-    public checkIfBothPlayersFinishedPlacingTheShips(): boolean {
+    public static checkIfBothPlayersFinishedPlacingTheShips(): boolean {
 
-        return ControllerManager.getInstance(this.multitonKey).checkIfBothPlayersFinishedPlacingTheShips();
+        return ControllerManager.checkIfBothPlayersFinishedPlacingTheShips();
     }
 
     /**
