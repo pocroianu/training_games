@@ -28,17 +28,28 @@ export class SingleShipView extends AbstractSimpleView {
         this.yPosition = yPosition;
         this.shipGraphics = new ShipGraphics(player);
         this.numberOfSquares = numberOfSquares;
+        this.verifyPlayer(player);
+        this.verifyShipType(type);
+        this.shipGraphics.endFill();
+        this.shipGraphics.interactive = true;
+        this.shipGraphics.buttonMode = true;
+        this.makeTheShipInteractive();
+        console.log('   # SingleShipView created');
+    }
 
-        if (player === FacadeInformation.PlayerOne) {
-            this.shipGraphics.lineStyle(6, FacadeInformation.PlayerOneShipBorderColor);
-            this.shipGraphics.beginFill(FacadeInformation.PlayerOneShipFillColor);
-        }
-        else if (player === FacadeInformation.PlayerTwo) {
-            this.shipGraphics.lineStyle(6, FacadeInformation.PlayerTwoShipBorderColor);
-            this.shipGraphics.beginFill(FacadeInformation.PlayerTwoShipFillColor);
-        }
+    /**
+     * Getter for the SingleShipView's Container.
+     */
+    public getUIContainer(): PIXI.Container {
+        return this.shipGraphics;
+    }
 
-
+    /**
+     * Checks if it is a horizontal or a vertical ship.
+     * If it is either of these types,it creates the ship.
+     * @param type
+     */
+    private verifyShipType(type: string) {
         switch (type) {
             case FacadeInformation.ShipHorizontalType:
                 for (let i: number = 0; i < this.numberOfSquares; i++) {
@@ -55,59 +66,45 @@ export class SingleShipView extends AbstractSimpleView {
                 }
                 break;
         }
-        this.shipGraphics.endFill();
-        this.shipGraphics.interactive = true;
-        this.shipGraphics.buttonMode = true;
+    }
 
+    /**
+     * Changes the ship's colors according to the player.
+     * @param player
+     */
+    private verifyPlayer(player: string) {
+        if (player === FacadeInformation.PlayerOne) {
+            this.shipGraphics.lineStyle(6, FacadeInformation.PlayerOneShipBorderColor);
+            this.shipGraphics.beginFill(FacadeInformation.PlayerOneShipFillColor);
+        }
+        else if (player === FacadeInformation.PlayerTwo) {
+            this.shipGraphics.lineStyle(6, FacadeInformation.PlayerTwoShipBorderColor);
+            this.shipGraphics.beginFill(FacadeInformation.PlayerTwoShipFillColor);
+        }
+    }
+
+    /**
+     * Adds interaction to the ship.
+     * Makes the ship draggable.
+     */
+    private makeTheShipInteractive() {
         this.shipGraphics
             .on('pointerdown', onDragStart)
             .on('pointerup', onDragEnd)
             .on('pointerupoutside', onDragEnd)
             .on('pointermove', onDragMove);
 
-        /**
-         * When the player starts to drag the ship.
-         * @param event
-         */
-        function onDragStart(event): void {
+        function onDragStart(event): void { //Called when the player starts dragging the ship.
+            let position: any;
             this.data = event.data;
-
-            //store this variable for convenience
-            let position = this.data.getLocalPosition(this.parent);
-
-            //Print the position
-
-
-            // Set the pivot point to the new position
+            position = this.data.getLocalPosition(this.parent);
             this.pivot.set(position.x, position.y);
-
-            // update the new position of the sprite to the position obtained through
-            // the global data. This ensures the position lines up with the location of
-            // the mouse on the screen. I'm not certain why, but this is necessary.
             this.position.set(this.data.x, this.data.y);
             this.dragging = true;
             this.mousedown = false;
         }
 
-        /**
-         * When the player is dragging the ship.
-         */
-        function onDragMove(): void {
-            if (this.dragging) {
-                this.alpha = 0.5;
-                let newPosition = this.data.getLocalPosition(this.parent);
-                this.x = newPosition.x;
-                this.y = newPosition.y;
-            }
-        }
-
-        /**
-         * When the player stops dragging the ship.
-         */
-        function onDragEnd(): void {
-
-            //Show the end position
-
+        function onDragEnd(): void { //Called when the player doesn't drag the ship anymore.
             let shipType: string;
             if (this.width > this.height) {
                 shipType = FacadeInformation.ShipHorizontalType;
@@ -115,35 +112,22 @@ export class SingleShipView extends AbstractSimpleView {
             else if (this.width <= this.height) {
                 shipType = FacadeInformation.ShipVerticalType;
             }
-            let newPosition = this.data.getLocalPosition(this.parent.parent.parent);
-
             BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
                 .sendNotification(MediatorNotifications.ShipsPlacement, [this.getBounds().x, this.getBounds().y, this.width, this.height, this.player], shipType);
-
-
             this.alpha = 1;
             this.dragging = false;
-
-            // set the interaction data to null
             this.data = null;
             this.destroy();
         }
 
-        console.log('   # SingleShipView created');
+        function onDragMove(): void { //Called when the player is dragging the ship.
+            let newPosition: any;
+            if (this.dragging) {
+                this.alpha = 0.5;
+                newPosition = this.data.getLocalPosition(this.parent);
+                this.x = newPosition.x;
+                this.y = newPosition.y;
+            }
+        }
     }
-
-    /**
-     * Initializing the Ship's view
-     */
-    public initializeView(): void {
-        super.initializeView();
-    }
-
-    /**
-     * Getter for the SingleShipView's Container
-     */
-    public getUIContainer(): PIXI.Container {
-        return this.shipGraphics;
-    }
-
 }

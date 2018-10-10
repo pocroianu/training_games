@@ -8,7 +8,6 @@ import {AbstractFacade} from "./AbstractFacade";
  */
 export class AbstractCommand extends puremvc.SimpleCommand implements puremvc.ICommand, AbstractNotifier {
 
-    public name: string = 'Command';
 
     /**
      *

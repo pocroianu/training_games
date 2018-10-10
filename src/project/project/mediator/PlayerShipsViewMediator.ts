@@ -1,10 +1,5 @@
 import 'pixi.js'
-import {
-    BattleShipFacade,
-    CommandNotifications,
-    FacadeInformation,
-    MediatorNotifications
-} from "../facade/BattleShipFacade";
+import {BattleShipFacade, Commands, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {ViewManager} from "../view/mainView/ViewManager";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
@@ -59,7 +54,7 @@ export class PlayerShipsViewMediator extends AbstractMediator {
                 let shipType: string = notification.getType();
 
                 if (player == this._player) {
-                    super.sendNotification(CommandNotifications.ShipsPlacement, [notification.getBody(), player], shipType);
+                    super.sendNotification(Commands.ShipsPlacement, [notification.getBody(), player], shipType);
                 }
                 break;
         }

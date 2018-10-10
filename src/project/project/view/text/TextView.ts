@@ -22,12 +22,7 @@ export class TextView extends AbstractSimpleView {
         this.text.anchor.set(0.5, 0.5);
     }
 
-    /**
-     * Initializing the Text's view
-     */
-    public initializeView(): void {
-        super.initializeView();
-    }
+
 
     /**
      *
@@ -47,7 +42,7 @@ export class TextView extends AbstractSimpleView {
     /**
      *
      */
-    public getUIContainer(): PIXI.Container {
+    public getText(): PIXI.Text {
         return this.text;
     }
 }

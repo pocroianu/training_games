@@ -1,12 +1,13 @@
 import {AbstractProxy} from "../../abstractClasses/AbstractProxy";
-import {PlayerController} from "../controller/PlayerController";
+import {Player} from "./Player";
+import {FacadeInformation} from "../facade/BattleShipFacade";
 
 /**
  *
  */
 export class PlayerProxy extends AbstractProxy {
 
-    public playerController: Array<PlayerController> = [];
+    public players: Array<Player> = [];
 
     /**
      *
@@ -15,19 +16,26 @@ export class PlayerProxy extends AbstractProxy {
      */
     constructor(proxyName?: string, data?: any) {
         super(proxyName, data);
-        console.log('   # PlayerProxy created');
     }
 
     /**
      *
-     * @param data
+     * @param players
      */
-    public setData(data: Array<PlayerController>): void {
-        this.playerController = data;
+    public setData(players: Array<Player>): void {
+        this.players = players;
     }
 
-
-    public getData(): Array<PlayerController> {
-        return this.playerController;
+    /**
+     *
+     * @param player
+     */
+    public getPlayer(player: string): Player {
+        if (player == FacadeInformation.PlayerOne) {
+            return this.players[0];
+        }
+        else if (player == FacadeInformation.PlayerTwo) {
+            return this.players[1];
+        }
     }
 }

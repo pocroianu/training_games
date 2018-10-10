@@ -20,7 +20,7 @@ export class TextViewMediator extends AbstractMediator {
 
 
         let containersList: Array<PIXI.Container> = [];
-        containersList.push(super.getViewComponent().getUIContainer());
+        containersList.push(super.getViewComponent().getText());
         BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
             .addContainersToView(containersList, ViewManager.GameInfoContainer);
         console.log('   # ' + this.name + ' created');

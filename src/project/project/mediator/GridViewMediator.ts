@@ -1,10 +1,5 @@
 import 'pixi.js'
-import {
-    BattleShipFacade,
-    CommandNotifications,
-    FacadeInformation,
-    MediatorNotifications
-} from "../facade/BattleShipFacade";
+import {BattleShipFacade, Commands, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 import {ControllerManager} from "../controller/ControllerManager";
@@ -66,7 +61,7 @@ export class GridViewMediator extends AbstractMediator {
                 let square = notification.getBody()[1];
                 if (super.getViewComponent().hasSquare(square)) {  //if the Grid has this square.
                     let squareClickCoordinates = notification.getBody()[0];
-                    super.sendNotification(CommandNotifications.SquareClickNotification, squareClickCoordinates, this._player);
+                    super.sendNotification(Commands.SquareClickNotification, squareClickCoordinates, this._player);
                 }
                 break;
 

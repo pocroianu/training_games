@@ -2,6 +2,7 @@ import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import 'pixi.js'
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
+import {Player} from "../proxy/Player";
 
 /**
  * Command called when a ship is placed on the screen by a player
@@ -16,17 +17,9 @@ export class ShipPlaceCommand extends AbstractCommand {
 
         let player: string = notification.getBody()[1];
         let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
-        let playerProxy: any = facade.retrieveProxy(BattleShipFacade.PlayerProxyName);
-
-        switch (player) {
-
-            case FacadeInformation.PlayerOne:
-                playerProxy.getData()[0].updateNumberOfShipsPlaced(FacadeInformation.PlayerOne);
-                break;
-            case FacadeInformation.PlayerTwo:
-                playerProxy.getData()[1].updateNumberOfShipsPlaced(FacadeInformation.PlayerTwo);
-                break;
-        }
-        super.sendNotification(MediatorNotifications.GridShipMarking, notification.getBody(), notification.getType());
+        let playerProxy: any = facade.retrieveProxy(BattleShipFacade.PlayerProxy);
+        let playerC: Player = playerProxy.getPlayer(player);
+        playerC.updateNumberOfShipsPlaced();
+        this.sendNotification(MediatorNotifications.GridShipMarking, notification.getBody(), notification.getType());
     }
 }

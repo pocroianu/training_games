@@ -1,9 +1,9 @@
-import {ControllerManager} from "./ControllerManager";
+import {ControllerManager} from "../controller/ControllerManager";
 
 /**
  *
  */
-export class SquareController {
+export class Square {
 
     public hit: string = ControllerManager.HitText;
     public miss: string = ControllerManager.MissText;

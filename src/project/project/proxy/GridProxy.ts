@@ -1,13 +1,13 @@
 import {AbstractProxy} from "../../abstractClasses/AbstractProxy";
-import {GridController} from "../controller/GridController";
+import {FacadeInformation} from "../facade/BattleShipFacade";
+import {Grid} from "./Grid";
 
 /**
  *
  */
 export class GridProxy extends AbstractProxy {
 
-    public gridController: Array<GridController> = [];
-
+    public grid: Array<Grid> = [];
 
     /**
      *
@@ -16,21 +16,26 @@ export class GridProxy extends AbstractProxy {
      */
     constructor(proxyName?: string, data?: any) {
         super(proxyName, data);
-        console.log('   # GridProxy created');
     }
 
     /**
      *
-     * @param data
+     * @param grids
      */
-    public setData(data: Array<GridController>) {
-        this.gridController = data;
+    public setData(grids: Array<Grid>): void {
+        this.grid = grids;
     }
 
     /**
      *
+     * @param player
      */
-    public getData(): Array<GridController> {
-        return this.gridController;
+    public getGrid(player: string): any {
+        if (player == FacadeInformation.PlayerOne) {
+            return this.grid[0];
+        }
+        else if (player == FacadeInformation.PlayerTwo) {
+            return this.grid[1];
+        }
     }
 }
