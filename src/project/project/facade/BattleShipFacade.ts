@@ -289,6 +289,14 @@ export class BattleShipFacade extends AbstractFacade {
     }
 
     /**
+     *
+     */
+    public checkIfBothPlayersFinishedPlacingTheShips(): boolean {
+
+        return ControllerManager.getInstance(this.multitonKey).checkIfBothPlayersFinishedPlacingTheShips();
+    }
+
+    /**
      *  Checks at the Start of the game which orientation it has
      */
     private checkStartOrientation(): void {

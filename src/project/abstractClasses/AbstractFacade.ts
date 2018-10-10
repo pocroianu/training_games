@@ -55,7 +55,7 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
      *
      * @param proxyName
      */
-    public retrieveProxy(proxyName: string): puremvc.IProxy {
+    public retrieveProxy(proxyName: string): any {
         return super.retrieveProxy(proxyName);
     }
 

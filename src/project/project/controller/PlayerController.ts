@@ -20,17 +20,6 @@ export class PlayerController {
     }
 
     /**
-     *
-     * @param key
-     */
-    static getInstance(key: string): PlayerController {
-        if (!puremvc.Controller.instanceMap[key])
-            puremvc.Controller.instanceMap[key] = new PlayerController(key);
-
-        return puremvc.Controller.instanceMap[key] as PlayerController;
-    }
-
-    /**
      * Updates the number of ships placed for a Player.
      */
     public updateNumberOfShipsPlaced(player: string): void {

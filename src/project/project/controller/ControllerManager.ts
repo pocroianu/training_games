@@ -3,6 +3,7 @@ import {GridController} from "./GridController";
 import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
 import {PlayerController} from "./PlayerController";
 import {GamePlayController} from "./GamePlayController";
+import {PlayerProxy} from "../proxy/PlayerProxy";
 
 /**
  * The BattleShip controller.
@@ -63,8 +64,10 @@ export class ControllerManager extends AbstractController {
      *
      */
     public checkIfBothPlayersFinishedPlacingTheShips(): boolean {
-        if (PlayerController.getInstance(ControllerManager.PlayerOneControllerName).shipsPlacementFinished() === true &&
-            PlayerController.getInstance(ControllerManager.PlayerTwoControllerName).shipsPlacementFinished() === true) {
+        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        let playerProxy: PlayerProxy = facade.retrieveProxy(BattleShipFacade.PlayerProxyName);
+
+        if (playerProxy.getData()[0].shipsPlacementFinished() === true && playerProxy.getData()[1].shipsPlacementFinished() === true) {
             console.log('Both Players finished placing the ships');
             return true;
         }

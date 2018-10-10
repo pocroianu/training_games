@@ -1,7 +1,6 @@
 import {SquareController} from "./SquareController";
 import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
 import {PlayerShipsController} from "./PlayerShipsController";
-import {ControllerManager} from "./ControllerManager";
 
 
 /**
@@ -61,10 +60,10 @@ export class GridController {
     public getPlayerShipsController(): PlayerShipsController {
         let playerShips: PlayerShipsController;
         if (this._player == FacadeInformation.PlayerOne) {
-            playerShips = PlayerShipsController.getInstance(ControllerManager.PlayerOneShips);
+            //    TODO finish this
         }
         if (this._player == FacadeInformation.PlayerTwo) {
-            playerShips = PlayerShipsController.getInstance(ControllerManager.PlayerTwoShips);
+            //    TODO finish this
         }
         return playerShips;
     }
@@ -106,13 +105,13 @@ export class GridController {
                 case FacadeInformation.ShipHorizontalType:
                     for (let x: number = j; x < j + numberOfSquares; x++) {
                         this.GridSquares[i][x].shipOnSquare();
-                        this.getPlayerShipsController().addShip(i, j, numberOfSquares, shipType);
+                        // this.getPlayerShipsController().addShip(i, j, numberOfSquares, shipType);
                     }
                     break;
                 case FacadeInformation.ShipVerticalType:
                     for (let x: number = i; x < i + numberOfSquares; x++) {
                         this.GridSquares[x][j].shipOnSquare();
-                        this.getPlayerShipsController().addShip(i, j, numberOfSquares, shipType);
+                        // this.getPlayerShipsController().addShip(i, j, numberOfSquares, shipType);
                     }
                     break;
             }
