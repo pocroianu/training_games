@@ -1,5 +1,5 @@
 import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
-import {FacadeInformation} from "../../facade/BattleShipFacade";
+import {GameSettings} from "../../staticInformation/GameSettings";
 
 /**
  *  The X inside a square.
@@ -18,7 +18,7 @@ export class HitView extends AbstractSimpleView {
 
         super();
         this.graphics = new PIXI.Graphics();
-        this.graphics.lineStyle(10, FacadeInformation.HitColor);
+        this.graphics.lineStyle(10, GameSettings.HitColor);
         this.graphics.moveTo(squareXPosition + squareWidth / 3, squareYPosition + squareWidth - squareWidth / 3);
         this.graphics.lineTo(squareXPosition + squareWidth - squareWidth / 3, squareYPosition + squareWidth / 3);
         this.graphics.moveTo(squareXPosition + squareWidth / 3, squareYPosition + squareWidth / 3);

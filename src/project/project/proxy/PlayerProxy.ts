@@ -1,6 +1,6 @@
 import {AbstractProxy} from "../../abstractClasses/AbstractProxy";
 import {Player} from "./Player";
-import {FacadeInformation} from "../facade/BattleShipFacade";
+import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
  *
@@ -31,10 +31,10 @@ export class PlayerProxy extends AbstractProxy {
      * @param player
      */
     public getPlayer(player: string): Player {
-        if (player == FacadeInformation.PlayerOne) {
+        if (player == GameSettings.PlayerOne) {
             return this.players[0];
         }
-        else if (player == FacadeInformation.PlayerTwo) {
+        else if (player == GameSettings.PlayerTwo) {
             return this.players[1];
         }
     }

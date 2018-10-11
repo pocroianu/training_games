@@ -1,4 +1,5 @@
-import {BattleShipFacade, FacadeInformation} from './project/facade/BattleShipFacade'
+import {BattleShipFacade} from './project/facade/BattleShipFacade'
+import {GameSettings} from "./project/staticInformation/GameSettings";
 
 new class Main
 {
@@ -6,6 +7,6 @@ new class Main
 
     constructor()
     {
-        this.myFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        this.myFacade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
     };
 };

@@ -1,8 +1,9 @@
-import {BattleShipFacade, FacadeInformation} from "../../facade/BattleShipFacade";
+import {BattleShipFacade} from "../../facade/BattleShipFacade";
 import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 import 'pixi.js';
 import {ShipGraphics} from "./ShipGraphics";
 import {MediatorInformation} from "../../staticInformation/MediatorInformation";
+import {GameSettings} from "../../staticInformation/GameSettings";
 
 
 /**
@@ -52,18 +53,18 @@ export class SingleShipView extends AbstractSimpleView {
      */
     private verifyShipType(type: string) {
         switch (type) {
-            case FacadeInformation.ShipHorizontalType:
+            case GameSettings.ShipHorizontalType:
                 for (let i: number = 0; i < this.numberOfSquares; i++) {
 
-                    this.shipGraphics.drawRect(this.xPosition + i * FacadeInformation.SquareWidth, this.yPosition,
-                        FacadeInformation.SquareWidth - 3, FacadeInformation.SquareWidth - 3,);
+                    this.shipGraphics.drawRect(this.xPosition + i * GameSettings.SquareWidth, this.yPosition,
+                        GameSettings.SquareWidth - 3, GameSettings.SquareWidth - 3,);
                 }
                 break;
-            case FacadeInformation.ShipVerticalType:
+            case GameSettings.ShipVerticalType:
                 for (let i: number = 0; i < this.numberOfSquares; i++) {
 
-                    this.shipGraphics.drawRect(this.xPosition, this.yPosition + i * FacadeInformation.SquareWidth,
-                        FacadeInformation.SquareWidth - 3, FacadeInformation.SquareWidth - 3,);
+                    this.shipGraphics.drawRect(this.xPosition, this.yPosition + i * GameSettings.SquareWidth,
+                        GameSettings.SquareWidth - 3, GameSettings.SquareWidth - 3,);
                 }
                 break;
         }
@@ -74,13 +75,13 @@ export class SingleShipView extends AbstractSimpleView {
      * @param player
      */
     private verifyPlayer(player: string) {
-        if (player === FacadeInformation.PlayerOne) {
-            this.shipGraphics.lineStyle(6, FacadeInformation.PlayerOneShipBorderColor);
-            this.shipGraphics.beginFill(FacadeInformation.PlayerOneShipFillColor);
+        if (player === GameSettings.PlayerOne) {
+            this.shipGraphics.lineStyle(6, GameSettings.PlayerOneShipBorderColor);
+            this.shipGraphics.beginFill(GameSettings.PlayerOneShipFillColor);
         }
-        else if (player === FacadeInformation.PlayerTwo) {
-            this.shipGraphics.lineStyle(6, FacadeInformation.PlayerTwoShipBorderColor);
-            this.shipGraphics.beginFill(FacadeInformation.PlayerTwoShipFillColor);
+        else if (player === GameSettings.PlayerTwo) {
+            this.shipGraphics.lineStyle(6, GameSettings.PlayerTwoShipBorderColor);
+            this.shipGraphics.beginFill(GameSettings.PlayerTwoShipFillColor);
         }
     }
 
@@ -108,12 +109,12 @@ export class SingleShipView extends AbstractSimpleView {
         function onDragEnd(): void { //Called when the player doesn't drag the ship anymore.
             let shipType: string;
             if (this.width > this.height) {
-                shipType = FacadeInformation.ShipHorizontalType;
+                shipType = GameSettings.ShipHorizontalType;
             }
             else if (this.width <= this.height) {
-                shipType = FacadeInformation.ShipVerticalType;
+                shipType = GameSettings.ShipVerticalType;
             }
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
+            BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey)
                 .sendNotification(MediatorInformation.ShipsPlacement, [this.getBounds().x, this.getBounds().y, this.width, this.height, this.player], shipType);
             this.alpha = 1;
             this.dragging = false;

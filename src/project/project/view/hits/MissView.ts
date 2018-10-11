@@ -1,5 +1,5 @@
 import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
-import {FacadeInformation} from "../../facade/BattleShipFacade";
+import {GameSettings} from "../../staticInformation/GameSettings";
 
 /**
  * Class that creates the miss inside a Grid's square.
@@ -17,7 +17,7 @@ export class MissView extends AbstractSimpleView {
     constructor(squareXPosition: number, squareYPosition: number, squareWidth: number) {
         super();
         this.graphics = new PIXI.Graphics();
-        this.graphics.lineStyle(8, FacadeInformation.MissColor);
+        this.graphics.lineStyle(8, GameSettings.MissColor);
         this.graphics.drawCircle(squareXPosition + squareWidth / 2, squareYPosition + squareWidth / 2, squareWidth / 3.9);
         this.addToContainer(this.graphics);
 

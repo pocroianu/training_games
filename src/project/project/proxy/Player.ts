@@ -1,8 +1,8 @@
-import {FacadeInformation} from "../facade/BattleShipFacade";
-
 /**
  *
  */
+import {GameSettings} from "../staticInformation/GameSettings";
+
 export class Player {
 
     private readonly _player: string;
@@ -22,10 +22,10 @@ export class Player {
      */
     public updateNumberOfShipsPlaced(): void {
 
-        if (this._shipsPlaced <= FacadeInformation.MaximumNumberOfShipsOnAGrid) {
+        if (this._shipsPlaced <= GameSettings.MaximumNumberOfShipsOnAGrid) {
             this._shipsPlaced++;
         }
-        if (this._shipsPlaced === FacadeInformation.MaximumNumberOfShipsOnAGrid) {
+        if (this._shipsPlaced === GameSettings.MaximumNumberOfShipsOnAGrid) {
             this._shipsPlacementCompleted = true;
         }
     }

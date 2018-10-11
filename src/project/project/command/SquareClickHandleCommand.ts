@@ -1,9 +1,10 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
+import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {CommandInformation} from "../staticInformation/CommandInformation";
 import {Square} from "../proxy/Square";
 import {Grid} from "../proxy/Grid";
 import {MediatorInformation} from "../staticInformation/MediatorInformation";
+import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
  * Command used when a grid's square is clicked by a player.
@@ -17,7 +18,7 @@ export class SquareClickHandleCommand extends AbstractCommand {
     public execute(notification): void {
         console.log('SquareClick Handle Request');
 
-        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        let facade: BattleShipFacade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
         let gridProxy: any = facade.retrieveProxy(BattleShipFacade.GridProxy);
         let player: string = notification.getType();
         let squareClickCoordinates: any = notification.getBody();

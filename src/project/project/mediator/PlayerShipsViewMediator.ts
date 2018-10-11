@@ -1,10 +1,11 @@
 import 'pixi.js'
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
+import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {ViewManager} from "../view/mainView/ViewManager";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 import {CommandInformation} from "../staticInformation/CommandInformation";
 import {MediatorInformation} from "../staticInformation/MediatorInformation";
+import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
  *
@@ -60,11 +61,11 @@ export class PlayerShipsViewMediator extends AbstractMediator {
     private addView(player: string) {
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        if (player == FacadeInformation.PlayerOne) {
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, ViewManager.PlayerOneShipsContainer);
+        if (player == GameSettings.PlayerOne) {
+            BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey).addContainersToView(containersList, ViewManager.PlayerOneShipsContainer);
         }
-        else if (player == FacadeInformation.PlayerTwo) {
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, ViewManager.PlayerTwoShipsContainer);
+        else if (player == GameSettings.PlayerTwo) {
+            BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey).addContainersToView(containersList, ViewManager.PlayerTwoShipsContainer);
         }
     }
 }

@@ -1,6 +1,6 @@
 import {AbstractProxy} from "../../abstractClasses/AbstractProxy";
-import {FacadeInformation} from "../facade/BattleShipFacade";
 import {Grid} from "./Grid";
+import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
  *
@@ -31,10 +31,10 @@ export class GridProxy extends AbstractProxy {
      * @param player
      */
     public getGrid(player: string): Grid {
-        if (player == FacadeInformation.PlayerOne) {
+        if (player == GameSettings.PlayerOne) {
             return this.grids[0];
         }
-        else if (player == FacadeInformation.PlayerTwo) {
+        else if (player == GameSettings.PlayerTwo) {
             return this.grids[1];
         }
     }

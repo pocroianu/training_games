@@ -1,10 +1,11 @@
 import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 import {SquareView} from "./SquareView";
-import {BattleShipFacade, FacadeInformation} from '../../facade/BattleShipFacade'
+import {BattleShipFacade} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
 import 'pixi.js'
 import {CommandInformation} from "../../staticInformation/CommandInformation";
 import {MediatorInformation} from "../../staticInformation/MediatorInformation";
+import {GameSettings} from "../../staticInformation/GameSettings";
 
 /**
  * Creates the grid.
@@ -12,7 +13,7 @@ import {MediatorInformation} from "../../staticInformation/MediatorInformation";
 export class GridView extends AbstractSimpleView {
     private GridSquares: SquareView[][];
     public name = 'GridView';
-    private maxShipsOnThisGrid: number = FacadeInformation.MaximumNumberOfShipsOnAGrid;
+    private maxShipsOnThisGrid: number = GameSettings.MaximumNumberOfShipsOnAGrid;
     private currentNumberOfShips: number = 0;
     private readonly _player: string;
 
@@ -40,14 +41,14 @@ export class GridView extends AbstractSimpleView {
         let xPosition: number = position[0];
         let yPosition: number = position[1];
         let newShipInfo: any = shipInfo.split(',');
-        let squareWidth: number = FacadeInformation.SquareWidth * FacadeInformation.GridScale;
+        let squareWidth: number = GameSettings.SquareWidth * GameSettings.GridScale;
 
         if (player == this._player) {
 
             if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
                 if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
-                    for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
-                        for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
+                    for (let i: number = 0; i < GameSettings.NumberOfSquaresVertically; i++) {
+                        for (let j: number = 0; j < GameSettings.NumberOfSquaresHorizontally; j++) {
                             let squareXPosition: number = this.GridSquares[i][j].getPosition()[0];
                             let squareYPosition: number = this.GridSquares[i][j].getPosition()[1];
 
@@ -55,26 +56,26 @@ export class GridView extends AbstractSimpleView {
                             if ((xPosition >= squareXPosition && xPosition < squareXPosition + squareWidth) &&
                                 (yPosition >= squareYPosition && yPosition < squareYPosition + squareWidth)) {
 
-                                if (newShipInfo[0] == FacadeInformation.ShipHorizontalType) {
-                                    let numberOfSquares: number = Math.round(position[2] / FacadeInformation.SquareWidth);
+                                if (newShipInfo[0] == GameSettings.ShipHorizontalType) {
+                                    let numberOfSquares: number = Math.round(position[2] / GameSettings.SquareWidth);
 
                                     if (this.currentNumberOfShips < this.maxShipsOnThisGrid) {
                                         for (let x: number = j; x < j + numberOfSquares; x++) {
                                             this.GridSquares[i][x].fillSquare();
                                         }
-                                        this.notifyTheGridController(i, j, numberOfSquares, FacadeInformation.ShipHorizontalType);
+                                        this.notifyTheGridController(i, j, numberOfSquares, GameSettings.ShipHorizontalType);
                                         this.currentNumberOfShips++;
                                         this.notifyThatPlayerFinishedPlacingTheShips();
                                     }
                                 }
-                                else if (newShipInfo[0] == FacadeInformation.ShipVerticalType) {
-                                    let numberOfSquares: number = Math.round(position[3] / FacadeInformation.SquareWidth);
+                                else if (newShipInfo[0] == GameSettings.ShipVerticalType) {
+                                    let numberOfSquares: number = Math.round(position[3] / GameSettings.SquareWidth);
 
                                     if (this.currentNumberOfShips < this.maxShipsOnThisGrid) {
                                         for (let x: number = i; x < i + numberOfSquares; x++) {
                                             this.GridSquares[x][j].fillSquare();
                                         }
-                                        this.notifyTheGridController(i, j, numberOfSquares, FacadeInformation.ShipVerticalType);
+                                        this.notifyTheGridController(i, j, numberOfSquares, GameSettings.ShipVerticalType);
                                         this.currentNumberOfShips++;
                                         this.notifyThatPlayerFinishedPlacingTheShips();
                                     }
@@ -101,32 +102,25 @@ export class GridView extends AbstractSimpleView {
      */
     public hideTheShips(): void {
 
-        for (let i = 0; i < FacadeInformation.NumberOfSquaresHorizontally; i++) {
-            for (let j = 0; j < FacadeInformation.NumberOfSquaresVertically; j++) {
+        for (let i = 0; i < GameSettings.NumberOfSquaresHorizontally; i++) {
+            for (let j = 0; j < GameSettings.NumberOfSquaresVertically; j++) {
                 this.GridSquares[i][j].hideTheShipPart();
             }
         }
     }
 
     /**
-     *
+     * Search for a Square in this Grid.
+     * @param squareView
      */
-    private checkPlayer() {
-        switch (this._player) {
-            case FacadeInformation.PlayerOne:
-                this.createBoard(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.SquareWidth,
-                    FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid1BorderColor, FacadeInformation.GridSquareFillColor);
-                this.createRuler(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.NumberOfSquaresVertically,
-                    FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid1BorderColor, FacadeInformation.RulerTextColor);
-                break;
-
-            case FacadeInformation.PlayerTwo:
-                this.createBoard(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.SquareWidth,
-                    FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid2BorderColor, FacadeInformation.GridSquareFillColor);
-                this.createRuler(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.NumberOfSquaresVertically,
-                    FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
-                break;
+    public hasSquare(squareView: SquareView): boolean {
+        for (let i: number = 0; i < GameSettings.NumberOfSquaresVertically; i++) {
+            for (let j: number = 0; j < GameSettings.NumberOfSquaresHorizontally; j++) {
+                if (this.GridSquares[i][j] === squareView)
+                    return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -155,7 +149,6 @@ export class GridView extends AbstractSimpleView {
                 square = new SquareView(newXPosition + j * squareWidth,
                     newYPosition, squareWidth, gridBorderColor, gridSquareFillColor, j, i);
                 this.GridSquares[i][j] = square;
-
             }
             newYPosition += squareWidth;
         }
@@ -185,17 +178,24 @@ export class GridView extends AbstractSimpleView {
     }
 
     /**
-     * Search for a Square in this Grid.
-     * @param squareView
+     *
      */
-    public hasSquare(squareView: SquareView): boolean {
-        for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
-            for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
-                if (this.GridSquares[i][j] === squareView)
-                    return true;
-            }
+    private checkPlayer() {
+        switch (this._player) {
+            case GameSettings.PlayerOne:
+                this.createBoard(GameSettings.Grid1XPosition, GameSettings.Grid1YPosition, GameSettings.SquareWidth,
+                    GameSettings.NumberOfSquaresVertically, GameSettings.NumberOfSquaresHorizontally, GameSettings.Grid1BorderColor, GameSettings.GridSquareFillColor);
+                this.createRuler(GameSettings.Grid1XPosition, GameSettings.Grid1YPosition, GameSettings.NumberOfSquaresVertically,
+                    GameSettings.NumberOfSquaresHorizontally, GameSettings.SquareWidth, GameSettings.Grid1BorderColor, GameSettings.RulerTextColor);
+                break;
+
+            case GameSettings.PlayerTwo:
+                this.createBoard(GameSettings.Grid2XPosition, GameSettings.Grid2YPosition, GameSettings.SquareWidth,
+                    GameSettings.NumberOfSquaresVertically, GameSettings.NumberOfSquaresHorizontally, GameSettings.Grid2BorderColor, GameSettings.GridSquareFillColor);
+                this.createRuler(GameSettings.Grid2XPosition, GameSettings.Grid2YPosition, GameSettings.NumberOfSquaresVertically,
+                    GameSettings.NumberOfSquaresHorizontally, GameSettings.SquareWidth, GameSettings.Grid2BorderColor, GameSettings.RulerTextColor);
+                break;
         }
-        return false;
     }
 
     /**
@@ -203,7 +203,7 @@ export class GridView extends AbstractSimpleView {
      */
     private notifyThatPlayerFinishedPlacingTheShips() {
         if (this.currentNumberOfShips === this.maxShipsOnThisGrid) {
-            let facade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+            let facade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
             facade.sendNotification(MediatorInformation.TextUpdate, MediatorInformation.MaximumNumberOfShipReached, this._player);
             facade.sendNotification(CommandInformation.PlayerFinishedPlacingTheShipsCommand, this._player);
         }
@@ -233,8 +233,8 @@ export class GridView extends AbstractSimpleView {
      * @param numberOfSquares
      * @param shipType
      */
-    private notifyTheGridController(i: number, j: number, numberOfSquares: number, shipType: FacadeInformation): void {
-        let facade: any = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+    private notifyTheGridController(i: number, j: number, numberOfSquares: number, shipType: GameSettings): void {
+        let facade: any = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
         facade.sendNotification(MediatorInformation.ShipPositionInfo, [[i, j, numberOfSquares], this._player], shipType);
     }
 }

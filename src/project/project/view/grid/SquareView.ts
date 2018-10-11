@@ -1,8 +1,9 @@
 import {HitView} from "../hits/HitView";
 import {MissView} from "../hits/MissView";
-import {BattleShipFacade, FacadeInformation} from "../../facade/BattleShipFacade";
+import {BattleShipFacade} from "../../facade/BattleShipFacade";
 import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 import {MediatorInformation} from "../../staticInformation/MediatorInformation";
+import {GameSettings} from "../../staticInformation/GameSettings";
 
 /**
  * Small rectangle class
@@ -109,8 +110,8 @@ export class SquareView extends AbstractSimpleView {
      * This contains a part of the ship.
      */
     private createShipGraphics() {
-        this.shipSquare.lineStyle(0, FacadeInformation.SquareFillColor);
-        this.shipSquare.beginFill(FacadeInformation.SquareFillColor, 0.6);
+        this.shipSquare.lineStyle(0, GameSettings.SquareFillColor);
+        this.shipSquare.beginFill(GameSettings.SquareFillColor, 0.6);
         this.shipSquare.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
         this.shipSquare.endFill();
         this.shipSquare.visible = false;
@@ -151,7 +152,7 @@ export class SquareView extends AbstractSimpleView {
      *  Handles the clicked down event
      */
     private handleMouseDown(): void {
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey)
+        BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey)
             .sendNotification(MediatorInformation.SquareClickRequest, [[this.verticalIndex, this.horizontalIndex], this], undefined);
     }
 

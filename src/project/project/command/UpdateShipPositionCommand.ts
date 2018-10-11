@@ -1,8 +1,9 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
+import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {Grid} from "../proxy/Grid";
 import {Square} from "../proxy/Square";
+import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
  *
@@ -19,12 +20,12 @@ export class UpdateShipPositionCommand extends AbstractCommand {
         let i: number = shipPosition[0], j: number = shipPosition[1], numberOfSquares: number = shipPosition[2];
         let gridSquares: Square[][] = grid.getGridSquares();
         switch (shipType) {
-            case FacadeInformation.ShipHorizontalType:
+            case GameSettings.ShipHorizontalType:
                 for (let x: number = j; x < j + numberOfSquares; x++) {
                     gridSquares[i][x].shipOnSquare();
                 }
                 break;
-            case FacadeInformation.ShipVerticalType:
+            case GameSettings.ShipVerticalType:
                 for (let x: number = i; x < i + numberOfSquares; x++) {
                     gridSquares[x][j].shipOnSquare();
                 }
@@ -37,7 +38,7 @@ export class UpdateShipPositionCommand extends AbstractCommand {
      * @param notification
      */
     public execute(notification: AbstractNotification): void {
-        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        let facade: BattleShipFacade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
         let player: string = notification.getBody()[1];
 
         let shipType: string = notification.getType();

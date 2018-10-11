@@ -10,6 +10,7 @@ export class ControllerManager extends AbstractController {
     public static DefaultStateText: string = 'Non';
     public static ShipOnSquare: string = 'Shp';
 
+
     /**
      *
      * @param key

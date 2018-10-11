@@ -1,9 +1,10 @@
 import 'pixi.js'
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
+import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 import {CommandInformation} from "../staticInformation/CommandInformation";
 import {MediatorInformation} from "../staticInformation/MediatorInformation";
+import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
  * The grid's mediator.
@@ -24,7 +25,7 @@ export class GridViewMediator extends AbstractMediator {
 
         let containersList: Array<PIXI.Container> = [];
         containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, +player - 1);
+        BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey).addContainersToView(containersList, +player - 1);
 
         console.log('   # ' + super.getMediatorName() + ' created');
     }

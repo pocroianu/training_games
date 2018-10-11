@@ -1,8 +1,9 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {BattleShipFacade, FacadeInformation} from "../facade/BattleShipFacade";
+import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {Square} from "../proxy/Square";
 import {Grid} from "../proxy/Grid";
+import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
  * Creates the grid.
@@ -16,9 +17,9 @@ export class CreateGridCommand extends AbstractCommand {
     public static createTheGrid(): Grid {
 
         let gridSquares: Square[][] = [];
-        for (let i: number = 0; i < FacadeInformation.NumberOfSquaresHorizontally; i++) {
+        for (let i: number = 0; i < GameSettings.NumberOfSquaresHorizontally; i++) {
             gridSquares[i] = [];
-            for (let j: number = 0; j < FacadeInformation.NumberOfSquaresVertically; j++) {
+            for (let j: number = 0; j < GameSettings.NumberOfSquaresVertically; j++) {
                 gridSquares[i][j] = new Square();
             }
         }
@@ -31,7 +32,7 @@ export class CreateGridCommand extends AbstractCommand {
      */
     public execute(notification: AbstractNotification): void {
 
-        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        let facade: BattleShipFacade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
         let grid: Grid = CreateGridCommand.createTheGrid();
         facade.retrieveProxy(BattleShipFacade.GridProxy).setData([grid, grid]);
     }
