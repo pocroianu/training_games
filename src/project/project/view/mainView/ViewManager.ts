@@ -15,7 +15,6 @@ export class ViewManager extends AbstractViewManager {
     public static GameButtonContainer: number = 4;
     public static PlayerOneShipsContainer: number = 5;
     public static PlayerTwoShipsContainer: number = 6;
-
     public static GamePlayStateText: string = 'GamePlay State';
 
 

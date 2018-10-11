@@ -10,21 +10,10 @@ import {Grid} from "../proxy/Grid";
 export class CreateGridCommand extends AbstractCommand {
 
     /**
-     * Registers the grid's proxy.
-     * @param notification
-     */
-    public execute(notification: AbstractNotification): void {
-
-        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
-        let grid: Grid = this.createTheGrid();
-        facade.retrieveProxy(BattleShipFacade.GridProxy).setData([grid, grid]);
-    }
-
-    /**
      * Creates the grid,his squares.
      * Change the size of the grid by changing NumberOfSquaresHorizontally and NumberOfSquaresVertically.
      */
-    public createTheGrid(): Grid {
+    public static createTheGrid(): Grid {
 
         let gridSquares: Square[][] = [];
         for (let i: number = 0; i < FacadeInformation.NumberOfSquaresHorizontally; i++) {
@@ -34,5 +23,16 @@ export class CreateGridCommand extends AbstractCommand {
             }
         }
         return new Grid(gridSquares);
+    }
+
+    /**
+     * Registers the grid's proxy.
+     * @param notification
+     */
+    public execute(notification: AbstractNotification): void {
+
+        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        let grid: Grid = CreateGridCommand.createTheGrid();
+        facade.retrieveProxy(BattleShipFacade.GridProxy).setData([grid, grid]);
     }
 }

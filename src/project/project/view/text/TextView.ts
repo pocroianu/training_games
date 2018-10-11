@@ -22,8 +22,6 @@ export class TextView extends AbstractSimpleView {
         this.text.anchor.set(0.5, 0.5);
     }
 
-
-
     /**
      *
      * @param text

@@ -15,7 +15,6 @@ export class MissView extends AbstractSimpleView {
      * @param squareWidth
      */
     constructor(squareXPosition: number, squareYPosition: number, squareWidth: number) {
-
         super();
         this.graphics = new PIXI.Graphics();
         this.graphics.lineStyle(8, FacadeInformation.MissColor);

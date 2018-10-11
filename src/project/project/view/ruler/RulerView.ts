@@ -29,7 +29,6 @@ export class RulerView extends AbstractSimpleView {
      */
     constructor(xPosition: number, yPosition: number, numberOfSquaresVertically: number,
                 numberOfSquaresHorizontally: number, squareWidth: number, borderColor: number, textColor: number) {
-
         super();
         this.xPosition = xPosition;
         this.yPosition = yPosition;
@@ -38,19 +37,9 @@ export class RulerView extends AbstractSimpleView {
         this.squareWidth = squareWidth;
         this.borderColor = borderColor;
         this.textColor = textColor;
-
         this.createRulerVertically();
         this.createRulerHorizontally();
     }
-
-    /**
-     * Initializing the Ruler's view
-     */
-    public initializeView(): void {
-        super.initializeView();
-        console.log('   # RulerView created');
-    }
-
 
     /**
      * Creates the horizontal ruler which contains numbers and begins with 0

@@ -5,11 +5,6 @@ import {AbstractController} from "../../abstractClasses/AbstractController";
  */
 export class ControllerManager extends AbstractController {
 
-    public static ShipPositionInfoCommand: string = 'ShipPositionCommand';
-    public static PlayerFinishedPlacingTheShipsCommand: string = 'PlayerFBTS';
-    public static StartGamePlayCommand: string = 'StartGamePlay';
-    public static HideTheShipCommand: string = 'HideTheShipCommand';
-
     public static HitText: string = 'Hit';
     public static MissText: string = 'Miss';
     public static DefaultStateText: string = 'Non';
@@ -23,7 +18,6 @@ export class ControllerManager extends AbstractController {
         super(key);
         console.log('ControllerManager created');
     }
-
 
     /**
      *

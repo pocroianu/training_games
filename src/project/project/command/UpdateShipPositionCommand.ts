@@ -11,25 +11,11 @@ export class UpdateShipPositionCommand extends AbstractCommand {
 
     /**
      *
-     * @param notification
-     */
-    public execute(notification: AbstractNotification): void {
-        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
-        let player: string = notification.getBody()[1];
-
-        let shipType: string = notification.getType();
-        let shipPosition = notification.getBody()[0];
-        let grid: Grid = facade.retrieveProxy(BattleShipFacade.GridProxy).getGrid(player);
-        this.checkShipType(shipPosition, shipType, grid);
-    }
-
-    /**
-     *
      * @param shipPosition
      * @param shipType
      * @param grid
      */
-    private checkShipType(shipPosition, shipType: string, grid: Grid): void {
+    private static checkShipType(shipPosition, shipType: string, grid: Grid): void {
         let i: number = shipPosition[0], j: number = shipPosition[1], numberOfSquares: number = shipPosition[2];
         let gridSquares: Square[][] = grid.getGridSquares();
         switch (shipType) {
@@ -44,5 +30,19 @@ export class UpdateShipPositionCommand extends AbstractCommand {
                 }
                 break;
         }
+    }
+
+    /**
+     *
+     * @param notification
+     */
+    public execute(notification: AbstractNotification): void {
+        let facade: BattleShipFacade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+        let player: string = notification.getBody()[1];
+
+        let shipType: string = notification.getType();
+        let shipPosition = notification.getBody()[0];
+        let grid: Grid = facade.retrieveProxy(BattleShipFacade.GridProxy).getGrid(player);
+        UpdateShipPositionCommand.checkShipType(shipPosition, shipType, grid);
     }
 }

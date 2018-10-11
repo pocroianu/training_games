@@ -5,7 +5,6 @@ import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
  */
 export class RulerSquare extends AbstractSimpleView {
 
-
     /**
      *
      * @param xPosition
@@ -17,10 +16,21 @@ export class RulerSquare extends AbstractSimpleView {
      * @param asciiCode
      */
     constructor(xPosition: number, yPosition: number, squareWidth: number, borderColor: number, textColor: number, type: string, asciiCode: number) {
-
         super();
-        this._container = new PIXI.Container();
+        this.createRulerSquare(borderColor, xPosition, yPosition, squareWidth, type, asciiCode, textColor);
+    }
 
+    /**
+     *
+     * @param borderColor
+     * @param xPosition
+     * @param yPosition
+     * @param squareWidth
+     * @param type
+     * @param asciiCode
+     * @param textColor
+     */
+    private createRulerSquare(borderColor: number, xPosition: number, yPosition: number, squareWidth: number, type: string, asciiCode: number, textColor: number) {
         let graphics = new PIXI.Graphics();
         graphics.lineStyle(8, borderColor);
         graphics.beginFill(0xffffff);

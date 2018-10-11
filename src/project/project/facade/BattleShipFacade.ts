@@ -5,7 +5,6 @@ import 'pixi.js';
 import {GridView} from "../view/grid/GridView";
 import {TextView} from "../view/text/TextView";
 import {SquareClickHandleCommand} from "../command/SquareClickHandleCommand";
-import {ButtonViewMediator} from "../mediator/ButtonViewMediator";
 import {GridViewMediator} from "../mediator/GridViewMediator";
 import {TextViewMediator} from "../mediator/TextViewMediator";
 import {PlayerShipsViewMediator} from "../mediator/PlayerShipsViewMediator";
@@ -23,24 +22,7 @@ import {LogGridSquaresCommand} from "../command/LogGridSquaresCommand";
 import {GridProxy} from "../proxy/GridProxy";
 import {PlayerProxy} from "../proxy/PlayerProxy";
 import {Player} from "../proxy/Player";
-
-export enum MediatorNotifications {
-    ShipsPlacement = 'Ships_Placement',
-    GridShipMarking = 'GridMarking',
-    TextUpdate = 'TextUpdate',
-    SquareClickRequest = 'SquareClickR',
-    ShipPositionInfo = 'ShipPosition',
-    HideTheShips = 'HideThoseDamnShips',
-    PlayerHitAShip = 'PlayerHitAShip',
-    PlayerMissed = 'PlayerMissed',
-    Test = 'Test'
-}
-
-export enum TextErrors {
-
-    MaximumNumberOfShipReached = 'Max Number Of Ships to Place Reached'
-}
-
+import {MediatorInformation} from "../staticInformation/MediatorInformation";
 
 export enum FacadeInformation {
 
@@ -51,36 +33,25 @@ export enum FacadeInformation {
     Grid2YPosition = 100,
     Grid2BorderColor = 0xff0000,
     GridScale = 0.5,
-
     GridSquareFillColor = 0x000000,
     RulerTextColor = 0x000000,
     HitColor = 0x00ff00,
     MissColor = 0xff3300,
-
     SquareFillColor = 0x00ff00,
     SquareWidth = 80,
     NumberOfSquaresVertically = 12,
     NumberOfSquaresHorizontally = 12,
-
     TextViewText = 'Game status : \nShips placement',
     TextViewColor = 0x42d1f4,
     FontSize = 30,
-
     PlayerOneShipFillColor = 0x0000ff,
     PlayerOneShipBorderColor = 0xfff000,
     PlayerTwoShipFillColor = 0xfa0000,
     PlayerTwoShipBorderColor = 0xfff000,
     PlayerOneNumberOfShips = 6,
     PlayerTwoNumberOfShips = 6,
-
-    ButtonViewXPosition = 100,
-    ButtonViewYPosition = 100,
-    ButtonViewScale = 0.9,
-
-
     PlayerOne = '1',
     PlayerTwo = '2',
-
     BattleShipFacadeKey = 'BattleShip',
     ShipVerticalType = 'Vertical',
     ShipHorizontalType = 'Horizontal',
@@ -93,11 +64,6 @@ export enum FacadeInformation {
 export class BattleShipFacade extends AbstractFacade {
 
     public app: PIXI.Application;
-
-    public gridViewMediator: string[];
-    public buttonViewMediator: string;
-    public bundleShipViewMediator: string[];
-    public textViewMediator: string;
 
     /**The containers that contains the GameBoards */
     public GameBoardContainerOne: PIXI.Container;
@@ -146,7 +112,6 @@ export class BattleShipFacade extends AbstractFacade {
         this.registerProxy(new PlayerProxy(BattleShipFacade.PlayerProxy));
         this.retrieveProxy(BattleShipFacade.PlayerProxy)
             .setData([new Player(FacadeInformation.PlayerOne), new Player(FacadeInformation.PlayerTwo)]);
-
     }
 
     /**
@@ -156,31 +121,24 @@ export class BattleShipFacade extends AbstractFacade {
         if (!this.view)
             this.view = ViewManager.getInstance(this.multitonKey);
 
-        /**Keys for the mediators */
-
-        this.gridViewMediator = ['GridOneMediator', 'GridTwoMediator'];
-        this.buttonViewMediator = 'ButtonViewMediator';
-        this.bundleShipViewMediator = ['ShipPlayerOneMediator', 'ShipPlayerTwoMediator'];
-        this.textViewMediator = 'TextViewMediator';
-
         /**Registering the two GridViews */
-        this.registerMediator(new GridViewMediator(this.gridViewMediator[0],
+        this.registerMediator(new GridViewMediator(MediatorInformation.GridViewMediator[0],
             new GridView(FacadeInformation.PlayerOne), FacadeInformation.PlayerOne));
-        this.registerMediator(new GridViewMediator(this.gridViewMediator[1],
+        this.registerMediator(new GridViewMediator(MediatorInformation.GridViewMediator[1],
             new GridView(FacadeInformation.PlayerTwo), FacadeInformation.PlayerTwo));
         /**Registering the TextMediator */
-        this.registerMediator(new TextViewMediator(this.textViewMediator, new TextView(FacadeInformation.TextViewText,
+        this.registerMediator(new TextViewMediator(MediatorInformation.TextViewMediator, new TextView(FacadeInformation.TextViewText,
             FacadeInformation.FontSize, FacadeInformation.TextViewColor)));
         /**Registering the Ships Mediators */
-        this.registerMediator(new PlayerShipsViewMediator(this.bundleShipViewMediator[0],
+        this.registerMediator(new PlayerShipsViewMediator(MediatorInformation.PlayerShipViewMediator[0],
             new PlayerShipsView(FacadeInformation.PlayerOne, FacadeInformation.PlayerOneNumberOfShips), FacadeInformation.PlayerOne));
-        this.registerMediator(new PlayerShipsViewMediator(this.bundleShipViewMediator[1],
+        this.registerMediator(new PlayerShipsViewMediator(MediatorInformation.PlayerShipViewMediator[1],
             new PlayerShipsView(FacadeInformation.PlayerTwo, FacadeInformation.PlayerTwoNumberOfShips), FacadeInformation.PlayerTwo));
 
         let count: number = 0;
         this.app.ticker.add(() => {
             count += 0.1;
-            let text: any = super.retrieveMediator(this.textViewMediator).getViewComponent().getText();
+            let text: any = super.retrieveMediator(MediatorInformation.TextViewMediator).getViewComponent().getText();
             text.scale.set(1 + Math.sin(count) * 0.05);
 
         });
@@ -193,15 +151,11 @@ export class BattleShipFacade extends AbstractFacade {
         if (!this.controller)
             this.controller = ControllerManager.getInstance(this.multitonKey);
 
-        console.log(this.controller);
-
         /**Registering the commands */
-
         this.registerCommand(CommandInformation.ShipPositionInfoCommand, UpdateShipPositionCommand);
         this.registerCommand(CommandInformation.PlayerFinishedPlacingTheShipsCommand, CheckIfPlayerFinishedPlacingTheShipsCommand);
         this.registerCommand(CommandInformation.StartGamePlayCommand, StartGamePlayCommand);
         this.registerCommand(CommandInformation.HideTheShipCommand, HideTheShipsCommand);
-
 
         this.registerCommand(CommandInformation.ShipsPlacement, ShipPlaceCommand);
         this.registerCommand(CommandInformation.StartGameCommand, StartUpCommand);
@@ -261,7 +215,7 @@ export class BattleShipFacade extends AbstractFacade {
     }
 
     /**
-     *
+     * Creates the PIXI Application.
      */
     private createPixiApplication(): void {
         this.app = new PIXI.Application(window.innerWidth, window.innerHeight, {backgroundColor: 0x000000});
@@ -301,8 +255,6 @@ export class BattleShipFacade extends AbstractFacade {
      *  When the player rotates the screen
      */
     private changeOrientation(): void {
-
-
         window.addEventListener('resize', () => {
                 this.app.renderer.resize(window.innerWidth, window.innerHeight);
                 let width: number = window.innerWidth;
@@ -336,7 +288,6 @@ export class BattleShipFacade extends AbstractFacade {
                 this.ShipsContainerTwo.position.set(3 * width / 6, 30);
                 this.ShipsContainerTwo.scale.set(0.5);
                 break;
-
             case 0 :
                 this.GameBoardContainerOne.position.set(width / 2, height / 6);
                 this.GameBoardContainerOne.scale.set(0.7, 0.7);
@@ -347,7 +298,6 @@ export class BattleShipFacade extends AbstractFacade {
                 this.GameButtonContainer.position.set(3 * width / 4, 5 * height / 6);
                 this.GameButtonContainer.scale.set(1.6);
                 break;
-
             default:
                 this.GameBoardContainerOne.position.set(width / 6, height / 2);
                 this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);

@@ -25,24 +25,11 @@ export class ButtonView extends AbstractSimpleView {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.scale = scale;
-
         this.sprite = PIXI.Sprite.fromImage('images/NextPhaseButton.png');
         this.sprite.scale.set(this.scale);
         this._container.addChild(this.sprite);
-
         this.initializeButtonInteraction();
-
-        // super.registerMediator(new ButtonViewMediator(key, this));
-
         console.log('   # ButtonView created');
-    }
-
-
-    /**
-     * Initializing the Button's view.
-     */
-    public initializeView(): void {
-        super.initializeView();
     }
 
     /**

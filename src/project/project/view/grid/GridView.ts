@@ -1,16 +1,16 @@
 import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 import {SquareView} from "./SquareView";
-import {BattleShipFacade, FacadeInformation, MediatorNotifications, TextErrors} from '../../facade/BattleShipFacade'
+import {BattleShipFacade, FacadeInformation} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
 import 'pixi.js'
 import {CommandInformation} from "../../staticInformation/CommandInformation";
+import {MediatorInformation} from "../../staticInformation/MediatorInformation";
 
 /**
- * Creates the grid
+ * Creates the grid.
  */
 export class GridView extends AbstractSimpleView {
     private GridSquares: SquareView[][];
-    public RulerName: string = 'RulerForTheGrid';
     public name = 'GridView';
     private maxShipsOnThisGrid: number = FacadeInformation.MaximumNumberOfShipsOnAGrid;
     private currentNumberOfShips: number = 0;
@@ -24,40 +24,8 @@ export class GridView extends AbstractSimpleView {
         super();
         this.name = this.name.concat(player);
         this._player = player;
-        switch (this._player) {
-            case FacadeInformation.PlayerOne:
-                this.createBoard(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.SquareWidth,
-                    FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid1BorderColor, FacadeInformation.GridSquareFillColor);
-                this.createRuler(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.NumberOfSquaresVertically,
-                    FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid1BorderColor, FacadeInformation.RulerTextColor);
-                break;
-
-            case FacadeInformation.PlayerTwo:
-                this.createBoard(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.SquareWidth,
-                    FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid2BorderColor, FacadeInformation.GridSquareFillColor);
-                this.createRuler(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.NumberOfSquaresVertically,
-                    FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
-                break;
-        }
-
-
+        this.checkPlayer();
         console.log('   # ' + this.name + ' created');
-    }
-
-    /**
-     *  Initializing the Grid's view
-     */
-    public initializeView(): void {
-        super.initializeView();
-    }
-
-    /**
-     * Returns this grid's container.
-     */
-    public getUIContainer(): PIXI.Container {
-        this._container.pivot.x = this._container.width / 2;
-        this._container.pivot.y = this._container.height / 2;
-        return super.getUIContainer();
     }
 
     /**
@@ -94,7 +62,7 @@ export class GridView extends AbstractSimpleView {
                                         for (let x: number = j; x < j + numberOfSquares; x++) {
                                             this.GridSquares[i][x].fillSquare();
                                         }
-                                        this.notifyGridController(i, j, numberOfSquares, FacadeInformation.ShipHorizontalType);
+                                        this.notifyTheGridController(i, j, numberOfSquares, FacadeInformation.ShipHorizontalType);
                                         this.currentNumberOfShips++;
                                         this.notifyThatPlayerFinishedPlacingTheShips();
                                     }
@@ -106,7 +74,7 @@ export class GridView extends AbstractSimpleView {
                                         for (let x: number = i; x < i + numberOfSquares; x++) {
                                             this.GridSquares[x][j].fillSquare();
                                         }
-                                        this.notifyGridController(i, j, numberOfSquares, FacadeInformation.ShipVerticalType);
+                                        this.notifyTheGridController(i, j, numberOfSquares, FacadeInformation.ShipVerticalType);
                                         this.currentNumberOfShips++;
                                         this.notifyThatPlayerFinishedPlacingTheShips();
                                     }
@@ -120,13 +88,44 @@ export class GridView extends AbstractSimpleView {
     }
 
     /**
+     * Returns this grid's container.
+     */
+    public getUIContainer(): PIXI.Container {
+        this._container.pivot.x = this._container.width / 2;
+        this._container.pivot.y = this._container.height / 2;
+        return super.getUIContainer();
+    }
+
+    /**
+     * This is used to hide the ships that can be dragged and dropped.
+     */
+    public hideTheShips(): void {
+
+        for (let i = 0; i < FacadeInformation.NumberOfSquaresHorizontally; i++) {
+            for (let j = 0; j < FacadeInformation.NumberOfSquaresVertically; j++) {
+                this.GridSquares[i][j].hideTheShipPart();
+            }
+        }
+    }
+
+    /**
      *
      */
-    private notifyThatPlayerFinishedPlacingTheShips() {
-        if (this.currentNumberOfShips === this.maxShipsOnThisGrid) {
-            let facade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
-            facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._player);
-            facade.sendNotification(CommandInformation.PlayerFinishedPlacingTheShipsCommand, this._player);
+    private checkPlayer() {
+        switch (this._player) {
+            case FacadeInformation.PlayerOne:
+                this.createBoard(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.SquareWidth,
+                    FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid1BorderColor, FacadeInformation.GridSquareFillColor);
+                this.createRuler(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.NumberOfSquaresVertically,
+                    FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid1BorderColor, FacadeInformation.RulerTextColor);
+                break;
+
+            case FacadeInformation.PlayerTwo:
+                this.createBoard(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.SquareWidth,
+                    FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid2BorderColor, FacadeInformation.GridSquareFillColor);
+                this.createRuler(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.NumberOfSquaresVertically,
+                    FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
+                break;
         }
     }
 
@@ -202,12 +201,11 @@ export class GridView extends AbstractSimpleView {
     /**
      *
      */
-    public hideTheShips(): void {
-
-        for (let i = 0; i < FacadeInformation.NumberOfSquaresHorizontally; i++) {
-            for (let j = 0; j < FacadeInformation.NumberOfSquaresVertically; j++) {
-                this.GridSquares[i][j].hideTheShipPart();
-            }
+    private notifyThatPlayerFinishedPlacingTheShips() {
+        if (this.currentNumberOfShips === this.maxShipsOnThisGrid) {
+            let facade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
+            facade.sendNotification(MediatorInformation.TextUpdate, MediatorInformation.MaximumNumberOfShipReached, this._player);
+            facade.sendNotification(CommandInformation.PlayerFinishedPlacingTheShipsCommand, this._player);
         }
     }
 
@@ -235,8 +233,8 @@ export class GridView extends AbstractSimpleView {
      * @param numberOfSquares
      * @param shipType
      */
-    private notifyGridController(i: number, j: number, numberOfSquares: number, shipType: FacadeInformation): void {
+    private notifyTheGridController(i: number, j: number, numberOfSquares: number, shipType: FacadeInformation): void {
         let facade: any = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
-        facade.sendNotification(MediatorNotifications.ShipPositionInfo, [[i, j, numberOfSquares], this._player], shipType);
+        facade.sendNotification(MediatorInformation.ShipPositionInfo, [[i, j, numberOfSquares], this._player], shipType);
     }
 }

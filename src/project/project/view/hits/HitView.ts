@@ -17,16 +17,12 @@ export class HitView extends AbstractSimpleView {
     constructor(squareXPosition: number, squareYPosition: number, squareWidth: number) {
 
         super();
-
         this.graphics = new PIXI.Graphics();
         this.graphics.lineStyle(10, FacadeInformation.HitColor);
-
         this.graphics.moveTo(squareXPosition + squareWidth / 3, squareYPosition + squareWidth - squareWidth / 3);
         this.graphics.lineTo(squareXPosition + squareWidth - squareWidth / 3, squareYPosition + squareWidth / 3);
-
         this.graphics.moveTo(squareXPosition + squareWidth / 3, squareYPosition + squareWidth / 3);
         this.graphics.lineTo(squareXPosition + squareWidth - squareWidth / 3, squareYPosition + squareWidth - squareWidth / 3);
         this.addToContainer(this.graphics);
-
     }
 }
