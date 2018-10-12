@@ -13,8 +13,6 @@ export class ViewManagerMediator extends AbstractMediator {
      */
     constructor(mediatorName?: string, viewComponent?: any) {
         super(mediatorName, viewComponent);
-
-
         console.log('   # ' + this.getMediatorName() + ' created');
     }
 

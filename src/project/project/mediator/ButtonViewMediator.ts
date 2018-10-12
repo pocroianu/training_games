@@ -32,13 +32,6 @@ export class ButtonViewMediator extends AbstractMediator {
         return [];
     }
 
-    /**
-     *  This is where the notifications are handled.
-     * @param notification
-     */
-    public handleNotification(notification: puremvc.Notification): void {
-        let name: String = notification.name;
-    }
 
     /**
      *

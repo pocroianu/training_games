@@ -40,7 +40,7 @@ export class TextViewMediator extends AbstractMediator {
      * @param text
      */
     public addTextToTheView(text: string) {
-        super.getViewComponent().addText(text);
+        this.getViewComponent().addText(text);
     }
 
     /**
@@ -63,7 +63,7 @@ export class TextViewMediator extends AbstractMediator {
                 }
                 break;
             case ViewManager.GamePlayStateText:
-                super.getViewComponent().showGamePlayStateText();
+                this.getViewComponent().showGamePlayStateText();
                 break;
 
 

@@ -70,11 +70,11 @@ export class GridViewMediator extends AbstractMediator {
                 let player1: string = notification.getBody()[1];
                 let shipType1: string = notification.getType();
                 let shipPositionInfo1 = notification.getBody()[0];
-                super.sendNotification(CommandInformation.ShipPositionInfoCommand, notification.getBody(), shipType1);
+                this.sendNotification(CommandInformation.ShipPositionInfoCommand, notification.getBody(), shipType1);
                 break;
 
             case MediatorInformation.HideTheShips:
-                super.getViewComponent().hideTheShips();
+                this.getViewComponent().hideTheShips();
                 break;
 
             case MediatorInformation.PlayerHitAShip:
@@ -82,7 +82,7 @@ export class GridViewMediator extends AbstractMediator {
                 let hitCoordinates = notification.getBody();
 
                 if (this._player == playerL) {
-                    super.getViewComponent().updateTheViewWithAHit(hitCoordinates);
+                    this.getViewComponent().updateTheViewWithAHit(hitCoordinates);
                 }
                 break;
 
@@ -90,7 +90,7 @@ export class GridViewMediator extends AbstractMediator {
                 let playerK: string = notification.getType();
                 let missCoordinates = notification.getBody();
                 if (this._player == playerK) {
-                    super.getViewComponent().updateTheViewWithAMiss(missCoordinates);
+                    this.getViewComponent().updateTheViewWithAMiss(missCoordinates);
                 }
                 break;
         }

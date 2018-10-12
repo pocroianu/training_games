@@ -24,7 +24,6 @@ export class PlayerShipsViewMediator extends AbstractMediator {
         super(mediatorName, viewComponent);
         this._player = player;
         this.addView(player);
-
         console.log('   # ' + super.getMediatorName() + ' created');
     }
 
@@ -48,7 +47,7 @@ export class PlayerShipsViewMediator extends AbstractMediator {
                 let shipType: string = notification.getType();
 
                 if (player == this._player) {
-                    super.sendNotification(CommandInformation.ShipsPlacement, [notification.getBody(), player], shipType);
+                    this.sendNotification(CommandInformation.ShipsPlacement, [notification.getBody(), player], shipType);
                 }
                 break;
         }
