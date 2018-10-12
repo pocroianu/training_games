@@ -12,6 +12,6 @@ export class HideTheShipsCommand extends AbstractCommand {
      * @param notification
      */
     public execute(notification: AbstractNotification): void {
-        this.sendNotification(MediatorInformation.HideTheShips);
+        super.sendNotification(MediatorInformation.HideTheShips);
     }
 }
