@@ -1,3 +1,5 @@
+import {AbstractNotification} from "./AbstractNotification";
+
 /**
  * Extend this.
  */
@@ -11,6 +13,7 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
         super(key);
         this.multitonKey = key;
     }
+
 
     /**
      * Notifies the facade's view observers.
@@ -27,8 +30,8 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
      * @param body
      * @param type
      */
-    public sendNotification(name: string, body: string, type?: string): void {
-        super.sendNotification(name, body, type);
+    public sendNotification(name: string, body: any, type?: string): void {
+        this.notifyObservers(new AbstractNotification(name, body, type));
     }
 
     /**
@@ -52,7 +55,7 @@ export class AbstractFacade extends puremvc.Facade implements puremvc.IFacade {
      *
      * @param proxyName
      */
-    public retrieveProxy(proxyName: string): puremvc.IProxy {
+    public retrieveProxy(proxyName: string): any {
         return super.retrieveProxy(proxyName);
     }
 

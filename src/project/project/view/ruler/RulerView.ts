@@ -1,12 +1,10 @@
 import {RulerSquare} from "./RulerSquare";
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 
 /**
  * Class that creates the horizontal and vertical ruler around the grid
  */
-export class RulerView extends AbstractView {
-
-    public name:string='Ruler';
+export class RulerView extends AbstractSimpleView {
 
     public xPosition: number;
     public yPosition: number;
@@ -21,7 +19,6 @@ export class RulerView extends AbstractView {
 
     /**
      *
-     * @param key
      * @param xPosition
      * @param yPosition
      * @param numberOfSquaresVertically
@@ -30,10 +27,9 @@ export class RulerView extends AbstractView {
      * @param borderColor
      * @param textColor
      */
-    constructor(key: string, xPosition: number, yPosition: number, numberOfSquaresVertically: number,
+    constructor(xPosition: number, yPosition: number, numberOfSquaresVertically: number,
                 numberOfSquaresHorizontally: number, squareWidth: number, borderColor: number, textColor: number) {
-
-        super(key);
+        super();
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.numberOfSquaresVertically = numberOfSquaresVertically;
@@ -41,37 +37,8 @@ export class RulerView extends AbstractView {
         this.squareWidth = squareWidth;
         this.borderColor = borderColor;
         this.textColor = textColor;
-
         this.createRulerVertically();
         this.createRulerHorizontally();
-    }
-
-    /**
-     * Initializing the Ruler's view
-     */
-    public initializeView(): void {
-        super.initializeView();
-        console.log('   # RulerView created');
-    }
-
-    /**
-     *
-     * @param key
-     * @param xPosition
-     * @param yPosition
-     * @param numberOfSquaresVertically
-     * @param numberOfSquaresHorizontally
-     * @param squareWidth
-     * @param borderColor
-     * @param textColor
-     */
-    static getInstance(key: string, xPosition?: number, yPosition?: number, numberOfSquaresVertically?: number,
-                       numberOfSquaresHorizontally?: number, squareWidth?: number, borderColor?: number, textColor?: number): RulerView {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new RulerView(key, xPosition, yPosition, numberOfSquaresVertically, numberOfSquaresHorizontally,
-                squareWidth, borderColor, textColor);
-
-        return puremvc.View.instanceMap[key] as RulerView;
     }
 
     /**
@@ -79,7 +46,7 @@ export class RulerView extends AbstractView {
      */
     private createRulerHorizontally(): void {
         for (let i: number = 0; i < this.numberOfSquaresHorizontally; i++) {
-            let rulerSquare: RulerSquare = RulerSquare.getInstance(700 * Math.random() + i + '', this.xPosition + i * this.squareWidth,
+            let rulerSquare: RulerSquare = new RulerSquare(this.xPosition + i * this.squareWidth,
                 this.yPosition + this.numberOfSquaresVertically * this.squareWidth,
                 this.squareWidth, this.borderColor, this.textColor, this.RulerType[0], i + 1);
             this._container.addChild(rulerSquare.getUIContainer());
@@ -92,7 +59,8 @@ export class RulerView extends AbstractView {
     private createRulerVertically(): void {
 
         for (let i: number = 0; i < this.numberOfSquaresVertically; i++) {
-            let rulerSquare: RulerSquare = RulerSquare.getInstance(300 * Math.random() + i + '', this.xPosition - this.squareWidth, this.yPosition + i * this.squareWidth,
+            let rulerSquare: RulerSquare = new RulerSquare(this.xPosition - this.squareWidth,
+                this.yPosition + i * this.squareWidth,
                 this.squareWidth, this.borderColor, this.textColor, this.RulerType[1], 65 + i);
             this._container.addChild(rulerSquare.getUIContainer());
         }

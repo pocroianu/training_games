@@ -1,9 +1,9 @@
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 
 /**
  * A button class.
  */
-export class ButtonView extends AbstractView {
+export class ButtonView extends AbstractSimpleView {
 
     /**The positions and the scale of the button */
     public xPosition: number;
@@ -16,47 +16,20 @@ export class ButtonView extends AbstractView {
 
     /**
      *
-     * @param key
      * @param xPosition
      * @param yPosition
      * @param scale
      */
-    constructor(key: string, xPosition: number, yPosition: number, scale: number) {
-
-        super(key);
+    constructor(xPosition: number, yPosition: number, scale: number) {
+        super();
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.scale = scale;
-
         this.sprite = PIXI.Sprite.fromImage('images/NextPhaseButton.png');
         this.sprite.scale.set(this.scale);
         this._container.addChild(this.sprite);
-
         this.initializeButtonInteraction();
-
-        // super.registerMediator(new ButtonViewMediator(key, this));
-
         console.log('   # ButtonView created');
-    }
-
-    /**
-     *
-     * @param key
-     * @param xPosition
-     * @param yPosition
-     * @param scale
-     */
-    static getInstance(key: string, xPosition?: number, yPosition?: number, scale?: number): puremvc.View {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new ButtonView(key, xPosition, yPosition, scale);
-        return puremvc.View.instanceMap[key] as puremvc.View;
-    }
-
-    /**
-     * Initializing the Button's view.
-     */
-    public initializeView(): void {
-        super.initializeView();
     }
 
     /**
@@ -75,7 +48,5 @@ export class ButtonView extends AbstractView {
     private initializeButtonInteraction() {
         this.sprite.interactive = true;
         this.sprite.buttonMode = true;
-
-        // this.sprite.on('pointertap', this.handleMouseDown);
     }
 }

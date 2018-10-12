@@ -5,6 +5,7 @@ export class AbstractController extends puremvc.Controller implements puremvc.IC
 
     public name: string = 'Controller';
     private multitonkey: string;
+
     /**
      *
      * @param key
@@ -12,14 +13,6 @@ export class AbstractController extends puremvc.Controller implements puremvc.IC
     constructor(key: string) {
         super(key);
         this.multitonkey = key
-    }
-
-    /**
-     * Initializes the controller.
-     * It is called when super is called in the constructor.
-     */
-    public initializeController(): void {
-        super.initializeController();
     }
 
     /**
@@ -53,20 +46,5 @@ export class AbstractController extends puremvc.Controller implements puremvc.IC
      */
     public removeCommand(notificationName: string): void {
         super.removeCommand(notificationName);
-    }
-
-    /**
-     * Getter for the multitonKey.
-     */
-    get multitonKey(): string {
-        return this.multitonkey;
-    }
-
-    /**
-     * Setter for the multitonKey.
-     * @param key
-     */
-    set multitonKey(key: string) {
-        this.multitonkey = key;
     }
 }

@@ -1,72 +1,91 @@
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 import {SquareView} from "./SquareView";
-import {BattleShipFacade, FacadeInformation, MediatorNotifications, TextErrors} from '../../facade/BattleShipFacade'
+import {BattleShipFacade} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
 import 'pixi.js'
+import {Notifications} from "../../staticInformation/Notifications";
+import {MediatorInformation} from "../../staticInformation/MediatorInformation";
+import {GameSettings} from "../../staticInformation/GameSettings";
 
 /**
- * Creates the grid
+ * Creates the grid.
  */
-export class GridView extends AbstractView {
+export class GridView extends AbstractSimpleView {
     private GridSquares: SquareView[][];
-    private readonly _gridNumber: number;
-    public RulerName: string = 'RulerForTheGrid';
     public name = 'GridView';
-    private maxShipsOnThisGrid: number = FacadeInformation.MaximumNumberOfShipsOnAGrid;
+    private maxShipsOnThisGrid: number = GameSettings.MaximumNumberOfShipsOnAGrid;
     private currentNumberOfShips: number = 0;
-    private _player: string;
+    private readonly _player: string;
 
     /**
      *
-     * @param key
-     * @param gridNumber
+     * @param player
      */
-    constructor(key: string, gridNumber: number) {
-        super(key);
-        this.name = this.name.concat(gridNumber.toString());
-        this._gridNumber = gridNumber;
-        switch (gridNumber) {
-            case 1:
-                this.createBoard(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.SquareWidth,
-                    FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid1BorderColor, FacadeInformation.GridSquareFillColor);
-                this.createRuler(FacadeInformation.Grid1XPosition, FacadeInformation.Grid1YPosition, FacadeInformation.NumberOfSquaresVertically,
-                    FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid1BorderColor, FacadeInformation.RulerTextColor);
-                break;
-
-            case 2:
-                this.createBoard(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.SquareWidth,
-                    FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.Grid2BorderColor, FacadeInformation.GridSquareFillColor);
-                this.createRuler(FacadeInformation.Grid2XPosition, FacadeInformation.Grid2YPosition, FacadeInformation.NumberOfSquaresVertically,
-                    FacadeInformation.NumberOfSquaresHorizontally, FacadeInformation.SquareWidth, FacadeInformation.Grid2BorderColor, FacadeInformation.RulerTextColor);
-                break;
-        }
-        if (this._gridNumber == FacadeInformation.GridOne) {
-            this._player = FacadeInformation.PlayerOne;
-        }
-        else if (this._gridNumber == FacadeInformation.GridTwo) {
-            this._player = FacadeInformation.PlayerTwo;
-        }
-
+    constructor(player: string) {
+        super();
+        this.name = this.name.concat(player);
+        this._player = player;
+        this.checkPlayer();
         console.log('   # ' + this.name + ' created');
     }
 
     /**
-     *  Initializing the Grid's view
+     *
+     * @param position
+     * @param shipInfo
+     * @param player
      */
-    public initializeView(): void {
-        super.initializeView();
-    }
+    public fillGridWithBattleShip(position: Array<number>, shipInfo: string, player: string): void {
 
-    /**
-     * Get an instance of the Grid's view
-     * @param key
-     * @param gridNumber
-     */
-    static getInstance(key: string, gridNumber?: number): GridView {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new GridView(key, gridNumber);
+        let gridDimensions: PIXI.Rectangle = this.getUIContainer().getBounds();
+        let xPosition: number = position[0];
+        let yPosition: number = position[1];
+        let newShipInfo: any = shipInfo.split(',');
+        let squareWidth: number = GameSettings.SquareWidth * GameSettings.GridScale;
 
-        return puremvc.View.instanceMap[key] as GridView;
+        if (player == this._player) {
+
+            if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
+                if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
+                    for (let i: number = 0; i < GameSettings.NumberOfSquaresVertically; i++) {
+                        for (let j: number = 0; j < GameSettings.NumberOfSquaresHorizontally; j++) {
+                            let squareXPosition: number = this.GridSquares[i][j].getPosition()[0];
+                            let squareYPosition: number = this.GridSquares[i][j].getPosition()[1];
+
+
+                            if ((xPosition >= squareXPosition && xPosition < squareXPosition + squareWidth) &&
+                                (yPosition >= squareYPosition && yPosition < squareYPosition + squareWidth)) {
+
+                                if (newShipInfo[0] == GameSettings.ShipHorizontalType) {
+                                    let numberOfSquares: number = Math.round(position[2] / GameSettings.SquareWidth);
+
+                                    if (this.currentNumberOfShips < this.maxShipsOnThisGrid) {
+                                        for (let x: number = j; x < j + numberOfSquares; x++) {
+                                            this.GridSquares[i][x].fillSquare();
+                                        }
+                                        this.notifyTheGridController(i, j, numberOfSquares, GameSettings.ShipHorizontalType);
+                                        this.currentNumberOfShips++;
+                                        this.notifyThatPlayerFinishedPlacingTheShips();
+                                    }
+                                }
+                                else if (newShipInfo[0] == GameSettings.ShipVerticalType) {
+                                    let numberOfSquares: number = Math.round(position[3] / GameSettings.SquareWidth);
+
+                                    if (this.currentNumberOfShips < this.maxShipsOnThisGrid) {
+                                        for (let x: number = i; x < i + numberOfSquares; x++) {
+                                            this.GridSquares[x][j].fillSquare();
+                                        }
+                                        this.notifyTheGridController(i, j, numberOfSquares, GameSettings.ShipVerticalType);
+                                        this.currentNumberOfShips++;
+                                        this.notifyThatPlayerFinishedPlacingTheShips();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -79,73 +98,30 @@ export class GridView extends AbstractView {
     }
 
     /**
-     *
-     * @param position
-     * @param shipInfo
+     * This is used to hide the ships that can be dragged and dropped.
      */
-    public fillGridWithBattleShip(position: Array<number>, shipInfo: string): void {
-        let gridDimensions: PIXI.Rectangle = this.getUIContainer().getBounds();
-        let xPosition: number = position[0];
-        let yPosition: number = position[1];
-        let newShipInfo: any = shipInfo.split(',');
-        console.log(shipInfo);
+    public hideTheShips(): void {
 
-        console.log('Coordinates received ' + [xPosition, yPosition]);
-        let squareWidth: number = FacadeInformation.SquareWidth * FacadeInformation.GridScale;
-
-        // if (newShipInfo[1] == this._player) {
-
-        if ((xPosition > gridDimensions.x) && (xPosition < gridDimensions.x + gridDimensions.width)) {
-            if ((yPosition > gridDimensions.y) && (yPosition < gridDimensions.y + gridDimensions.height)) {
-
-                // console.log('Ship is in GridView' + this._gridNumber);
-
-                for (let i: number = 0; i < FacadeInformation.NumberOfSquaresVertically; i++) {
-                    for (let j: number = 0; j < FacadeInformation.NumberOfSquaresHorizontally; j++) {
-                        let squareXPosition: number = this.GridSquares[i][j].getPosition()[0];
-                        let squareYPosition: number = this.GridSquares[i][j].getPosition()[1];
-                        let facade = BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey);
-
-                        if ((xPosition >= squareXPosition && xPosition < squareXPosition + squareWidth) &&
-                            (yPosition >= squareYPosition && yPosition < squareYPosition + squareWidth)) {
-
-                            if (newShipInfo[0] == FacadeInformation.ShipHorizontalType) {
-                                let numberOfSquares: number = Math.round(position[2] / FacadeInformation.SquareWidth);
-                                for (let x: number = j; x < j + numberOfSquares; x++) {
-
-                                    if (this.currentNumberOfShips <= this.maxShipsOnThisGrid + 1) {
-                                        this.GridSquares[i][x].fillSquare();
-
-                                    }
-                                    else {
-                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._gridNumber.toString());
-                                    }
-                                }
-                                this.currentNumberOfShips++;
-                            }
-                            else if (newShipInfo[0] == FacadeInformation.ShipVerticalType) {
-                                let numberOfSquares: number = Math.round(position[3] / FacadeInformation.SquareWidth);
-                                for (let x: number = i; x < i + numberOfSquares; x++) {
-                                    if (this.currentNumberOfShips <= this.maxShipsOnThisGrid + 1) {
-                                        this.GridSquares[x][j].fillSquare();
-
-                                    }
-                                    else {
-                                        facade.sendNotification(MediatorNotifications.TextUpdate, TextErrors.MaximumNumberOfShipReached, this._gridNumber.toString());
-                                    }
-                                }
-                                this.currentNumberOfShips++;
-                            }
-                            console.log('GridSquare coordinates : ' + [squareXPosition, squareYPosition] +
-                                '\n Index : ' + [i, j]);
-                        }
-                        }
-                    }
-                }
+        for (let i = 0; i < GameSettings.NumberOfSquaresHorizontally; i++) {
+            for (let j = 0; j < GameSettings.NumberOfSquaresVertically; j++) {
+                this.GridSquares[i][j].hideTheShipPart();
             }
-        // }
+        }
     }
 
+    /**
+     * Search for a Square in this Grid.
+     * @param squareView
+     */
+    public hasSquare(squareView: SquareView): boolean {
+        for (let i: number = 0; i < GameSettings.NumberOfSquaresVertically; i++) {
+            for (let j: number = 0; j < GameSettings.NumberOfSquaresHorizontally; j++) {
+                if (this.GridSquares[i][j] === squareView)
+                    return true;
+            }
+        }
+        return false;
+    }
 
     /**
      *
@@ -170,10 +146,9 @@ export class GridView extends AbstractView {
 
             for (let j: number = 0; j < numberOfSquaresHorizontally; j++) {
                 key++;
-                square = SquareView.getInstance('Square' + key + Math.random(), newXPosition + j * squareWidth,
+                square = new SquareView(newXPosition + j * squareWidth,
                     newYPosition, squareWidth, gridBorderColor, gridSquareFillColor, j, i);
                 this.GridSquares[i][j] = square;
-
             }
             newYPosition += squareWidth;
         }
@@ -196,9 +171,70 @@ export class GridView extends AbstractView {
      */
     private createRuler(xPosition: number, yPosition: number, numberOfSquaresVertically: number,
                         numberOfSquaresHorizontally: number, squareWidth: number, gridBorderColor: number, rulerTextColor: number) {
-        let rulerView: RulerView = RulerView.getInstance(this.RulerName + '' + Math.random(), xPosition, yPosition, numberOfSquaresVertically,
+        let rulerView: RulerView = new RulerView(xPosition, yPosition, numberOfSquaresVertically,
             numberOfSquaresHorizontally, squareWidth, gridBorderColor, rulerTextColor);
 
         this._container.addChild(rulerView.getUIContainer());
+    }
+
+    /**
+     *
+     */
+    private checkPlayer() {
+        switch (this._player) {
+            case GameSettings.PlayerOne:
+                this.createBoard(GameSettings.Grid1XPosition, GameSettings.Grid1YPosition, GameSettings.SquareWidth,
+                    GameSettings.NumberOfSquaresVertically, GameSettings.NumberOfSquaresHorizontally, GameSettings.Grid1BorderColor, GameSettings.GridSquareFillColor);
+                this.createRuler(GameSettings.Grid1XPosition, GameSettings.Grid1YPosition, GameSettings.NumberOfSquaresVertically,
+                    GameSettings.NumberOfSquaresHorizontally, GameSettings.SquareWidth, GameSettings.Grid1BorderColor, GameSettings.RulerTextColor);
+                break;
+
+            case GameSettings.PlayerTwo:
+                this.createBoard(GameSettings.Grid2XPosition, GameSettings.Grid2YPosition, GameSettings.SquareWidth,
+                    GameSettings.NumberOfSquaresVertically, GameSettings.NumberOfSquaresHorizontally, GameSettings.Grid2BorderColor, GameSettings.GridSquareFillColor);
+                this.createRuler(GameSettings.Grid2XPosition, GameSettings.Grid2YPosition, GameSettings.NumberOfSquaresVertically,
+                    GameSettings.NumberOfSquaresHorizontally, GameSettings.SquareWidth, GameSettings.Grid2BorderColor, GameSettings.RulerTextColor);
+                break;
+        }
+    }
+
+    /**
+     *
+     */
+    private notifyThatPlayerFinishedPlacingTheShips() {
+        if (this.currentNumberOfShips === this.maxShipsOnThisGrid) {
+            let facade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
+            facade.sendNotification(Notifications.UPDATE_THE_TEXT, MediatorInformation.MaximumNumberOfShipReached, this._player);
+            facade.sendNotification(Notifications.PLAYER_FINISHED_PLACING_THE_SHIPS, this._player);
+        }
+    }
+
+    /**
+     * If a player missed,the controller notifies the View to show the miss on the grid.
+     */
+    public updateTheViewWithAHit(squarePosition: Array<number>): void {
+        let i: number = squarePosition[0], j: number = squarePosition[1];
+        this.GridSquares[i][j].hit();
+    }
+
+    /**
+     * If a player hits,the controller notifies the View to show the miss on the grid.
+     * @param squarePosition
+     */
+    public updateTheViewWithAMiss(squarePosition: Array<number>): void {
+        let i: number = squarePosition[0], j: number = squarePosition[1];
+        this.GridSquares[i][j].miss();
+    }
+
+    /**
+     *
+     * @param i
+     * @param j
+     * @param numberOfSquares
+     * @param shipType
+     */
+    private notifyTheGridController(i: number, j: number, numberOfSquares: number, shipType: GameSettings): void {
+        let facade: any = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
+        facade.sendNotification(Notifications.SHIP_POSITION_INFO, [[i, j, numberOfSquares], this._player], shipType);
     }
 }

@@ -1,14 +1,12 @@
-import {AbstractView} from "../../../abstractClasses/AbstractView";
+import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 
 /**
  * Has the responsibility to create a single square and inside it to put the coresponding letter
  */
-export class RulerSquare extends AbstractView {
-
+export class RulerSquare extends AbstractSimpleView {
 
     /**
      *
-     * @param key
      * @param xPosition
      * @param yPosition
      * @param squareWidth
@@ -17,11 +15,22 @@ export class RulerSquare extends AbstractView {
      * @param type
      * @param asciiCode
      */
-    constructor(key: string, xPosition: number, yPosition: number, squareWidth: number, borderColor: number, textColor: number, type: string, asciiCode: number) {
+    constructor(xPosition: number, yPosition: number, squareWidth: number, borderColor: number, textColor: number, type: string, asciiCode: number) {
+        super();
+        this.createRulerSquare(borderColor, xPosition, yPosition, squareWidth, type, asciiCode, textColor);
+    }
 
-        super(key);
-        this._container = new PIXI.Container();
-
+    /**
+     *
+     * @param borderColor
+     * @param xPosition
+     * @param yPosition
+     * @param squareWidth
+     * @param type
+     * @param asciiCode
+     * @param textColor
+     */
+    private createRulerSquare(borderColor: number, xPosition: number, yPosition: number, squareWidth: number, type: string, asciiCode: number, textColor: number) {
         let graphics = new PIXI.Graphics();
         graphics.lineStyle(8, borderColor);
         graphics.beginFill(0xffffff);
@@ -41,24 +50,5 @@ export class RulerSquare extends AbstractView {
         }
 
         this._container.addChild(graphics, text);
-    }
-
-    /**
-     * Getter for an instance of this class
-     * @param key
-     * @param xPosition
-     * @param yPosition
-     * @param squareWidth
-     * @param borderColor
-     * @param textColor
-     * @param type
-     * @param asciiCode
-     */
-    static getInstance(key: string, xPosition?: number, yPosition?: number, squareWidth?: number, borderColor?: number,
-                       textColor?: number, type?: string, asciiCode?: number): RulerSquare {
-        if (!puremvc.View.instanceMap[key])
-            puremvc.View.instanceMap[key] = new RulerSquare(key, xPosition, yPosition, squareWidth, borderColor, textColor, type, asciiCode);
-
-        return puremvc.View.instanceMap[key] as RulerSquare;
     }
 }

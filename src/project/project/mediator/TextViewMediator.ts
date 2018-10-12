@@ -1,14 +1,15 @@
 import 'pixi.js'
-import {BattleShipFacade, FacadeInformation, MediatorNotifications} from "../facade/BattleShipFacade";
+import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
+import {ViewManager} from "../view/mainView/ViewManager";
+import {GameSettings} from "../staticInformation/GameSettings";
+import {Notifications} from "../staticInformation/Notifications";
 
 /**
  *  TextViewMediator
  */
 export class TextViewMediator extends AbstractMediator {
     public name: String = 'TextViewMediator';
-    public count: number[] = [0, 0];
-
     /**
      *
      * @param mediatorName
@@ -19,17 +20,19 @@ export class TextViewMediator extends AbstractMediator {
 
 
         let containersList: Array<PIXI.Container> = [];
-        containersList.push(super.getViewComponent().getUIContainer());
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).addContainersToView(containersList, 2);
+        containersList.push(super.getViewComponent().getText());
+        BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey)
+            .addContainersToView(containersList, ViewManager.GameInfoContainer);
         console.log('   # ' + this.name + ' created');
     }
 
 
     /**
-     * The notification that the BattleShipMediator is interested in.
+     * The notification that the ViewManagerMediator is interested in.
      */
     public listNotificationInterests(): string[] {
-        return [MediatorNotifications.TextUpdate];
+        return [Notifications.UPDATE_THE_TEXT,
+            ViewManager.GamePlayStateText];
     }
 
     /**
@@ -47,26 +50,23 @@ export class TextViewMediator extends AbstractMediator {
     public handleNotification(notification: puremvc.Notification): void {
 
         switch (notification.getName()) {
-            case MediatorNotifications.TextUpdate:
-                let gridNumber: number = +notification.getType();
-                switch (gridNumber) {
-                    case FacadeInformation.GridOne:
-                        if (this.count[0] <= 0) {
-                            this.addTextToTheView(notification.getBody() + ' \nfor Player' + gridNumber);
-                            this.count[0]++;
-                        }
+            case Notifications.UPDATE_THE_TEXT:
+                let player: string = notification.getType();
+                switch (player) {
+                    case GameSettings.PlayerOne:
+                        this.addTextToTheView(notification.getBody() + ' \nfor Player' + player);
                         break;
 
-                    case FacadeInformation.GridTwo:
-                        if (this.count[1] <= 0) {
-                            this.addTextToTheView(notification.getBody() + ' \nfor Player' + gridNumber);
-                            this.count[1]++;
-                        }
+                    case GameSettings.PlayerTwo:
+                        this.addTextToTheView(notification.getBody() + ' \nfor Player' + player);
                         break;
                 }
-
-
                 break;
+            case ViewManager.GamePlayStateText:
+                super.getViewComponent().showGamePlayStateText();
+                break;
+
+
         }
     }
 }

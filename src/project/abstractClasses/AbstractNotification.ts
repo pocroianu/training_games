@@ -3,16 +3,14 @@
  */
 export class AbstractNotification extends puremvc.Notification {
 
-    public reference: any;
-
     /**
      *
-     * @param key
-     * @param reference
+     * @param name
+     * @param body
+     * @param type
      */
-    constructor(key: string, reference: any) {
-        super(key);
-        this.reference = reference;
+    constructor(name: string, body: string, type?: string) {
+        super(name, body, type);
     }
 
     /**
@@ -33,7 +31,7 @@ export class AbstractNotification extends puremvc.Notification {
     /**
      *
      */
-    public getBody(): string {
+    public getBody(): any {
         return super.getBody();
     }
 
@@ -59,11 +57,5 @@ export class AbstractNotification extends puremvc.Notification {
         return super.toString();
     }
 
-    /**
-     * Return a reference of something we need in the future.
-     */
-    public getReference(): any {
-        return this.reference;
-    }
 }
 
