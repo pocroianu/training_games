@@ -2,8 +2,9 @@ import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {PlayerProxy} from "../proxy/PlayerProxy";
-import {CommandInformation} from "../staticInformation/CommandInformation";
+import {Notifications} from "../staticInformation/Notifications";
 import {GameSettings} from "../staticInformation/GameSettings";
+import {ProxyInformation} from "../staticInformation/ProxyInformation";
 
 /**
  *
@@ -15,7 +16,7 @@ export class CheckIfPlayerFinishedPlacingTheShipsCommand extends AbstractCommand
      */
     public static checkIfBothPlayersFinishedPlacingTheShips(): boolean {
         let facade: BattleShipFacade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
-        let playerProxy: PlayerProxy = facade.retrieveProxy(BattleShipFacade.PlayerProxy);
+        let playerProxy: PlayerProxy = facade.retrieveProxy(ProxyInformation.PlayerProxy);
 
         if (playerProxy.getPlayer(GameSettings.PlayerOne).shipsPlacementFinished() === true
             && playerProxy.getPlayer(GameSettings.PlayerTwo).shipsPlacementFinished() === true) {
@@ -33,7 +34,7 @@ export class CheckIfPlayerFinishedPlacingTheShipsCommand extends AbstractCommand
 
         if (CheckIfPlayerFinishedPlacingTheShipsCommand.checkIfBothPlayersFinishedPlacingTheShips()) {
             console.log('Finished');
-            this.sendNotification(CommandInformation.StartGamePlayCommand);
+            this.sendNotification(Notifications.START_GAMEPLAY);
         }
     }
 }

@@ -1,6 +1,6 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {CommandInformation} from "../staticInformation/CommandInformation";
+import {Notifications} from "../staticInformation/Notifications";
 
 /**
  *
@@ -12,6 +12,6 @@ export class StartUpCommand extends AbstractCommand {
      */
     public execute(notification: AbstractNotification) {
 
-        this.sendNotification(CommandInformation.CreateGridCommand);
+        this.sendNotification(Notifications.CREATE_GRID);
     }
 }

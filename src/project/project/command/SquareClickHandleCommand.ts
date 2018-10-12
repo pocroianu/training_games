@@ -1,10 +1,10 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {BattleShipFacade} from "../facade/BattleShipFacade";
-import {CommandInformation} from "../staticInformation/CommandInformation";
+import {Notifications} from "../staticInformation/Notifications";
 import {Square} from "../proxy/Square";
 import {Grid} from "../proxy/Grid";
-import {MediatorInformation} from "../staticInformation/MediatorInformation";
 import {GameSettings} from "../staticInformation/GameSettings";
+import {ProxyInformation} from "../staticInformation/ProxyInformation";
 
 /**
  * Command used when a grid's square is clicked by a player.
@@ -19,13 +19,13 @@ export class SquareClickHandleCommand extends AbstractCommand {
         console.log('SquareClick Handle Request');
 
         let facade: BattleShipFacade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
-        let gridProxy: any = facade.retrieveProxy(BattleShipFacade.GridProxy);
+        let gridProxy: any = facade.retrieveProxy(ProxyInformation.GridProxy);
         let player: string = notification.getType();
         let squareClickCoordinates: any = notification.getBody();
         let grid: any = gridProxy.getGrid(player);
 
         this.checkIfPlayerHitAShip(grid, squareClickCoordinates, player);
-        this.sendNotification(CommandInformation.LogGridSquares, undefined, player);
+        this.sendNotification(Notifications.LOG_GRID_SQUARES, undefined, player);
     }
 
     /**
@@ -39,11 +39,11 @@ export class SquareClickHandleCommand extends AbstractCommand {
         let gridSquares: Square[][] = grid.getGridSquares();
         if (gridSquares[x][y].checkIfItIsAHit()) {
             gridSquares[x][y].squareHit();
-            this.sendNotification(MediatorInformation.PlayerHitAShip, squareClickCoordinates, player);
+            this.sendNotification(Notifications.PLAYER_HIT_A_SHIP, squareClickCoordinates, player);
         }
         else {
             gridSquares[x][y].squareMiss();
-            this.sendNotification(MediatorInformation.PlayerMissed, squareClickCoordinates, player);
+            this.sendNotification(Notifications.PLAYER_MISSED, squareClickCoordinates, player);
         }
     }
 }

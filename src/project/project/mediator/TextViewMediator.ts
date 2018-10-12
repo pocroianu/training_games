@@ -2,8 +2,8 @@ import 'pixi.js'
 import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {ViewManager} from "../view/mainView/ViewManager";
-import {MediatorInformation} from "../staticInformation/MediatorInformation";
 import {GameSettings} from "../staticInformation/GameSettings";
+import {Notifications} from "../staticInformation/Notifications";
 
 /**
  *  TextViewMediator
@@ -31,7 +31,7 @@ export class TextViewMediator extends AbstractMediator {
      * The notification that the ViewManagerMediator is interested in.
      */
     public listNotificationInterests(): string[] {
-        return [MediatorInformation.TextUpdate,
+        return [Notifications.UPDATE_THE_TEXT,
             ViewManager.GamePlayStateText];
     }
 
@@ -50,7 +50,7 @@ export class TextViewMediator extends AbstractMediator {
     public handleNotification(notification: puremvc.Notification): void {
 
         switch (notification.getName()) {
-            case MediatorInformation.TextUpdate:
+            case Notifications.UPDATE_THE_TEXT:
                 let player: string = notification.getType();
                 switch (player) {
                     case GameSettings.PlayerOne:

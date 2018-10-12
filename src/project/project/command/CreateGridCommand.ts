@@ -4,6 +4,7 @@ import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {Square} from "../proxy/Square";
 import {Grid} from "../proxy/Grid";
 import {GameSettings} from "../staticInformation/GameSettings";
+import {ProxyInformation} from "../staticInformation/ProxyInformation";
 
 /**
  * Creates the grid.
@@ -34,6 +35,6 @@ export class CreateGridCommand extends AbstractCommand {
 
         let facade: BattleShipFacade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
         let grid: Grid = CreateGridCommand.createTheGrid();
-        facade.retrieveProxy(BattleShipFacade.GridProxy).setData([grid, grid]);
+        facade.retrieveProxy(ProxyInformation.GridProxy).setData([grid, grid]);
     }
 }

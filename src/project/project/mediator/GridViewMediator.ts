@@ -2,8 +2,7 @@ import 'pixi.js'
 import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {CommandInformation} from "../staticInformation/CommandInformation";
-import {MediatorInformation} from "../staticInformation/MediatorInformation";
+import {Notifications} from "../staticInformation/Notifications";
 import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
@@ -34,12 +33,12 @@ export class GridViewMediator extends AbstractMediator {
      * The notification that the GridViewMediator is interested in.
      */
     public listNotificationInterests(): string[] {
-        return [MediatorInformation.GridShipMarking,
-            MediatorInformation.SquareClickRequest,
-            MediatorInformation.ShipPositionInfo,
-            MediatorInformation.HideTheShips,
-            MediatorInformation.PlayerHitAShip,
-            MediatorInformation.PlayerMissed];
+        return [Notifications.MARK_THE_SHIP_ON_THE_GRID,
+            Notifications.SQUARE_CLICK_REQUEST,
+            Notifications.SHIP_POSITION_INFO,
+            Notifications.HIDE_THE_SHIPS,
+            Notifications.PLAYER_HIT_A_SHIP,
+            Notifications.PLAYER_MISSED];
     }
 
     /**
@@ -49,7 +48,7 @@ export class GridViewMediator extends AbstractMediator {
     public handleNotification(notification: AbstractNotification): void {
         switch (notification.getName()) {
 
-            case MediatorInformation.GridShipMarking :
+            case Notifications.MARK_THE_SHIP_ON_THE_GRID :
                 let shipPositionInfo: Array<number> = notification.getBody()[0];
                 console.log(shipPositionInfo);
                 let player: string = notification.getBody()[1];
@@ -58,26 +57,26 @@ export class GridViewMediator extends AbstractMediator {
                     this.getViewComponent().fillGridWithBattleShip(shipPositionInfo, shipType, player);
                 break;
 
-            case MediatorInformation.SquareClickRequest:
+            case Notifications.SQUARE_CLICK_REQUEST:
                 let square = notification.getBody()[1];
                 if (this.getViewComponent().hasSquare(square)) {  //if the Grid has this square.
                     let squareClickCoordinates = notification.getBody()[0];
-                    this.sendNotification(CommandInformation.SquareClickHandleCommand, squareClickCoordinates, this._player);
+                    this.sendNotification(Notifications.SQUARE_CLICK_HANDLE, squareClickCoordinates, this._player);
                 }
                 break;
 
-            case MediatorInformation.ShipPositionInfo:
+            case Notifications.SHIP_POSITION_INFO:
                 let player1: string = notification.getBody()[1];
                 let shipType1: string = notification.getType();
                 let shipPositionInfo1 = notification.getBody()[0];
-                super.sendNotification(CommandInformation.ShipPositionInfoCommand, notification.getBody(), shipType1);
+                super.sendNotification(Notifications.SHIPS_SEND_POSITION_INFO, notification.getBody(), shipType1);
                 break;
 
-            case MediatorInformation.HideTheShips:
+            case Notifications.HIDE_THE_SHIPS:
                 super.getViewComponent().hideTheShips();
                 break;
 
-            case MediatorInformation.PlayerHitAShip:
+            case Notifications.PLAYER_HIT_A_SHIP:
                 let playerL: string = notification.getType();
                 let hitCoordinates = notification.getBody();
 
@@ -86,7 +85,7 @@ export class GridViewMediator extends AbstractMediator {
                 }
                 break;
 
-            case MediatorInformation.PlayerMissed:
+            case Notifications.PLAYER_MISSED:
                 let playerK: string = notification.getType();
                 let missCoordinates = notification.getBody();
                 if (this._player == playerK) {

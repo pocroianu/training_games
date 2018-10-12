@@ -2,8 +2,8 @@ import {HitView} from "../hits/HitView";
 import {MissView} from "../hits/MissView";
 import {BattleShipFacade} from "../../facade/BattleShipFacade";
 import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
-import {MediatorInformation} from "../../staticInformation/MediatorInformation";
 import {GameSettings} from "../../staticInformation/GameSettings";
+import {Notifications} from "../../staticInformation/Notifications";
 
 /**
  * Small rectangle class
@@ -153,7 +153,7 @@ export class SquareView extends AbstractSimpleView {
      */
     private handleMouseDown(): void {
         BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey)
-            .sendNotification(MediatorInformation.SquareClickRequest, [[this.verticalIndex, this.horizontalIndex], this], undefined);
+            .sendNotification(Notifications.SQUARE_CLICK_REQUEST, [[this.verticalIndex, this.horizontalIndex], this], undefined);
     }
 
     /**

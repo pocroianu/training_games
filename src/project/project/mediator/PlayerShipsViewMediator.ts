@@ -3,8 +3,7 @@ import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {AbstractMediator} from "../../abstractClasses/AbstractMediator";
 import {ViewManager} from "../view/mainView/ViewManager";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
-import {CommandInformation} from "../staticInformation/CommandInformation";
-import {MediatorInformation} from "../staticInformation/MediatorInformation";
+import {Notifications} from "../staticInformation/Notifications";
 import {GameSettings} from "../staticInformation/GameSettings";
 
 /**
@@ -32,7 +31,7 @@ export class PlayerShipsViewMediator extends AbstractMediator {
      * The notification that the ViewManagerMediator is interested in.
      */
     public listNotificationInterests(): string[] {
-        return [MediatorInformation.ShipsPlacement,
+        return [Notifications.SHIPSS_PLACEMENT,
         ];
     }
 
@@ -43,12 +42,12 @@ export class PlayerShipsViewMediator extends AbstractMediator {
     public handleNotification(notification: AbstractNotification): void {
 
         switch (notification.getName()) {
-            case MediatorInformation.ShipsPlacement:
+            case Notifications.SHIPSS_PLACEMENT:
                 let player: any = notification.getBody()[4];
                 let shipType: string = notification.getType();
 
                 if (player == this._player) {
-                    super.sendNotification(CommandInformation.ShipsPlacement, [notification.getBody(), player], shipType);
+                    super.sendNotification(Notifications.SHIPS_PLACEMENT, [notification.getBody(), player], shipType);
                 }
                 break;
         }

@@ -2,8 +2,8 @@ import {BattleShipFacade} from "../../facade/BattleShipFacade";
 import {AbstractSimpleView} from "../../../abstractClasses/AbstractSimpleView";
 import 'pixi.js';
 import {ShipGraphics} from "./ShipGraphics";
-import {MediatorInformation} from "../../staticInformation/MediatorInformation";
 import {GameSettings} from "../../staticInformation/GameSettings";
+import {Notifications} from "../../staticInformation/Notifications";
 
 
 /**
@@ -115,7 +115,7 @@ export class SingleShipView extends AbstractSimpleView {
                 shipType = GameSettings.ShipVerticalType;
             }
             BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey)
-                .sendNotification(MediatorInformation.ShipsPlacement, [this.getBounds().x, this.getBounds().y, this.width, this.height, this.player], shipType);
+                .sendNotification(Notifications.SHIPSS_PLACEMENT, [this.getBounds().x, this.getBounds().y, this.width, this.height, this.player], shipType);
             this.alpha = 1;
             this.dragging = false;
             this.data = null;

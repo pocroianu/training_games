@@ -3,7 +3,7 @@ import {SquareView} from "./SquareView";
 import {BattleShipFacade} from '../../facade/BattleShipFacade'
 import {RulerView} from "../ruler/RulerView";
 import 'pixi.js'
-import {CommandInformation} from "../../staticInformation/CommandInformation";
+import {Notifications} from "../../staticInformation/Notifications";
 import {MediatorInformation} from "../../staticInformation/MediatorInformation";
 import {GameSettings} from "../../staticInformation/GameSettings";
 
@@ -204,8 +204,8 @@ export class GridView extends AbstractSimpleView {
     private notifyThatPlayerFinishedPlacingTheShips() {
         if (this.currentNumberOfShips === this.maxShipsOnThisGrid) {
             let facade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
-            facade.sendNotification(MediatorInformation.TextUpdate, MediatorInformation.MaximumNumberOfShipReached, this._player);
-            facade.sendNotification(CommandInformation.PlayerFinishedPlacingTheShipsCommand, this._player);
+            facade.sendNotification(Notifications.UPDATE_THE_TEXT, MediatorInformation.MaximumNumberOfShipReached, this._player);
+            facade.sendNotification(Notifications.PLAYER_FINISHED_PLACING_THE_SHIPS, this._player);
         }
     }
 
@@ -235,6 +235,6 @@ export class GridView extends AbstractSimpleView {
      */
     private notifyTheGridController(i: number, j: number, numberOfSquares: number, shipType: GameSettings): void {
         let facade: any = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
-        facade.sendNotification(MediatorInformation.ShipPositionInfo, [[i, j, numberOfSquares], this._player], shipType);
+        facade.sendNotification(Notifications.SHIP_POSITION_INFO, [[i, j, numberOfSquares], this._player], shipType);
     }
 }

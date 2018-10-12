@@ -11,14 +11,14 @@ export class GameSettings {
     public static readonly RulerTextColor = 0x000000;
     public static readonly HitColor = 0x00ff00;
     public static readonly MissColor = 0xff3300;
-    public static readonly SquareFillColor = 0x7a827b;
+    public static readonly SquareFillColor = 0x00ff00;
     public static readonly SquareWidth = 75;
     public static readonly NumberOfSquaresVertically = 12;
     public static readonly NumberOfSquaresHorizontally = 12;
     public static readonly TextViewText = 'Game status : \nShips placement';
     public static readonly TextViewColor = 0x42d1f4;
     public static readonly FontSize = 38;
-    public static readonly PlayerOneShipFillColor = 0x0000f0;
+    public static readonly PlayerOneShipFillColor = 0x0000ff;
     public static readonly PlayerOneShipBorderColor = 0xfff000;
     public static readonly PlayerTwoShipFillColor = 0xfa0000;
     public static readonly PlayerTwoShipBorderColor = 0xfff000;

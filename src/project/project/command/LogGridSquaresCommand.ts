@@ -3,6 +3,7 @@ import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 import {Grid} from "../proxy/Grid";
 import {GameSettings} from "../staticInformation/GameSettings";
+import {ProxyInformation} from "../staticInformation/ProxyInformation";
 
 /**
  *
@@ -30,7 +31,7 @@ export class LogGridSquaresCommand extends AbstractCommand {
     public execute(notification: AbstractNotification): void {
         let facade: BattleShipFacade = BattleShipFacade.getInstance(GameSettings.BattleShipFacadeKey);
         let player: string = notification.getType();
-        let grid: any = facade.retrieveProxy(BattleShipFacade.GridProxy).getGrid(player);
+        let grid: any = facade.retrieveProxy(ProxyInformation.GridProxy).getGrid(player);
         LogGridSquaresCommand.log(grid);
     }
 }

@@ -4,6 +4,7 @@ import {BattleShipFacade} from "../facade/BattleShipFacade";
 import {Grid} from "../proxy/Grid";
 import {Square} from "../proxy/Square";
 import {GameSettings} from "../staticInformation/GameSettings";
+import {ProxyInformation} from "../staticInformation/ProxyInformation";
 
 /**
  *
@@ -43,7 +44,7 @@ export class UpdateShipPositionCommand extends AbstractCommand {
 
         let shipType: string = notification.getType();
         let shipPosition = notification.getBody()[0];
-        let grid: Grid = facade.retrieveProxy(BattleShipFacade.GridProxy).getGrid(player);
+        let grid: Grid = facade.retrieveProxy(ProxyInformation.GridProxy).getGrid(player);
         UpdateShipPositionCommand.checkShipType(shipPosition, shipType, grid);
     }
 }

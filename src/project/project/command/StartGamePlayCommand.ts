@@ -1,7 +1,7 @@
 import {AbstractCommand} from "../../abstractClasses/AbstractCommand";
 import {AbstractNotification} from "../../abstractClasses/AbstractNotification";
 import {ViewManager} from "../view/mainView/ViewManager";
-import {CommandInformation} from "../staticInformation/CommandInformation";
+import {Notifications} from "../staticInformation/Notifications";
 
 /**
  *
@@ -14,7 +14,7 @@ export class StartGamePlayCommand extends AbstractCommand {
      */
     public execute(notification: AbstractNotification): void {
 
-        this.sendNotification(CommandInformation.HideTheShipCommand, undefined);
+        this.sendNotification(Notifications.HIDE_THE_SHIPS, undefined);
         this.sendNotification(ViewManager.GamePlayStateText, undefined);
 
     }
