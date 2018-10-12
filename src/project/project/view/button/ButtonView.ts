@@ -1,5 +1,4 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import {ButtonViewMediator} from "../../mediator/ButtonViewMediator";
 
 /**
  * A button class.
@@ -35,7 +34,7 @@ export class ButtonView extends AbstractView {
 
         this.initializeButtonInteraction();
 
-        super.registerMediator(new ButtonViewMediator(key, this));
+        // super.registerMediator(new ButtonViewMediator(key, this));
 
         console.log('   # ButtonView created');
     }
@@ -47,10 +46,10 @@ export class ButtonView extends AbstractView {
      * @param yPosition
      * @param scale
      */
-    static getInstance(key: string, xPosition?: number, yPosition?: number, scale?: number): puremvc.IView {
+    static getInstance(key: string, xPosition?: number, yPosition?: number, scale?: number): puremvc.View {
         if (!puremvc.View.instanceMap[key])
             puremvc.View.instanceMap[key] = new ButtonView(key, xPosition, yPosition, scale);
-        return puremvc.View.instanceMap[key] as puremvc.IView;
+        return puremvc.View.instanceMap[key] as puremvc.View;
     }
 
     /**
@@ -69,13 +68,6 @@ export class ButtonView extends AbstractView {
         return super.getUIContainer();
     }
 
-    /*
-        /!**
-         *
-         *!/
-        private handleMouseDown(): void {
-            BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ButtonPress);
-        }*/
 
     /**
      * Makes the button interactive with the player.

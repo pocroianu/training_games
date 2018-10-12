@@ -1,8 +1,7 @@
-import {SquareClickCommand} from "../command/SquareClickCommand";
-import {CommandNotifications} from '../facade/BattleShipFacade'
 import {AbstractController} from "../../abstractClasses/AbstractController";
 import 'pixi.js'
-import {ButtonPressCommand} from "../command/ButtonPressCommand";
+import {GridController} from "./GridController";
+import {ControllerNames, FacadeInformation} from "../facade/BattleShipFacade";
 
 /**
  * The BattleShip controller.
@@ -16,9 +15,7 @@ export class BattleShipController extends AbstractController {
     constructor(key: string) {
         super(key);
 
-        super.registerCommand(CommandNotifications.ClickHandle, SquareClickCommand);
-        super.registerCommand(CommandNotifications.ButtonPress, ButtonPressCommand);
-        // super.registerCommand(CommandNotifications.ShipsPlacement,ShipPlaceCommand);
+        GridController.getInstance(ControllerNames.GridControllerName, FacadeInformation.NumberOfSquaresVertically, FacadeInformation.NumberOfSquaresHorizontally);
         console.log('BattleShipController created');
     }
 

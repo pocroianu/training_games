@@ -5,6 +5,7 @@ export class AbstractView extends puremvc.View implements puremvc.IView {
     public ID: number;
     protected _container: PIXI.Container;
     protected _multitonKey: string;
+    protected _active: boolean;
 
     /**
      *
@@ -15,7 +16,6 @@ export class AbstractView extends puremvc.View implements puremvc.IView {
         this._multitonKey = key;
     }
 
-    protected _active: boolean;
 
     /**
      *
@@ -74,6 +74,14 @@ export class AbstractView extends puremvc.View implements puremvc.IView {
      */
     public registerMediator(mediator: puremvc.Mediator): void {
         super.registerMediator(mediator);
+    }
+
+    /**
+     *
+     * @param mediatorName
+     */
+    public hasMediator(mediatorName: string): boolean {
+        return super.hasMediator(mediatorName);
     }
 
     /**

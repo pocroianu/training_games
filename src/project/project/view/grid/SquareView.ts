@@ -31,6 +31,9 @@ export class SquareView extends AbstractView {
     /**Square's glow */
     private readonly squareGlow: PIXI.Graphics;
 
+    /**Ship's Square fill object */
+    public shipSquare: PIXI.Graphics;
+
     /**
      *
      * @param key
@@ -55,7 +58,7 @@ export class SquareView extends AbstractView {
         this.squareGraphics = new PIXI.Graphics();
         this.squareMarking = new PIXI.Graphics();
         this.squareGlow = new PIXI.Graphics();
-
+        this.shipSquare = new PIXI.Graphics();
 
         this.squareGraphics.lineStyle(7, this.borderColor, 1);
         this.squareGraphics.beginFill(this.fillColor);
@@ -68,6 +71,7 @@ export class SquareView extends AbstractView {
         this.squareGlow.endFill();
         this.squareGlow.visible = false;
 
+
         this.hitView = HitView.getInstance(Math.random() + '', this.x, this.y, this.width);
         this.hitView.setActive(false);
         this.missView = MissView.getInstance(Math.random() + '', this.x, this.y, this.width);
@@ -76,9 +80,16 @@ export class SquareView extends AbstractView {
         this.squareGraphics.interactive = true;
         this.squareGraphics.buttonMode = true;
 
+        this.shipSquare.lineStyle(0, FacadeInformation.SquareFillColor);
+        this.shipSquare.beginFill(FacadeInformation.SquareFillColor, 0.6);
+        this.shipSquare.drawRect(this.x + 5, this.y + 5, this.width - 5, this.width - 5);
+        this.shipSquare.endFill();
+        this.shipSquare.visible = false;
+
         this.addToContainer(this.squareGraphics);
         this.addToContainer(this.squareMarking);
         this.addToContainer(this.squareGlow);
+        this.addToContainer(this.shipSquare);
 
         this.initializeSquareInteraction();
     }
@@ -123,7 +134,7 @@ export class SquareView extends AbstractView {
      * Returns the x and y coordinates for this square.
      */
     public getPosition(): [number, number] {
-        return [this.x, this.y];
+        return [this.squareGraphics.getBounds().x, this.squareGraphics.getBounds().y];
     }
 
     /**
@@ -145,8 +156,7 @@ export class SquareView extends AbstractView {
      */
     private handleMouseDown(): void {
         this.hit();
-        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.horizontalIndex, this.verticalIndex].toString());
-        // this.onClickHandler.call(this, [this.x, this.y]);
+        BattleShipFacade.getInstance(FacadeInformation.BattleShipFacadeKey).sendNotification(CommandNotifications.ClickHandle, [this.verticalIndex, this.horizontalIndex].toString());
     }
 
     /**
@@ -161,5 +171,22 @@ export class SquareView extends AbstractView {
      */
     private miss(): void {
         this.missView.setActive(true);
+    }
+
+    /**
+     * Fill a square with a part of a BattleShip
+     */
+    public fillSquare(): void {
+        this.shipSquare.visible = true;
+        this.disableInteraction();
+    }
+
+    /**
+     * Disable the Square's interaction
+     */
+    public disableInteraction(): void {
+        this.squareGraphics.interactive = false;
+        this.squareGlow.interactive = false;
+        this.squareMarking.interactive = false;
     }
 }

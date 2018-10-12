@@ -1,5 +1,4 @@
 import {AbstractView} from "../../../abstractClasses/AbstractView";
-import {TextViewMediator} from "../../mediator/TextViewMediator";
 
 /**
  * Class that has the responsibility to show text notifications on the screen
@@ -19,10 +18,8 @@ export class TextView extends AbstractView {
         super(key);
 
         this.text = new PIXI.Text(text, {fontSize: fontSize, fill: color});
-        this.text.anchor.set(0, 0);
-        this._container.addChild(this.text);
+        this.text.anchor.set(0.5, 0.5);
 
-        super.registerMediator(new TextViewMediator(key, this));
     }
 
     /**
@@ -31,6 +28,16 @@ export class TextView extends AbstractView {
     public initializeView(): void {
         super.initializeView();
     }
+
+    /**
+     *
+     * @param text
+     */
+    public addText(text: string) {
+        this.text.text += '\n' + text;
+    }
+
+
 
     /**
      *
@@ -50,8 +57,8 @@ export class TextView extends AbstractView {
      *
      */
     public getUIContainer(): PIXI.Container {
-        this._container.pivot.x = this._container.width / 2;
-        this._container.pivot.y = this._container.height / 2;
-        return super.getUIContainer();
+        /*this._container.pivot.x = this._container.width / 2;
+        this._container.pivot.y = this._container.height / 2;*/
+        return this.text;
     }
 }

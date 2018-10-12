@@ -2,9 +2,28 @@ import {BattleShipController} from "../controller/BattleShipController";
 import {BattleShipView} from "../view/mainView/BattleShipView";
 import {AbstractFacade} from "../../abstractClasses/AbstractFacade";
 import 'pixi.js';
+import {GridView} from "../view/grid/GridView";
+import {TextView} from "../view/text/TextView";
+import {ButtonView} from "../view/button/ButtonView";
+import {SquareClickCommand} from "../command/SquareClickCommand";
+import {ButtonPressCommand} from "../command/ButtonPressCommand";
+import {ButtonViewMediator} from "../mediator/ButtonViewMediator";
+import {GridViewMediator} from "../mediator/GridViewMediator";
+import {TextViewMediator} from "../mediator/TextViewMediator";
+import {BundleShipViewMediator} from "../mediator/BundleShipViewMediator";
+import {BundleShipView} from "../view/ships/BundleShipView";
+import {ShipPlaceCommand} from "../command/ShipPlaceCommand";
 
 export enum MediatorNotifications {
-    ShipsPlacement = 'SHIPS_PLACEMENT_MEDIATOR'
+    ShipsPlacement = 'Ships_Placement',
+    GridShipMarking = 'GridMarking',
+    TextUpdate = 'TextUpdate',
+    Test = 'Test'
+}
+
+export enum TextErrors {
+
+    MaximumNumberOfShipReached = 'Max Number Of Ships to Place Reached'
 }
 
 export enum CommandNotifications {
@@ -15,46 +34,76 @@ export enum CommandNotifications {
     ShipsPlacement = 'SHIPS_PLACEMENT_COMMAND'
 }
 
+export enum ControllerNames {
+    GridControllerName = 'John'
+}
+
 export enum FacadeInformation {
+
+
     GridOne = 1,
     GridTwo = 2,
 
     Grid1XPosition = 100,
     Grid1YPosition = 100,
     Grid1BorderColor = 0x0000ff,
-
     Grid2XPosition = 100,
     Grid2YPosition = 100,
     Grid2BorderColor = 0xff0000,
+    GridScale = 0.5,
 
     GridSquareFillColor = 0x000000,
     RulerTextColor = 0x000000,
     HitColor = 0x00ff00,
     MissColor = 0xff3300,
 
+    SquareFillColor = 0x00ff00,
     SquareWidth = 80,
     NumberOfSquaresVertically = 12,
     NumberOfSquaresHorizontally = 12,
 
-    TextViewText = 'Game status : \n  Ships placement',
-    TextViewColor = 0xffffff,
+    TextViewText = 'Game status : \nShips placement',
+    TextViewColor = 0x42d1f4,
     FontSize = 30,
 
-    ShipFillColor = 0x0000ff,
-    ShipBorderColor = 0xfff000,
+    PlayerOneShipFillColor = 0x0000ff,
+    PlayerOneShipBorderColor = 0xfff000,
+    PlayerTwoShipFillColor = 0xfa0000,
+    PlayerTwoShipBorderColor = 0xfff000,
+    PlayerOneNumberOfShips = 6,
+    PlayerTwoNumberOfShips = 6,
 
     ButtonViewXPosition = 100,
     ButtonViewYPosition = 100,
     ButtonViewScale = 0.9,
 
-    BattleShipFacadeKey = 'BattleShip'
+
+    PlayerOne = 'PlayerOne',
+    PlayerTwo = 'PlayerTwo',
+
+    BattleShipFacadeKey = 'BattleShip',
+    ShipVerticalType = 'Vertical',
+    ShipHorizontalType = 'Horizontal',
+    MaximumNumberOfShipsOnAGrid = 3
 }
 
+/**
+ * The main Facade.
+ */
 export class BattleShipFacade extends AbstractFacade {
 
     public app: PIXI.Application;
 
-    //TODO - THE THREE CONTAINERS
+    public gridView: string[];
+    public gridViewMediator: string[];
+    public buttonView: string;
+    public buttonViewMediator: string;
+    public bundleShipView: string[];
+    public bundleShipViewMediator: string[];
+    public textView: string;
+    public textViewMediator: string;
+
+    //TODO - Add more containers if needed
     /**The containers that contains the GameBoards */
     public GameBoardContainerOne: PIXI.Container;
     public GameBoardContainerTwo: PIXI.Container;
@@ -63,10 +112,17 @@ export class BattleShipFacade extends AbstractFacade {
     /**The container which contains the GameButton */
     public GameButtonContainer: PIXI.Container;
     /**The container that holds information about the battleships */
-    public ShipsContainer: PIXI.Container;
+    public ShipsContainerOne: PIXI.Container;
+    public ShipsContainerTwo: PIXI.Container;
 
+    /**
+     *
+     * @param key
+     */
     constructor(key: string) {
         super(key);
+
+
     }
 
     /**
@@ -93,6 +149,49 @@ export class BattleShipFacade extends AbstractFacade {
     public initializeView(): void {
         if (!this.view)
             this.view = BattleShipView.getInstance(this.multitonKey);
+
+        /**Keys for the views and the mediators */
+        this.gridView = ['GridOneBoard', 'GridTwoBoard'];
+        this.gridViewMediator = ['GridOneMediator', 'GridTwoMediator'];
+        this.buttonView = 'ButtonView';
+        this.buttonViewMediator = 'ButtonViewMediator';
+        this.bundleShipView = ['ShipPlayerOneView', 'ShipPlayerTwoView'];
+        this.bundleShipViewMediator = ['ShipPlayerOneMediator', 'ShipPlayerTwoMediator'];
+        this.textView = 'TextView';
+        this.textViewMediator = 'TextViewMediator';
+
+
+        /**Registering a ButtonMediator */
+        super.registerMediator(new ButtonViewMediator(this.buttonViewMediator, ButtonView.getInstance(this.buttonView,
+            FacadeInformation.ButtonViewXPosition, FacadeInformation.ButtonViewYPosition, FacadeInformation.ButtonViewScale)));
+
+        /**Registering the two GridViews */
+        super.registerMediator(new GridViewMediator(this.gridViewMediator[0],
+            GridView.getInstance(this.gridView[0], FacadeInformation.GridOne), FacadeInformation.GridOne));
+        super.registerMediator(new GridViewMediator(this.gridViewMediator[1],
+            GridView.getInstance(this.gridView[1], FacadeInformation.GridTwo), FacadeInformation.GridTwo));
+
+        /**Registering the TextMediator */
+        super.registerMediator(new TextViewMediator(this.textViewMediator, TextView.getInstance(this.textView,
+            FacadeInformation.TextViewText, FacadeInformation.FontSize, FacadeInformation.TextViewColor)));
+
+
+        /**Registering the Ships Mediator */
+        super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[0],
+            BundleShipView.getInstance(this.bundleShipView[0], FacadeInformation.PlayerOne, FacadeInformation.PlayerOneNumberOfShips), FacadeInformation.PlayerOne));
+        super.registerMediator(new BundleShipViewMediator(this.bundleShipViewMediator[1],
+            BundleShipView.getInstance(this.bundleShipView[1], FacadeInformation.PlayerTwo, FacadeInformation.PlayerTwoNumberOfShips), FacadeInformation.PlayerTwo));
+
+        let count: number = 0;
+        // console.log(super.hasMediator(this.textViewMediator));
+        this.app.ticker.add((delta) => {
+            count += 0.1;
+
+            let text: any = super.retrieveMediator(this.textViewMediator).getViewComponent().getUIContainer();
+            text.scale.set(1 + Math.sin(count) * 0.05);
+
+        });
+
     }
 
     /**
@@ -101,6 +200,10 @@ export class BattleShipFacade extends AbstractFacade {
     public initializeController(): void {
         if (!this.controller)
             this.controller = BattleShipController.getInstance(this.multitonKey);
+
+        super.registerCommand(CommandNotifications.ClickHandle, SquareClickCommand);
+        super.registerCommand(CommandNotifications.ButtonPress, ButtonPressCommand);
+        super.registerCommand(CommandNotifications.ShipsPlacement, ShipPlaceCommand);
     }
 
     /**
@@ -112,7 +215,6 @@ export class BattleShipFacade extends AbstractFacade {
         for (let item of containersList) {
             if (type === 0) {
                 /**Adding to the GameBoardOne Container */
-
                 this.GameBoardContainerOne.addChild(item);
             }
             else if (type === 1) {
@@ -128,8 +230,12 @@ export class BattleShipFacade extends AbstractFacade {
                 this.GameButtonContainer.addChild(item);
             }
             else if (type === 4) {
-                /**Adding to the ShipsInfo Container */
-                this.ShipsContainer.addChild(item);
+                /**Adding to the Ships Container */
+                this.ShipsContainerOne.addChild(item);
+            }
+            else if (type === 5) {
+                /**Adding to the Ships Container */
+                this.ShipsContainerTwo.addChild(item);
             }
         }
     }
@@ -147,9 +253,11 @@ export class BattleShipFacade extends AbstractFacade {
         this.GameBoardContainerTwo = new PIXI.Container;
         this.GameInfoContainer = new PIXI.Container;
         this.GameButtonContainer = new PIXI.Container;
-        this.ShipsContainer = new PIXI.Container;
+        this.ShipsContainerOne = new PIXI.Container;
+        this.ShipsContainerTwo = new PIXI.Container;
         this.app.stage.addChild(this.GameBoardContainerOne, this.GameBoardContainerTwo,
-            this.GameInfoContainer, this.GameButtonContainer, this.ShipsContainer);
+            this.GameInfoContainer, this.GameButtonContainer, this.ShipsContainerOne, this.ShipsContainerTwo);
+
 
         this.checkStartOrientation();
         this.changeOrientation();
@@ -174,7 +282,6 @@ export class BattleShipFacade extends AbstractFacade {
     private checkStartOrientation(): void {
 
         this.app.renderer.resize(window.innerWidth, window.innerHeight);
-
         let width: number = this.app.view.width;
         let height: number = this.app.view.height;
 
@@ -182,10 +289,10 @@ export class BattleShipFacade extends AbstractFacade {
             case 90 :
 
                 this.GameBoardContainerOne.position.set(width / 6, height / 2);
-                this.GameBoardContainerOne.scale.set(0.5);
+                this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                 this.GameBoardContainerTwo.position.set(3 * width / 6, height / 2);
-                this.GameBoardContainerTwo.scale.set(0.5);
+                this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                 this.GameInfoContainer.position.set(5 * width / 6, height / 4);
                 this.GameInfoContainer.scale.set(1);
@@ -193,8 +300,11 @@ export class BattleShipFacade extends AbstractFacade {
                 this.GameButtonContainer.position.set(5 * width / 6, 3 * height / 4);
                 this.GameButtonContainer.scale.set(0.9);
 
-                this.ShipsContainer.position.set(width / 4, height / 6);
-                this.ShipsContainer.scale.set(0.5);
+                this.ShipsContainerOne.position.set(width / 6, 30);
+                this.ShipsContainerOne.scale.set(0.5);
+
+                this.ShipsContainerTwo.position.set(3 * width / 6, 30);
+                this.ShipsContainerTwo.scale.set(0.5);
 
                 break;
 
@@ -214,10 +324,10 @@ export class BattleShipFacade extends AbstractFacade {
 
             default:
                 this.GameBoardContainerOne.position.set(width / 6, height / 2);
-                this.GameBoardContainerOne.scale.set(0.5);
+                this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                 this.GameBoardContainerTwo.position.set(3 * width / 6, height / 2);
-                this.GameBoardContainerTwo.scale.set(0.5);
+                this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                 this.GameInfoContainer.position.set(5 * width / 6, height / 4);
                 this.GameInfoContainer.scale.set(1);
@@ -225,8 +335,11 @@ export class BattleShipFacade extends AbstractFacade {
                 this.GameButtonContainer.position.set(5 * width / 6, 3 * height / 4);
                 this.GameButtonContainer.scale.set(0.9);
 
-                this.ShipsContainer.position.set(width / 4, height / 6);
-                this.ShipsContainer.scale.set(0.5);
+                this.ShipsContainerOne.position.set(width / 6, 30);
+                this.ShipsContainerOne.scale.set(0.5);
+
+                this.ShipsContainerTwo.position.set(3 * width / 6, 30);
+                this.ShipsContainerTwo.scale.set(0.5);
 
                 break;
         }
@@ -249,10 +362,10 @@ export class BattleShipFacade extends AbstractFacade {
                     case 90 :
 
                         this.GameBoardContainerOne.position.set(width / 6, height / 2);
-                        this.GameBoardContainerOne.scale.set(0.5);
+                        this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                         this.GameBoardContainerTwo.position.set(3 * width / 6, height / 2);
-                        this.GameBoardContainerTwo.scale.set(0.5);
+                        this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                         this.GameInfoContainer.position.set(5 * width / 6, height / 4);
                         this.GameInfoContainer.scale.set(1);
@@ -260,18 +373,21 @@ export class BattleShipFacade extends AbstractFacade {
                         this.GameButtonContainer.position.set(5 * width / 6, 3 * height / 4);
                         this.GameButtonContainer.scale.set(0.9);
 
-                        this.ShipsContainer.position.set(width / 4, height / 6);
-                        this.ShipsContainer.scale.set(0.5);
+                        this.ShipsContainerOne.position.set(width / 6, 30);
+                        this.ShipsContainerOne.scale.set(0.5);
+
+                        this.ShipsContainerTwo.position.set(3 * width / 6, 30);
+                        this.ShipsContainerTwo.scale.set(0.5);
 
                         break;
 
                     case 0:
 
                         this.GameBoardContainerOne.position.set(width / 2, height / 6);
-                        this.GameBoardContainerOne.scale.set(0.7, 0.7);
+                        this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                         this.GameBoardContainerTwo.position.set(width / 2, 3 * height / 6);
-                        this.GameBoardContainerTwo.scale.set(0.7, 0.7);
+                        this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                         this.GameInfoContainer.position.set(width / 4, 5 * height / 6);
                         this.GameInfoContainer.scale.set(1.6);
@@ -283,10 +399,10 @@ export class BattleShipFacade extends AbstractFacade {
 
                     default:
                         this.GameBoardContainerOne.position.set(width / 6, height / 2);
-                        this.GameBoardContainerOne.scale.set(0.5);
+                        this.GameBoardContainerOne.scale.set(FacadeInformation.GridScale);
 
                         this.GameBoardContainerTwo.position.set(3 * width / 6, height / 2);
-                        this.GameBoardContainerTwo.scale.set(0.5);
+                        this.GameBoardContainerTwo.scale.set(FacadeInformation.GridScale);
 
                         this.GameInfoContainer.position.set(5 * width / 6, height / 4);
                         this.GameInfoContainer.scale.set(1);
@@ -294,10 +410,12 @@ export class BattleShipFacade extends AbstractFacade {
                         this.GameButtonContainer.position.set(5 * width / 6, 3 * height / 4);
                         this.GameButtonContainer.scale.set(0.9);
 
-                        this.ShipsContainer.position.set(width / 4, height / 6);
-                        this.ShipsContainer.scale.set(0.5);
+                        this.ShipsContainerOne.position.set(width / 6, 30);
+                        this.ShipsContainerOne.scale.set(0.5);
 
-                        break;
+                        this.ShipsContainerTwo.position.set(3 * width / 6, 30);
+                        this.ShipsContainerTwo.scale.set(0.5);
+
                 }
             }
         );
