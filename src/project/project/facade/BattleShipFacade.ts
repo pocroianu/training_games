@@ -72,8 +72,7 @@ export class BattleShipFacade extends AbstractFacade {
         /**Registering the proxies */
         this.registerProxy(new GridProxy(ProxyInformation.GridProxy));
         this.registerProxy(new PlayerProxy(ProxyInformation.PlayerProxy));
-        this.retrieveProxy(ProxyInformation.PlayerProxy)
-            .setData([new Player(GameSettings.PlayerOne), new Player(GameSettings.PlayerTwo)]);
+        this.retrieveProxy(ProxyInformation.PlayerProxy).setData([new Player(GameSettings.PlayerOne), new Player(GameSettings.PlayerTwo)]);
     }
 
     /**
